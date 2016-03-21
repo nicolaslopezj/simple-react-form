@@ -1,15 +1,3 @@
-.sass-cache/
 .DS_Store
-coverage/
-dist/
+lib/
 node_modules/
-main.css
-
-# temporary jenkins files
-test/test.js.tap
-jshint.xml
-jshint-proper.xml
-
-core
-npm-debug.log
-.idea/
