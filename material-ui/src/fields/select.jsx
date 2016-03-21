@@ -2,7 +2,7 @@ import React from 'react';
 import SelectField from 'material-ui/lib/select-field';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Colors from 'material-ui/lib/styles/colors';
-import {FieldType, registerType} from 'react-form';
+import {FieldType, registerType} from 'simple-react-form';
 import styles from '../styles';
 
 class SelectComponent extends FieldType {

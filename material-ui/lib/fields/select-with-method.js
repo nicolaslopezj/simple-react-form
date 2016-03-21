@@ -20,7 +20,7 @@ var _colors = require('material-ui/lib/styles/colors');
 
 var _colors2 = _interopRequireDefault(_colors);
 
-var _reactForm = require('react-form');
+var _simpleReactForm = require('simple-react-form');
 
 var _styles = require('../styles');
 
@@ -247,9 +247,9 @@ var SelectWithMethodComponent = function (_FieldType) {
   }]);
 
   return SelectWithMethodComponent;
-}(_reactForm.FieldType);
+}(_simpleReactForm.FieldType);
 
-(0, _reactForm.registerType)({
+(0, _simpleReactForm.registerType)({
   type: 'select-with-method',
   component: SelectWithMethodComponent,
   allowedTypes: [String, Number, [String], [Number]],

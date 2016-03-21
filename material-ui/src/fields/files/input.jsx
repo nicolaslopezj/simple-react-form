@@ -4,7 +4,7 @@ import LinearProgress from 'material-ui/lib/linear-progress';
 import Paper from 'material-ui/lib/paper';
 import Colors from 'material-ui/lib/styles/colors';
 
-import {FieldType, registerType} from 'react-form';
+import {FieldType, registerType} from 'simple-react-form';
 
 import UploadButton from './upload-button';
 import Preview from './preview';

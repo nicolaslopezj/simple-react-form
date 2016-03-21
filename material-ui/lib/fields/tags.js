@@ -12,7 +12,7 @@ var _textField = require('material-ui/lib/text-field');
 
 var _textField2 = _interopRequireDefault(_textField);
 
-var _reactForm = require('react-form');
+var _simpleReactForm = require('simple-react-form');
 
 var _styles = require('../styles');
 
@@ -103,15 +103,15 @@ var StringArrayComponent = function (_FieldType) {
   }]);
 
   return StringArrayComponent;
-}(_reactForm.FieldType);
+}(_simpleReactForm.FieldType);
 
-(0, _reactForm.registerType)({
+(0, _simpleReactForm.registerType)({
   type: 'string-array',
   component: StringArrayComponent,
   allowedTypes: [[String]]
 });
 
-(0, _reactForm.registerType)({
+(0, _simpleReactForm.registerType)({
   type: 'tags',
   component: StringArrayComponent,
   allowedTypes: [[String]],

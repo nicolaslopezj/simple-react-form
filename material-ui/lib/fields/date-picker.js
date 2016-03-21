@@ -12,7 +12,7 @@ var _datePicker = require('material-ui/lib/date-picker');
 
 var _datePicker2 = _interopRequireDefault(_datePicker);
 
-var _reactForm = require('react-form');
+var _simpleReactForm = require('simple-react-form');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52,9 +52,9 @@ var DatePickerComponent = function (_FieldType) {
   }]);
 
   return DatePickerComponent;
-}(_reactForm.FieldType);
+}(_simpleReactForm.FieldType);
 
-(0, _reactForm.registerType)({
+(0, _simpleReactForm.registerType)({
   type: 'date-picker',
   component: DatePickerComponent,
   allowedTypes: [Date],

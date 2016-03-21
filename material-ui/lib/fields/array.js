@@ -18,7 +18,7 @@ var _raisedButton = require('material-ui/lib/raised-button');
 
 var _raisedButton2 = _interopRequireDefault(_raisedButton);
 
-var _reactForm = require('react-form');
+var _simpleReactForm = require('simple-react-form');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -196,11 +196,11 @@ var MaterialArray = function (_ArrayComponent) {
   }]);
 
   return MaterialArray;
-}(_reactForm.ArrayComponent);
+}(_simpleReactForm.ArrayComponent);
 
 MaterialArray.propTypes = propTypes;
 MaterialArray.defaultProps = defaultProps;
 
-_reactForm.Form.defaultProps.arrayComponent = MaterialArray;
+_simpleReactForm.Form.defaultProps.arrayComponent = MaterialArray;
 
 //ArrayComponent = MaterialArray;

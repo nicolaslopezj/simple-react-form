@@ -16,7 +16,7 @@ var _colors = require('material-ui/lib/styles/colors');
 
 var _colors2 = _interopRequireDefault(_colors);
 
-var _reactForm = require('react-form');
+var _simpleReactForm = require('simple-react-form');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -81,9 +81,9 @@ var CheckboxComponent = function (_FieldType) {
   }]);
 
   return CheckboxComponent;
-}(_reactForm.FieldType);
+}(_simpleReactForm.FieldType);
 
-(0, _reactForm.registerType)({
+(0, _simpleReactForm.registerType)({
   type: 'checkbox',
   component: CheckboxComponent,
   allowedTypes: [Boolean],
@@ -92,7 +92,7 @@ var CheckboxComponent = function (_FieldType) {
   optionsDescription: {}
 });
 
-(0, _reactForm.registerType)({
+(0, _simpleReactForm.registerType)({
   type: 'boolean',
   component: CheckboxComponent
 });

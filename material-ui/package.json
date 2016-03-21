@@ -1,5 +1,5 @@
 {
-  "name": "react-form-material-ui",
+  "name": "simple-react-form-material-ui",
   "version": "1.0.0",
   "license": "MIT",
   "author": "Nicolás López <nicolaslopezj@me.com>",
@@ -24,13 +24,13 @@
     "run-browser-babel": "^4.0.1",
     "tape": "^4.0.0",
     "uglify-js": "^2.6.1",
-    "react-form": "../form",
+    "simple-react-form": "../form",
     "material-ui": ">=0.14.0",
     "react-tap-event-plugin": "^0.2.2"
   },
   "peerDependencies": {
     "react": ">=0.13.0",
-    "react-form": ">=0.0.1",
+    "simple-react-form": ">=0.0.1",
     "material-ui": ">=0.14.0",
     "react-tap-event-plugin": "^0.2.2"
   },

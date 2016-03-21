@@ -1,6 +1,6 @@
 import React from 'react';
 import TextField from 'material-ui/lib/text-field';
-import {FieldType, registerType} from 'react-form';
+import {FieldType, registerType} from 'simple-react-form';
 import styles from '../styles';
 
 class StringArrayComponent extends FieldType {

@@ -20,7 +20,7 @@ var _colors = require('material-ui/lib/styles/colors');
 
 var _colors2 = _interopRequireDefault(_colors);
 
-var _reactForm = require('react-form');
+var _simpleReactForm = require('simple-react-form');
 
 var _styles = require('../styles');
 
@@ -85,9 +85,9 @@ var SelectComponent = function (_FieldType) {
   }]);
 
   return SelectComponent;
-}(_reactForm.FieldType);
+}(_simpleReactForm.FieldType);
 
-(0, _reactForm.registerType)({
+(0, _simpleReactForm.registerType)({
   type: 'select',
   component: SelectComponent,
   allowedTypes: [String, Number],

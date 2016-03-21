@@ -12,7 +12,7 @@ var _textField = require('material-ui/lib/text-field');
 
 var _textField2 = _interopRequireDefault(_textField);
 
-var _reactForm = require('react-form');
+var _simpleReactForm = require('simple-react-form');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54,9 +54,9 @@ var TextareaComponent = function (_FieldType) {
   }]);
 
   return TextareaComponent;
-}(_reactForm.FieldType);
+}(_simpleReactForm.FieldType);
 
-(0, _reactForm.registerType)({
+(0, _simpleReactForm.registerType)({
   type: 'textarea',
   component: TextareaComponent,
   allowedTypes: [String],

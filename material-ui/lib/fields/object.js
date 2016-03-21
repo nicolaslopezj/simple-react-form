@@ -10,7 +10,7 @@ var _paper = require('material-ui/lib/paper');
 
 var _paper2 = _interopRequireDefault(_paper);
 
-var _reactForm = require('react-form');
+var _simpleReactForm = require('simple-react-form');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59,11 +59,11 @@ var MaterialObject = function (_ObjectComponent) {
   }]);
 
   return MaterialObject;
-}(_reactForm.ObjectComponent);
+}(_simpleReactForm.ObjectComponent);
 
 //MRF.Object = MaterialObject;
 
 
-_reactForm.Form.defaultProps.objectComponent = MaterialObject;
+_simpleReactForm.Form.defaultProps.objectComponent = MaterialObject;
 
 //ObjectComponent = MaterialObject;

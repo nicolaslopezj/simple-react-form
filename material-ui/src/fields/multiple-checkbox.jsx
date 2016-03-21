@@ -1,6 +1,6 @@
 import React from 'react';
 import Checkbox from 'material-ui/lib/checkbox';
-import {FieldType, registerType} from 'react-form';
+import {FieldType, registerType} from 'simple-react-form';
 
 class MultipleCheckboxComponent extends FieldType {
 

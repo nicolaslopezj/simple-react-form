@@ -1,6 +1,6 @@
 import React from 'react';
 import Toggle from 'material-ui/lib/toggle';
-import {FieldType, registerType} from 'react-form';
+import {FieldType, registerType} from 'simple-react-form';
 
 class ToggleComponent extends FieldType {
 

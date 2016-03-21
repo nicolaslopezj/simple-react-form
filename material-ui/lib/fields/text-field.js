@@ -12,7 +12,7 @@ var _textField = require('material-ui/lib/text-field');
 
 var _textField2 = _interopRequireDefault(_textField);
 
-var _reactForm = require('react-form');
+var _simpleReactForm = require('simple-react-form');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -73,9 +73,9 @@ var TextFieldComponent = function (_FieldType) {
   }]);
 
   return TextFieldComponent;
-}(_reactForm.FieldType);
+}(_simpleReactForm.FieldType);
 
-(0, _reactForm.registerType)({
+(0, _simpleReactForm.registerType)({
   type: 'text',
   component: TextFieldComponent,
   description: 'Simple checkbox field.',
@@ -102,7 +102,7 @@ var StringFieldComponent = function (_TextFieldComponent) {
   return StringFieldComponent;
 }(TextFieldComponent);
 
-(0, _reactForm.registerType)({
+(0, _simpleReactForm.registerType)({
   type: 'string',
   component: StringFieldComponent
 });
@@ -122,7 +122,7 @@ var NumberFieldComponent = function (_TextFieldComponent2) {
   return NumberFieldComponent;
 }(TextFieldComponent);
 
-(0, _reactForm.registerType)({
+(0, _simpleReactForm.registerType)({
   type: 'number',
   component: NumberFieldComponent
 });
@@ -142,7 +142,7 @@ var DateFieldComponent = function (_TextFieldComponent3) {
   return DateFieldComponent;
 }(TextFieldComponent);
 
-(0, _reactForm.registerType)({
+(0, _simpleReactForm.registerType)({
   type: 'date',
   component: DateFieldComponent
 });

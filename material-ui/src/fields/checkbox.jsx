@@ -2,7 +2,7 @@ import React from 'react';
 import Checkbox from 'material-ui/lib/text-field';
 import FontIcon from 'material-ui/lib/text-field';
 import Colors from 'material-ui/lib/styles/colors';
-import {FieldType, registerType} from 'react-form';
+import {FieldType, registerType} from 'simple-react-form';
 
 class CheckboxComponent extends FieldType {
 

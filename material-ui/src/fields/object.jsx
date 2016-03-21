@@ -1,6 +1,6 @@
 import React from 'react';
 import Paper from 'material-ui/lib/paper';
-import { Form, ObjectComponent } from 'react-form';
+import { Form, ObjectComponent } from 'simple-react-form';
 
 const styles = {
   label: {

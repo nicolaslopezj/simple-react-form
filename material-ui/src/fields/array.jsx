@@ -2,7 +2,7 @@ import React from 'react';
 import Paper from 'material-ui/lib/paper';
 import IconButton from 'material-ui/lib/icon-button';
 import RaisedButton from 'material-ui/lib/raised-button';
-import { Form, ArrayComponent } from 'react-form';
+import { Form, ArrayComponent } from 'simple-react-form';
 
 const styles = {
   label: {

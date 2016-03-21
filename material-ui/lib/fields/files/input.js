@@ -26,7 +26,7 @@ var _colors = require('material-ui/lib/styles/colors');
 
 var _colors2 = _interopRequireDefault(_colors);
 
-var _reactForm = require('react-form');
+var _simpleReactForm = require('simple-react-form');
 
 var _uploadButton = require('./upload-button');
 
@@ -242,12 +242,12 @@ var Component = function (_FieldType) {
   }]);
 
   return Component;
-}(_reactForm.FieldType);
+}(_simpleReactForm.FieldType);
 
 exports.default = Component;
 
 
-(0, _reactForm.registerType)({
+(0, _simpleReactForm.registerType)({
   type: 'file',
   component: Component,
   allowedTypes: [Object, [Object]],
