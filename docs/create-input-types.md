@@ -1,5 +1,4 @@
-
-## Create Input Types
+# Create Input Types
 
 React Simple Form is built from the idea that you can create custom components easily.
 

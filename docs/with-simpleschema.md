@@ -1,4 +1,4 @@
-# Tutorial for use with Meteor Simple Schema
+# Use with Meteor Simple Schema
 
 Automatic forms creation with [aldeed:simple-schema](http://github.com/aldeed/simple-schema) and React.
 
