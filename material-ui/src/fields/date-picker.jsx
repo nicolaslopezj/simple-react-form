@@ -1,5 +1,5 @@
 import React from 'react';
-import DatePicker from 'material-ui/lib/date-picker';
+import DatePicker from 'material-ui/lib/date-picker/date-picker';
 import {FieldType, registerType} from 'simple-react-form';
 
 class DatePickerComponent extends FieldType {

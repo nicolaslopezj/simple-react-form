@@ -8,7 +8,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _datePicker = require('material-ui/lib/date-picker');
+var _datePicker = require('material-ui/lib/date-picker/date-picker');
 
 var _datePicker2 = _interopRequireDefault(_datePicker);
 

@@ -3,6 +3,8 @@ import ArrayComponent from './array';
 import ObjectComponent from './object';
 import DotObject from './dot';
 import Utility from './utility';
+import Field from './field';
+import { getFieldTypeName } from './types';
 
 const propTypes = {
   /**
@@ -290,7 +292,7 @@ export default class Form extends React.Component {
     });
     return keys.map((key) => {
       var fullKey = parent ? `${parent}.${key}` : key;
-      var type = MRF.getFieldTypeName({ fieldName: fullKey, schema });
+      var type = getFieldTypeName({ fieldName: fullKey, schema });
       if (type == 'array') {
         var _keys = schema.objectKeys(`${fullKey}.$`);
         return (
@@ -306,7 +308,7 @@ export default class Form extends React.Component {
           </this.props.objectComponent>
         );
       } else {
-        return <MRF.Field fieldName={key} key={fullKey}/>;
+        return <Field fieldName={key} key={fullKey}/>;
       }
     });
   }

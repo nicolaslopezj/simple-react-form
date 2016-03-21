@@ -10,7 +10,7 @@ const styles = {
   },
 };
 
-class MaterialObject extends ObjectComponent {
+export default class MaterialObject extends ObjectComponent {
   render() {
     return (
       <Paper style={{ marginTop: 20, marginBottom: 20, padding: 20 }}>

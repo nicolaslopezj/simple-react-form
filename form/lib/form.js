@@ -26,6 +26,12 @@ var _utility = require('./utility');
 
 var _utility2 = _interopRequireDefault(_utility);
 
+var _field = require('./field');
+
+var _field2 = _interopRequireDefault(_field);
+
+var _types = require('./types');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -349,7 +355,7 @@ var Form = function (_React$Component) {
       });
       return keys.map(function (key) {
         var fullKey = parent ? parent + '.' + key : key;
-        var type = MRF.getFieldTypeName({ fieldName: fullKey, schema: schema });
+        var type = (0, _types.getFieldTypeName)({ fieldName: fullKey, schema: schema });
         if (type == 'array') {
           var _keys = schema.objectKeys(fullKey + '.$');
           return _react2.default.createElement(
@@ -365,7 +371,7 @@ var Form = function (_React$Component) {
             _this3.generateInputsForKeys(_keys, fullKey)
           );
         } else {
-          return _react2.default.createElement(MRF.Field, { fieldName: key, key: fullKey });
+          return _react2.default.createElement(_field2.default, { fieldName: key, key: fullKey });
         }
       });
     }

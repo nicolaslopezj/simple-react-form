@@ -29,7 +29,7 @@ const defaultProps = {
   useSmallSpace: false,
 };
 
-class MaterialArray extends ArrayComponent {
+export default class MaterialArray extends ArrayComponent {
   renderChildrenItem({ index, component }) {
     if (this.props.useSmallSpace) return this.renderChildrenSmallItem({ index, component });
     return (
