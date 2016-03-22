@@ -10,7 +10,7 @@ Register the fields
 import 'simple-react-form-material-ui';
 ```
 
-Allow mrf field for schemas
+Allow ```mrf``` field for schemas
 
 ```js
 SimpleSchema.extendOptions({
