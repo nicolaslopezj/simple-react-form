@@ -2,6 +2,22 @@
 
 Automatic forms creation with [aldeed:simple-schema](http://github.com/aldeed/simple-schema) and React.
 
+## Preparation
+
+Register the fields
+
+```js
+import 'simple-react-form-material-ui';
+```
+
+Allow mrf field for schemas
+
+```js
+SimpleSchema.extendOptions({
+  mrf: Match.Optional(Object),
+});
+```
+
 ## Basic Example
 
 Schema
