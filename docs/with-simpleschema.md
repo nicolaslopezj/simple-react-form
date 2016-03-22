@@ -4,13 +4,15 @@ Automatic forms creation with [aldeed:simple-schema](http://github.com/aldeed/si
 
 ## Preparation
 
-Register the fields
+You must add this lines of code in your app just once.
+
+##### Register the fields
 
 ```js
 import 'simple-react-form-material-ui';
 ```
 
-Allow ```mrf``` field for schemas
+##### Allow ```mrf``` field for schemas
 
 ```js
 SimpleSchema.extendOptions({
