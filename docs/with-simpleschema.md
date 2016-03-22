@@ -4,7 +4,7 @@ Automatic forms creation with [aldeed:simple-schema](http://github.com/aldeed/si
 
 ## Preparation
 
-You must add this lines of code in your app just once.
+*You must add this lines of code in your app just once.*
 
 ##### Register the fields
 
