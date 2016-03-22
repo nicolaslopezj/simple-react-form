@@ -1,5 +1,16 @@
 # Tutorial for use without Meteor
 
+## Preparation
+
+*You must add this lines of code in your app just once.*
+
+##### Register the fields
+
+```js
+import 'simple-react-form-material-ui';
+```
+
+
 ## Basic Example
 
 An insert form.
