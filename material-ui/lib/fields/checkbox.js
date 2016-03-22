@@ -8,9 +8,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _textField = require('material-ui/lib/text-field');
+var _checkbox = require('material-ui/lib/checkbox');
 
-var _textField2 = _interopRequireDefault(_textField);
+var _checkbox2 = _interopRequireDefault(_checkbox);
+
+var _fontIcon = require('material-ui/lib/font-icon');
+
+var _fontIcon2 = _interopRequireDefault(_fontIcon);
 
 var _colors = require('material-ui/lib/styles/colors');
 
@@ -39,7 +43,7 @@ var CheckboxComponent = function (_FieldType) {
     key: 'checkedIcon',
     value: function checkedIcon() {
       return _react2.default.createElement(
-        _textField2.default,
+        _fontIcon2.default,
         { className: 'material-icons' },
         'check_box'
       );
@@ -48,7 +52,7 @@ var CheckboxComponent = function (_FieldType) {
     key: 'unCheckedIcon',
     value: function unCheckedIcon() {
       return _react2.default.createElement(
-        _textField2.default,
+        _fontIcon2.default,
         { className: 'material-icons' },
         'check_box_outline_blank'
       );
@@ -61,7 +65,7 @@ var CheckboxComponent = function (_FieldType) {
       return _react2.default.createElement(
         'div',
         { style: { paddingTop: 10, paddingBottom: 10 } },
-        _react2.default.createElement(_textField2.default, _extends({
+        _react2.default.createElement(_checkbox2.default, _extends({
           label: this.props.label,
           disabled: this.props.disabled,
           checked: this.props.value,
