@@ -1,0 +1,15 @@
+{
+  "name": "example",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "meteor-node-stubs": "~0.2.0"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Nicolás López <nicolaslopezj@me.com>",
+  "license": "MIT",
+  "description": "Example for Simple React Form"
+}
