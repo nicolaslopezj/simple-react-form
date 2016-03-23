@@ -10,6 +10,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 var _raisedButton = require('material-ui/lib/raised-button');
 
 var _raisedButton2 = _interopRequireDefault(_raisedButton);
@@ -53,7 +57,7 @@ var Component = function (_React$Component) {
   _createClass(Component, [{
     key: 'openFileDialog',
     value: function openFileDialog() {
-      var fileInputDom = ReactDOM.findDOMNode(this.refs.input);
+      var fileInputDom = _reactDom2.default.findDOMNode(this.refs.input);
       fileInputDom.click();
     }
   }, {

@@ -100,7 +100,8 @@ var SelectWithMethodComponent = function (_FieldType) {
               });
             } else {
               knownLabels[labelsMethod] = response;
-              console.log('setting to response', response);
+
+              //console.log('setting to response', response);
               _this2.refs.input.setState({ searchText: response });
             }
 
@@ -109,7 +110,7 @@ var SelectWithMethodComponent = function (_FieldType) {
         });
       } else {
         if (!this.mrf.multi) {
-          console.log('setting to known label', knownLabels[values]);
+          //console.log('setting to known label', knownLabels[values]);
           this.refs.input.setState({ searchText: knownLabels[values] });
         }
       }
@@ -118,7 +119,7 @@ var SelectWithMethodComponent = function (_FieldType) {
     key: 'updateLabel',
     value: function updateLabel(value) {
       if (!this.mrf.multi && !value) {
-        console.log('clean on update');
+        //console.log('clean on update');
         this.refs.input.setState({ searchText: '' });
         return;
       }
@@ -130,7 +131,7 @@ var SelectWithMethodComponent = function (_FieldType) {
     value: function search(text) {
       var _this3 = this;
 
-      console.log('searching with text', text);
+      //console.log('searching with text', text);
       this.setState({ selected: null, isCalling: true });
 
       if (!this.mrf.multi) {
@@ -165,7 +166,7 @@ var SelectWithMethodComponent = function (_FieldType) {
     value: function onItemSelected(item, index) {
       var selected = this.state.response[index];
       if (this.mrf.multi) {
-        console.log('clean on item selected');
+        //console.log('clean on item selected');
         this.refs.input.setState({ searchText: '' });
         if (_.contains(this.props.value || [], selected.value)) return;
         this.props.onChange(_.union(this.props.value || [], [selected.value]));
@@ -186,7 +187,7 @@ var SelectWithMethodComponent = function (_FieldType) {
   }, {
     key: 'onFocus',
     value: function onFocus() {
-      console.log('on focus');
+      //console.log('on focus');
       this.setState({ open: true });
       this.search('');
     }

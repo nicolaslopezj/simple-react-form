@@ -60,7 +60,8 @@ class SelectWithMethodComponent extends FieldType {
             });
           } else {
             knownLabels[labelsMethod] = response;
-            console.log('setting to response', response);
+
+            //console.log('setting to response', response);
             this.refs.input.setState({ searchText: response });
           }
 
@@ -69,7 +70,7 @@ class SelectWithMethodComponent extends FieldType {
       });
     } else {
       if (!this.mrf.multi) {
-        console.log('setting to known label', knownLabels[values]);
+        //console.log('setting to known label', knownLabels[values]);
         this.refs.input.setState({ searchText: knownLabels[values] });
       }
     }
@@ -77,7 +78,7 @@ class SelectWithMethodComponent extends FieldType {
 
   updateLabel(value) {
     if (!this.mrf.multi && !value) {
-      console.log('clean on update');
+      //console.log('clean on update');
       this.refs.input.setState({ searchText: '' });
       return;
     }
@@ -86,7 +87,7 @@ class SelectWithMethodComponent extends FieldType {
   }
 
   search(text) {
-    console.log('searching with text', text);
+    //console.log('searching with text', text);
     this.setState({ selected: null, isCalling: true });
 
     if (!this.mrf.multi) {
@@ -119,7 +120,7 @@ class SelectWithMethodComponent extends FieldType {
   onItemSelected(item, index) {
     var selected = this.state.response[index];
     if (this.mrf.multi) {
-      console.log('clean on item selected');
+      //console.log('clean on item selected');
       this.refs.input.setState({ searchText: '' });
       if (_.contains(this.props.value || [], selected.value)) return;
       this.props.onChange(_.union(this.props.value || [], [selected.value]));
@@ -138,7 +139,7 @@ class SelectWithMethodComponent extends FieldType {
   }
 
   onFocus() {
-    console.log('on focus');
+    //console.log('on focus');
     this.setState({ open: true });
     this.search('');
   }
