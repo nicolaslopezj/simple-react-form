@@ -189,6 +189,11 @@ var Form = function (_React$Component) {
       }
     }
   }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      //console.log('did update form', prevProps, prevState);
+    }
+  }, {
     key: 'getSchema',
     value: function getSchema() {
       if (this.props.schema) {

@@ -80,6 +80,12 @@ export default class Field extends React.Component {
     this.props.onChange(this.props.fieldName, value);
   }
 
+  shouldComponentUpdate(nextProps) {
+    const notImportantFields = ['errorMessages', 'form', 'schema', 'onChange'];
+    const isPropsEqual = _.isEqual(_.omit(this.props, notImportantFields), _.omit(nextProps, notImportantFields));
+    return !isPropsEqual;
+  }
+
   getSchema() {
     return this.props.schema;
   }

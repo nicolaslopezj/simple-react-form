@@ -60,6 +60,7 @@ const defaultProps = {
 };
 
 export default class ArrayComponent extends ObjectComponent {
+
   onValueChange(fieldName, newValue) {
     var withoutSelf = fieldName.replace(`${this.props.fieldName}.`, '');
     var index = withoutSelf.split('.')[0];

@@ -103,6 +103,13 @@ var Field = function (_React$Component) {
       this.props.onChange(this.props.fieldName, value);
     }
   }, {
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate(nextProps) {
+      var notImportantFields = ['errorMessages', 'form', 'schema', 'onChange'];
+      var isPropsEqual = _.isEqual(_.omit(this.props, notImportantFields), _.omit(nextProps, notImportantFields));
+      return !isPropsEqual;
+    }
+  }, {
     key: 'getSchema',
     value: function getSchema() {
       return this.props.schema;

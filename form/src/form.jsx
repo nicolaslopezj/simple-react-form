@@ -148,6 +148,10 @@ export default class Form extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    //console.log('did update form', prevProps, prevState);
+  }
+
   getSchema() {
     if (this.props.schema) {
       return this.props.schema;
