@@ -47,6 +47,14 @@ var TextFieldComponent = function (_FieldType) {
       }
     }
   }, {
+    key: 'onChange',
+    value: function onChange(event) {
+      this.setState({ value: event.target.value });
+      if (this.mrf.changeOnKeyDown) {
+        this.props.onChange(event.target.value);
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
@@ -61,9 +69,7 @@ var TextFieldComponent = function (_FieldType) {
         hintText: this.props.useHint ? this.props.label : null,
         errorText: this.props.errorMessage,
         disabled: this.props.disabled,
-        onChange: function onChange(event) {
-          return _this2.setState({ value: event.target.value });
-        },
+        onChange: this.onChange.bind(this),
         onKeyDown: this.onKeyDown.bind(this),
         onBlur: function onBlur() {
           return _this2.props.onChange(_this2.state.value);
@@ -80,10 +86,10 @@ var TextFieldComponent = function (_FieldType) {
   component: TextFieldComponent,
   description: 'Simple checkbox field.',
   optionsDefinition: {
-    //type: Match.Optional(String),
+    changeOnKeyDown: _react2.default.PropTypes.bool
   },
   optionsDescription: {
-    type: 'Input type, it can be email, password, etc.'
+    changeOnKeyDown: 'Update the input value on any keyup'
   }
 });
 

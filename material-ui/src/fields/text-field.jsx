@@ -19,6 +19,13 @@ class TextFieldComponent extends FieldType {
     }
   }
 
+  onChange(event) {
+    this.setState({ value: event.target.value });
+    if (this.mrf.changeOnKeyDown) {
+      this.props.onChange(event.target.value);
+    }
+  }
+
   render() {
     var type = this.mrf.type || this.type;
     return (
@@ -31,7 +38,7 @@ class TextFieldComponent extends FieldType {
         hintText={this.props.useHint ? this.props.label : null}
         errorText={this.props.errorMessage}
         disabled={this.props.disabled}
-        onChange={(event) => this.setState({ value: event.target.value })}
+        onChange={this.onChange.bind(this)}
         onKeyDown={this.onKeyDown.bind(this)}
         onBlur={() => this.props.onChange(this.state.value)}
         {...this.passProps} />
@@ -44,10 +51,10 @@ registerType({
   component: TextFieldComponent,
   description: 'Simple checkbox field.',
   optionsDefinition: {
-    //type: Match.Optional(String),
+    changeOnKeyDown: React.PropTypes.bool,
   },
   optionsDescription: {
-    type: 'Input type, it can be email, password, etc.',
+    changeOnKeyDown: 'Update the input value on any keyup',
   },
 });
 
