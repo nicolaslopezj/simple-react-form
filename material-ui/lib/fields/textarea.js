@@ -22,6 +22,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var propTypes = {};
+
+var defaultProps = {};
+
 var TextareaComponent = function (_FieldType) {
   _inherits(TextareaComponent, _FieldType);
 
@@ -40,7 +44,6 @@ var TextareaComponent = function (_FieldType) {
         ref: 'input',
         fullWidth: true,
         multiLine: true,
-        rows: this.mrf.rows,
         value: this.props.value,
         floatingLabelText: this.props.useHint ? null : this.props.label,
         hintText: this.props.useHint ? this.props.label : null,
@@ -56,18 +59,12 @@ var TextareaComponent = function (_FieldType) {
   return TextareaComponent;
 }(_simpleReactForm.FieldType);
 
+TextareaComponent.propTypes = propTypes;
+TextareaComponent.defaultProps = defaultProps;
+
 (0, _simpleReactForm.registerType)({
   type: 'textarea',
   component: TextareaComponent,
   allowedTypes: [String],
-  description: 'Textarea',
-  optionsDefinition: {
-    //rows: Match.Optional(Number),
-  },
-  optionsDescription: {
-    rows: 'The number of rows'
-  },
-  defaultOptions: {
-    rows: 2
-  }
+  description: 'Textarea'
 });

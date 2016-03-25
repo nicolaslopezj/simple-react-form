@@ -4,6 +4,14 @@ import FontIcon from 'material-ui/lib/font-icon';
 import Colors from 'material-ui/lib/styles/colors';
 import {FieldType, registerType} from 'simple-react-form';
 
+const propTypes = {
+
+};
+
+const defaultProps = {
+
+};
+
 class CheckboxComponent extends FieldType {
 
   checkedIcon() {
@@ -32,13 +40,14 @@ class CheckboxComponent extends FieldType {
   }
 }
 
+CheckboxComponent.propTypes = propTypes;
+CheckboxComponent.defaultProps = defaultProps;
+
 registerType({
   type: 'checkbox',
   component: CheckboxComponent,
   allowedTypes: [Boolean],
   description: 'Simple checkbox field.',
-  optionsDefinition: {},
-  optionsDescription: {},
 });
 
 registerType({

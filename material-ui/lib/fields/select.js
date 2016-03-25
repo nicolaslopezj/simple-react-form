@@ -34,6 +34,18 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var propTypes = {
+  /**
+   * The options for the select input. Each item must have label and value.
+   */
+  options: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.shape({
+    label: _react2.default.PropTypes.string.isRequired,
+    value: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number]).isRequired
+  })).isRequired
+};
+
+var defaultProps = {};
+
 var SelectComponent = function (_FieldType) {
   _inherits(SelectComponent, _FieldType);
 
@@ -46,7 +58,7 @@ var SelectComponent = function (_FieldType) {
   _createClass(SelectComponent, [{
     key: 'renderItems',
     value: function renderItems() {
-      return this.mrf.options.map(function (item) {
+      return this.props.options.map(function (item) {
         return _react2.default.createElement(_menuItem2.default, { key: item.value, value: item.value, primaryText: item.label });
       });
     }
@@ -87,18 +99,12 @@ var SelectComponent = function (_FieldType) {
   return SelectComponent;
 }(_simpleReactForm.FieldType);
 
+SelectComponent.propTypes = propTypes;
+SelectComponent.defaultProps = defaultProps;
+
 (0, _simpleReactForm.registerType)({
   type: 'select',
   component: SelectComponent,
   allowedTypes: [String, Number],
-  description: 'Simple select field.',
-  optionsDefinition: {
-    options: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.shape({
-      label: _react2.default.PropTypes.string.isRequired,
-      value: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number]).isRequired
-    })).isRequired
-  },
-  optionsDescription: {
-    options: 'The options for the select input. Each item must have ```label``` and ```value```.'
-  }
+  description: 'Simple select field.'
 });

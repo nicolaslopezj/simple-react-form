@@ -3,6 +3,14 @@ import TextField from 'material-ui/lib/text-field';
 import {FieldType, registerType} from 'simple-react-form';
 import styles from '../styles';
 
+const propTypes = {
+
+};
+
+const defaultProps = {
+
+};
+
 class StringArrayComponent extends FieldType {
 
   constructor(props) {
@@ -59,6 +67,9 @@ class StringArrayComponent extends FieldType {
     );
   }
 }
+
+StringArrayComponent.propTypes = propTypes;
+StringArrayComponent.defaultProps = defaultProps;
 
 registerType({
   type: 'string-array',

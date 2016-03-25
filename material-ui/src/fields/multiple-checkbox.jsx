@@ -2,6 +2,23 @@ import React from 'react';
 import Checkbox from 'material-ui/lib/checkbox';
 import {FieldType, registerType} from 'simple-react-form';
 
+const propTypes = {
+  /**
+   * The options for the checkbox.
+   */
+  options: React.PropTypes.arrayOf(React.PropTypes.shape({
+    label: React.PropTypes.string.isRequired,
+    value:  React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number,
+    ]).isRequired,
+  })).isRequired,
+};
+
+const defaultProps = {
+
+};
+
 class MultipleCheckboxComponent extends FieldType {
 
   onCheck(value, currentVal) {
@@ -17,7 +34,7 @@ class MultipleCheckboxComponent extends FieldType {
 
   renderOptions() {
     var currentVal = this.props.value || [];
-    return this.props.fieldSchema.mrf.options.map((option) => {
+    return this.props.options.map((option) => {
       return (
         <div key={option.value} style={{ marginTop: 10 }}>
           <Checkbox
@@ -43,21 +60,12 @@ class MultipleCheckboxComponent extends FieldType {
   }
 }
 
+MultipleCheckboxComponent.propTypes = propTypes;
+MultipleCheckboxComponent.defaultProps = defaultProps;
+
 registerType({
   type: 'multiple-checkbox',
   component: MultipleCheckboxComponent,
   allowedTypes: [[String], [Number]],
   description: 'Select multiple values with checkboxes.',
-  optionsDefinition: {
-    options: React.PropTypes.arrayOf(React.PropTypes.shape({
-      label: React.PropTypes.string.isRequired,
-      value:  React.PropTypes.oneOfType([
-        React.PropTypes.string,
-        React.PropTypes.number,
-      ]).isRequired,
-    })).isRequired,
-  },
-  optionsDescription: {
-    options: 'The options for the checkbox. Each item must have ```label``` and ```value```.',
-  },
 });

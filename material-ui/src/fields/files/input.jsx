@@ -10,6 +10,38 @@ import UploadButton from './upload-button';
 import Preview from './preview';
 import styles from '../../styles';
 
+const propTypes = {
+  /**
+   * A function that recieves { file, onProgress, onReady, onError }.
+   * onProgress input is progress, a number from 0 to 1.
+   * onReady inputs are { url, meta },
+   * 		url is the url of the file, meta is a object with whatever you want.
+   * onError input is message.
+   */
+  upload: React.PropTypes.func.isRequired,
+  /**
+   * A function that recieves { file, onReady, onError }.
+   * file is the information of the file (includes the meta from before).
+   * onReady is a function with no input.
+   * onError input is message.
+   */
+  delete: React.PropTypes.func.isRequired,
+  /**
+   * Only accept images
+   */
+  image: React.PropTypes.bool,
+  /**
+   * Accept multiple files. If you are using simple-schema and this is true,
+   * you must set [Object] to the type.
+   */
+  multi: React.PropTypes.bool,
+};
+
+const defaultProps = {
+  image: false,
+  multi: false,
+};
+
 export default class Component extends FieldType {
 
   constructor(props) {
@@ -26,7 +58,7 @@ export default class Component extends FieldType {
 
   onSuccess() {
     this.toDelete.map((file) => {
-      this.mrf.delete({
+      this.props.delete({
         file,
         onReady: () => {},
 
@@ -42,7 +74,7 @@ export default class Component extends FieldType {
   componentWillUnmount() {
     if (!this.limbo.length) return;
     this.limbo.map((file) => {
-      this.mrf.delete({
+      this.props.delete({
         file,
         onReady: () => {},
 
@@ -54,7 +86,7 @@ export default class Component extends FieldType {
   }
 
   onReady(upload, file) {
-    if (this.mrf.multi) {
+    if (this.props.multi) {
       var newValue = _.clone(this.props.value) || [];
       newValue.push(file);
       this.props.onChange(newValue);
@@ -75,7 +107,7 @@ export default class Component extends FieldType {
     this.uploads.push(upload);
     this.forceUpdate();
 
-    this.mrf.upload({
+    this.props.upload({
       file,
       onProgress: (progress) => {
         upload.progress = progress;
@@ -100,7 +132,7 @@ export default class Component extends FieldType {
 
   deleteFile(file) {
     this.toDelete.push(_.clone(file));
-    if (this.mrf.multi) {
+    if (this.props.multi) {
       const index = this.props.value.indexOf(file);
       this.props.value.splice(index, 1);
       this.props.onChange(this.props.value);
@@ -117,17 +149,17 @@ export default class Component extends FieldType {
         file={upload.file}
         isUploading={upload.isUploading}
         progress={upload.progress}
-        isImage={!!this.mrf.image}
+        isImage={!!this.props.image}
         onDelete={() => this.deleteFile(file)}
         />;
     });
 
-    const value = this.mrf.multi ? (this.props.value || []) : this.props.value ? [this.props.value] : [];
+    const value = this.props.multi ? (this.props.value || []) : this.props.value ? [this.props.value] : [];
     const previews = value.map((file, index) => {
       return <Preview
         key={`preview-${file.url}`}
         url={file.url}
-        isImage={!!this.mrf.image}
+        isImage={!!this.props.image}
         deleteLabel='Delete'
         confirmDeleteText='Do you want to delete this file?'
         onDelete={() => this.deleteFile(file)}
@@ -143,13 +175,13 @@ export default class Component extends FieldType {
   }
 
   renderUploadButton() {
-    if (!this.mrf.multi && (this.props.value || this.uploads.length)) return;
+    if (!this.props.multi && (this.props.value || this.uploads.length)) return;
     const props = {
-      accept: this.mrf.image ? 'image/*' : '',
-      label: this.mrf.image ? 'Upload image' : 'Upload file',
-      multi: !!this.mrf.multi,
+      accept: this.props.image ? 'image/*' : '',
+      label: this.props.image ? 'Upload image' : 'Upload file',
+      multi: !!this.props.multi,
       onUpload: this.startUpload.bind(this),
-      passBase64: !!this.mrf.image,
+      passBase64: !!this.props.image,
     };
     return <UploadButton {...props} />;
   }
@@ -175,16 +207,4 @@ registerType({
   component: Component,
   allowedTypes: [Object, [Object]],
   description: 'File field.',
-  optionsDefinition: {
-    upload: React.PropTypes.func.isRequired,
-    delete: React.PropTypes.func.isRequired,
-    image: React.PropTypes.bool,
-    multi: React.PropTypes.bool,
-  },
-  optionsDescription: {
-    upload: 'A function that recieves ```{ file, onProgress, onReady, onError }```. ```onProgress``` input is ```progress```, a number from 0 to 1. ```onReady``` inputs are ```{ url, meta }```, ```url``` is the url of the file, ```meta``` meta is a object with whatever you want. ```onError``` input is ```message```.',
-    delete: 'A function that recieves ```{ file, onReady, onError }```. ```file``` is the information of the file (includes the meta from before). ```onReady``` is a function with no input. ```onError``` input is ```message```.',
-    image: 'Only accept images',
-    multi: 'Accept multiple files. You must set ```[Object]``` to the type.',
-  },
 });

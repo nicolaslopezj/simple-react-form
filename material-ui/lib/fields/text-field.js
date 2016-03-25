@@ -22,6 +22,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var propTypes = {
+  changeOnKeyDown: _react2.default.PropTypes.bool,
+  fieldType: _react2.default.PropTypes.string
+};
+
+var defaultProps = {};
+
 var TextFieldComponent = function (_FieldType) {
   _inherits(TextFieldComponent, _FieldType);
 
@@ -50,7 +57,7 @@ var TextFieldComponent = function (_FieldType) {
     key: 'onChange',
     value: function onChange(event) {
       this.setState({ value: event.target.value });
-      if (this.mrf.changeOnKeyDown) {
+      if (this.props.changeOnKeyDown) {
         this.props.onChange(event.target.value);
       }
     }
@@ -59,7 +66,7 @@ var TextFieldComponent = function (_FieldType) {
     value: function render() {
       var _this2 = this;
 
-      var type = this.mrf.type || this.type;
+      var type = this.props.fieldType || this.type;
       return _react2.default.createElement(_textField2.default, _extends({
         ref: 'input',
         fullWidth: true,
@@ -81,16 +88,12 @@ var TextFieldComponent = function (_FieldType) {
   return TextFieldComponent;
 }(_simpleReactForm.FieldType);
 
+TextFieldComponent.propTypes = propTypes;
+TextFieldComponent.defaultProps = defaultProps;
+
 (0, _simpleReactForm.registerType)({
   type: 'text',
-  component: TextFieldComponent,
-  description: 'Simple checkbox field.',
-  optionsDefinition: {
-    changeOnKeyDown: _react2.default.PropTypes.bool
-  },
-  optionsDescription: {
-    changeOnKeyDown: 'Update the input value on any keyup'
-  }
+  component: TextFieldComponent
 });
 
 var StringFieldComponent = function (_TextFieldComponent) {

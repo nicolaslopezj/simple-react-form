@@ -22,6 +22,18 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var propTypes = {
+  /**
+   * The options for the checkbox.
+   */
+  options: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.shape({
+    label: _react2.default.PropTypes.string.isRequired,
+    value: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number]).isRequired
+  })).isRequired
+};
+
+var defaultProps = {};
+
 var MultipleCheckboxComponent = function (_FieldType) {
   _inherits(MultipleCheckboxComponent, _FieldType);
 
@@ -49,7 +61,7 @@ var MultipleCheckboxComponent = function (_FieldType) {
       var _this2 = this;
 
       var currentVal = this.props.value || [];
-      return this.props.fieldSchema.mrf.options.map(function (option) {
+      return this.props.options.map(function (option) {
         return _react2.default.createElement(
           'div',
           { key: option.value, style: { marginTop: 10 } },
@@ -88,18 +100,12 @@ var MultipleCheckboxComponent = function (_FieldType) {
   return MultipleCheckboxComponent;
 }(_simpleReactForm.FieldType);
 
+MultipleCheckboxComponent.propTypes = propTypes;
+MultipleCheckboxComponent.defaultProps = defaultProps;
+
 (0, _simpleReactForm.registerType)({
   type: 'multiple-checkbox',
   component: MultipleCheckboxComponent,
   allowedTypes: [[String], [Number]],
-  description: 'Select multiple values with checkboxes.',
-  optionsDefinition: {
-    options: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.shape({
-      label: _react2.default.PropTypes.string.isRequired,
-      value: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.number]).isRequired
-    })).isRequired
-  },
-  optionsDescription: {
-    options: 'The options for the checkbox. Each item must have ```label``` and ```value```.'
-  }
+  description: 'Select multiple values with checkboxes.'
 });

@@ -124,9 +124,9 @@ export default class Field extends React.Component {
 
     const type = getFieldType(typeName);
     const propOptions = _.omit(this.props, _.keys(propTypes));
-    const schemaOptions = (this.getFieldSchema() && this.getFieldSchema().mrf) || {};
+    const schemaOptions = (this.getFieldSchema() && (this.getFieldSchema().srf || this.getFieldSchema().mrf)) || {};
     const totalOptions = _.extend(schemaOptions, propOptions);
-    const allowedKeys = _.keys(type.optionsDefinition || {});
+    const allowedKeys = _.keys(type.component.propTypes || {});
     const onlyAllowedOptions = _.pick(totalOptions, allowedKeys);
     const error = getFieldOptionsError({ type, options: onlyAllowedOptions });
     if (error) {
@@ -134,9 +134,8 @@ export default class Field extends React.Component {
     }
 
     const notDefinedOptions = _.omit(totalOptions, allowedKeys);
-    mrf = _.extend(type.defaultOptions || {}, onlyAllowedOptions);
 
-    return {
+    const props = {
       value: this.props.value,
       label: this.props.showLabel ? this.getLabel() : null,
       useHint: this.props.useHint,
@@ -148,8 +147,10 @@ export default class Field extends React.Component {
       form: this.props.form,
       disabled: this.props.disabled,
       passProps: notDefinedOptions,
-      mrf,
+      ...onlyAllowedOptions,
     };
+
+    return props;
   }
 
   render() {

@@ -30,6 +30,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var propTypes = {};
+
+var defaultProps = {};
+
 var CheckboxComponent = function (_FieldType) {
   _inherits(CheckboxComponent, _FieldType);
 
@@ -87,13 +91,14 @@ var CheckboxComponent = function (_FieldType) {
   return CheckboxComponent;
 }(_simpleReactForm.FieldType);
 
+CheckboxComponent.propTypes = propTypes;
+CheckboxComponent.defaultProps = defaultProps;
+
 (0, _simpleReactForm.registerType)({
   type: 'checkbox',
   component: CheckboxComponent,
   allowedTypes: [Boolean],
-  description: 'Simple checkbox field.',
-  optionsDefinition: {},
-  optionsDescription: {}
+  description: 'Simple checkbox field.'
 });
 
 (0, _simpleReactForm.registerType)({

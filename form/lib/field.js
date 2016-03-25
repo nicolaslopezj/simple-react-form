@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -153,9 +155,9 @@ var Field = function (_React$Component) {
 
       var type = (0, _types.getFieldType)(typeName);
       var propOptions = _.omit(this.props, _.keys(propTypes));
-      var schemaOptions = this.getFieldSchema() && this.getFieldSchema().mrf || {};
+      var schemaOptions = this.getFieldSchema() && (this.getFieldSchema().srf || this.getFieldSchema().mrf) || {};
       var totalOptions = _.extend(schemaOptions, propOptions);
-      var allowedKeys = _.keys(type.optionsDefinition || {});
+      var allowedKeys = _.keys(type.component.propTypes || {});
       var onlyAllowedOptions = _.pick(totalOptions, allowedKeys);
       var error = (0, _types.getFieldOptionsError)({ type: type, options: onlyAllowedOptions });
       if (error) {
@@ -163,9 +165,8 @@ var Field = function (_React$Component) {
       }
 
       var notDefinedOptions = _.omit(totalOptions, allowedKeys);
-      mrf = _.extend(type.defaultOptions || {}, onlyAllowedOptions);
 
-      return {
+      var props = _extends({
         value: this.props.value,
         label: this.props.showLabel ? this.getLabel() : null,
         useHint: this.props.useHint,
@@ -176,9 +177,10 @@ var Field = function (_React$Component) {
         schema: this.getSchema(),
         form: this.props.form,
         disabled: this.props.disabled,
-        passProps: notDefinedOptions,
-        mrf: mrf
-      };
+        passProps: notDefinedOptions
+      }, onlyAllowedOptions);
+
+      return props;
     }
   }, {
     key: 'render',

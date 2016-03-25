@@ -48,6 +48,38 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var propTypes = {
+  /**
+   * A function that recieves { file, onProgress, onReady, onError }.
+   * onProgress input is progress, a number from 0 to 1.
+   * onReady inputs are { url, meta },
+   * 		url is the url of the file, meta is a object with whatever you want.
+   * onError input is message.
+   */
+  upload: _react2.default.PropTypes.func.isRequired,
+  /**
+   * A function that recieves { file, onReady, onError }.
+   * file is the information of the file (includes the meta from before).
+   * onReady is a function with no input.
+   * onError input is message.
+   */
+  delete: _react2.default.PropTypes.func.isRequired,
+  /**
+   * Only accept images
+   */
+  image: _react2.default.PropTypes.bool,
+  /**
+   * Accept multiple files. If you are using simple-schema and this is true,
+   * you must set [Object] to the type.
+   */
+  multi: _react2.default.PropTypes.bool
+};
+
+var defaultProps = {
+  image: false,
+  multi: false
+};
+
 var Component = function (_FieldType) {
   _inherits(Component, _FieldType);
 
@@ -73,7 +105,7 @@ var Component = function (_FieldType) {
       var _this2 = this;
 
       this.toDelete.map(function (file) {
-        _this2.mrf.delete({
+        _this2.props.delete({
           file: file,
           onReady: function onReady() {},
 
@@ -92,7 +124,7 @@ var Component = function (_FieldType) {
 
       if (!this.limbo.length) return;
       this.limbo.map(function (file) {
-        _this3.mrf.delete({
+        _this3.props.delete({
           file: file,
           onReady: function onReady() {},
 
@@ -105,7 +137,7 @@ var Component = function (_FieldType) {
   }, {
     key: 'onReady',
     value: function onReady(upload, file) {
-      if (this.mrf.multi) {
+      if (this.props.multi) {
         var newValue = _.clone(this.props.value) || [];
         newValue.push(file);
         this.props.onChange(newValue);
@@ -129,7 +161,7 @@ var Component = function (_FieldType) {
       this.uploads.push(upload);
       this.forceUpdate();
 
-      this.mrf.upload({
+      this.props.upload({
         file: file,
         onProgress: function onProgress(progress) {
           upload.progress = progress;
@@ -158,7 +190,7 @@ var Component = function (_FieldType) {
     key: 'deleteFile',
     value: function deleteFile(file) {
       this.toDelete.push(_.clone(file));
-      if (this.mrf.multi) {
+      if (this.props.multi) {
         var index = this.props.value.indexOf(file);
         this.props.value.splice(index, 1);
         this.props.onChange(this.props.value);
@@ -178,19 +210,19 @@ var Component = function (_FieldType) {
           file: upload.file,
           isUploading: upload.isUploading,
           progress: upload.progress,
-          isImage: !!_this5.mrf.image,
+          isImage: !!_this5.props.image,
           onDelete: function onDelete() {
             return _this5.deleteFile(file);
           }
         });
       });
 
-      var value = this.mrf.multi ? this.props.value || [] : this.props.value ? [this.props.value] : [];
+      var value = this.props.multi ? this.props.value || [] : this.props.value ? [this.props.value] : [];
       var previews = value.map(function (file, index) {
         return _react2.default.createElement(_preview2.default, {
           key: 'preview-' + file.url,
           url: file.url,
-          isImage: !!_this5.mrf.image,
+          isImage: !!_this5.props.image,
           deleteLabel: 'Delete',
           confirmDeleteText: 'Do you want to delete this file?',
           onDelete: function onDelete() {
@@ -209,13 +241,13 @@ var Component = function (_FieldType) {
   }, {
     key: 'renderUploadButton',
     value: function renderUploadButton() {
-      if (!this.mrf.multi && (this.props.value || this.uploads.length)) return;
+      if (!this.props.multi && (this.props.value || this.uploads.length)) return;
       var props = {
-        accept: this.mrf.image ? 'image/*' : '',
-        label: this.mrf.image ? 'Upload image' : 'Upload file',
-        multi: !!this.mrf.multi,
+        accept: this.props.image ? 'image/*' : '',
+        label: this.props.image ? 'Upload image' : 'Upload file',
+        multi: !!this.props.multi,
         onUpload: this.startUpload.bind(this),
-        passBase64: !!this.mrf.image
+        passBase64: !!this.props.image
       };
       return _react2.default.createElement(_uploadButton2.default, props);
     }
@@ -251,17 +283,5 @@ exports.default = Component;
   type: 'file',
   component: Component,
   allowedTypes: [Object, [Object]],
-  description: 'File field.',
-  optionsDefinition: {
-    upload: _react2.default.PropTypes.func.isRequired,
-    delete: _react2.default.PropTypes.func.isRequired,
-    image: _react2.default.PropTypes.bool,
-    multi: _react2.default.PropTypes.bool
-  },
-  optionsDescription: {
-    upload: 'A function that recieves ```{ file, onProgress, onReady, onError }```. ```onProgress``` input is ```progress```, a number from 0 to 1. ```onReady``` inputs are ```{ url, meta }```, ```url``` is the url of the file, ```meta``` meta is a object with whatever you want. ```onError``` input is ```message```.',
-    delete: 'A function that recieves ```{ file, onReady, onError }```. ```file``` is the information of the file (includes the meta from before). ```onReady``` is a function with no input. ```onError``` input is ```message```.',
-    image: 'Only accept images',
-    multi: 'Accept multiple files. You must set ```[Object]``` to the type.'
-  }
+  description: 'File field.'
 });
