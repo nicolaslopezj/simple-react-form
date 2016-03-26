@@ -2,6 +2,14 @@ import React from 'react';
 import TextField from 'material-ui/lib/text-field';
 import {FieldType, registerType} from 'simple-react-form';
 
+const propTypes = {
+
+};
+
+const defaultProps = {
+
+};
+
 class TextareaComponent extends FieldType {
   render() {
     return (
@@ -9,7 +17,6 @@ class TextareaComponent extends FieldType {
         ref='input'
         fullWidth={true}
         multiLine={true}
-        rows={this.mrf.rows}
         value={this.props.value}
         floatingLabelText={this.props.useHint ? null : this.props.label}
         hintText={this.props.useHint ? this.props.label : null}
@@ -21,18 +28,12 @@ class TextareaComponent extends FieldType {
   }
 }
 
+TextareaComponent.propTypes = propTypes;
+TextareaComponent.defaultProps = defaultProps;
+
 registerType({
   type: 'textarea',
   component: TextareaComponent,
   allowedTypes: [String],
   description: 'Textarea',
-  optionsDefinition: {
-    //rows: Match.Optional(Number),
-  },
-  optionsDescription: {
-    rows: 'The number of rows',
-  },
-  defaultOptions: {
-    rows: 2,
-  },
 });

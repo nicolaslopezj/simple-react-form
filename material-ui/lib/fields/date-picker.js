@@ -22,6 +22,26 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var propTypes = {
+  /**
+   * Minimum date for the picker.
+   */
+
+  //minDate: React.PropTypes.date,
+  /**
+   * Maximum date for the picker.
+   */
+
+  //maxDate: React.PropTypes.date,
+  /**
+   * Takes the date as a parameters and must return a string.
+   */
+
+  //formatDate: React.PropTypes.func,
+};
+
+var defaultProps = {};
+
 var DatePickerComponent = function (_FieldType) {
   _inherits(DatePickerComponent, _FieldType);
 
@@ -58,15 +78,5 @@ var DatePickerComponent = function (_FieldType) {
   type: 'date-picker',
   component: DatePickerComponent,
   allowedTypes: [Date],
-  description: 'Material UI Date picker.',
-  optionsDefinition: {
-    minDate: _react2.default.PropTypes.date,
-    maxDate: _react2.default.PropTypes.date,
-    formatDate: _react2.default.PropTypes.func
-  },
-  optionsDescription: {
-    minDate: 'Minimum date for the picker.',
-    maxDate: 'Maximum date for the picker.',
-    formatDate: 'Takes the date as a parameters and must return a string.'
-  }
+  description: 'Material UI Date picker.'
 });

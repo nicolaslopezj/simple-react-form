@@ -2,6 +2,28 @@ import React from 'react';
 import DatePicker from 'material-ui/lib/date-picker/date-picker';
 import {FieldType, registerType} from 'simple-react-form';
 
+const propTypes = {
+  /**
+   * Minimum date for the picker.
+   */
+
+  //minDate: React.PropTypes.date,
+  /**
+   * Maximum date for the picker.
+   */
+
+  //maxDate: React.PropTypes.date,
+  /**
+   * Takes the date as a parameters and must return a string.
+   */
+
+  //formatDate: React.PropTypes.func,
+};
+
+const defaultProps = {
+
+};
+
 class DatePickerComponent extends FieldType {
 
   render() {
@@ -25,14 +47,4 @@ registerType({
   component: DatePickerComponent,
   allowedTypes: [Date],
   description: 'Material UI Date picker.',
-  optionsDefinition: {
-    minDate: React.PropTypes.date,
-    maxDate: React.PropTypes.date,
-    formatDate: React.PropTypes.func,
-  },
-  optionsDescription: {
-    minDate: 'Minimum date for the picker.',
-    maxDate: 'Maximum date for the picker.',
-    formatDate: 'Takes the date as a parameters and must return a string.',
-  },
 });

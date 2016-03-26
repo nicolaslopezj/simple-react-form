@@ -2,6 +2,14 @@ import React from 'react';
 import Toggle from 'material-ui/lib/toggle';
 import {FieldType, registerType} from 'simple-react-form';
 
+const propTypes = {
+
+};
+
+const defaultProps = {
+
+};
+
 class ToggleComponent extends FieldType {
 
   render() {
@@ -18,7 +26,11 @@ class ToggleComponent extends FieldType {
       </div>
     );
   }
+
 }
+
+ToggleComponent.propTypes = propTypes;
+ToggleComponent.defaultProps = defaultProps;
 
 registerType({
   type: 'toggle',

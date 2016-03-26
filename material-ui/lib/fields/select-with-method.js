@@ -34,6 +34,37 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var propTypes = {
+  /**
+   * Allow to select multiple items.
+   */
+  multi: _react2.default.PropTypes.bool,
+  /**
+   * Meteor method that recieves the search string and returns an array of items
+   * with "label" and "value" attributes.
+   */
+  methodName: _react2.default.PropTypes.string.isRequired,
+  /**
+   * Meteor method that recieves the value and must return the label. If
+   * ```multi``` is set to true, it will recieve an array and it must return an
+   * with the labels in the same order.
+   */
+  labelMethodName: _react2.default.PropTypes.string.isRequired,
+  /**
+   * A Meteor connection.
+   */
+  connection: _react2.default.PropTypes.any,
+  /**
+   * Time with no changes that activates the search.
+   */
+  waitTime: _react2.default.PropTypes.number
+};
+
+var defaultProps = {
+  multi: false,
+  waitTime: 200
+};
+
 var SelectWithMethodComponent = function (_FieldType) {
   _inherits(SelectWithMethodComponent, _FieldType);
 
@@ -52,7 +83,7 @@ var SelectWithMethodComponent = function (_FieldType) {
       hasTitleFor: null
     };
 
-    _this.throttledSearch = _.throttle(_this.search.bind(_this), _this.mrf.throttleTime || 200, { leading: false });
+    _this.throttledSearch = _.throttle(_this.search.bind(_this), _this.props.waitTime, { leading: false });
     return _this;
   }
 
@@ -87,14 +118,14 @@ var SelectWithMethodComponent = function (_FieldType) {
       });
 
       if (missingLabels.length > 0) {
-        var labelMethodName = this.mrf.labelMethodName;
-        var connection = this.mrf.connection || Meteor;
-        var labelsMethod = this.mrf.multi ? missingLabels : missingLabels[0];
+        var labelMethodName = this.props.labelMethodName;
+        var connection = this.props.connection || Meteor;
+        var labelsMethod = this.props.multi ? missingLabels : missingLabels[0];
         connection.call(labelMethodName, labelsMethod, function (error, response) {
           if (error) {
             console.log('[select-with-method] Recieved error from "' + labelMethodName + '"', error);
           } else {
-            if (_this2.mrf.multi) {
+            if (_this2.props.multi) {
               missingLabels.map(function (value, index) {
                 knownLabels[value] = response[index];
               });
@@ -109,7 +140,7 @@ var SelectWithMethodComponent = function (_FieldType) {
           }
         });
       } else {
-        if (!this.mrf.multi) {
+        if (!this.props.multi) {
           //console.log('setting to known label', knownLabels[values]);
           this.refs.input.setState({ searchText: knownLabels[values] });
         }
@@ -118,7 +149,7 @@ var SelectWithMethodComponent = function (_FieldType) {
   }, {
     key: 'updateLabel',
     value: function updateLabel(value) {
-      if (!this.mrf.multi && !value) {
+      if (!this.props.multi && !value) {
         //console.log('clean on update');
         this.refs.input.setState({ searchText: '' });
         return;
@@ -134,12 +165,12 @@ var SelectWithMethodComponent = function (_FieldType) {
       //console.log('searching with text', text);
       this.setState({ selected: null, isCalling: true });
 
-      if (!this.mrf.multi) {
+      if (!this.props.multi) {
         this.props.onChange(null);
       }
 
-      var methodName = this.props.fieldSchema.mrf.methodName;
-      var connection = this.props.fieldSchema.mrf.connection || Meteor;
+      var methodName = this.props.methodName;
+      var connection = this.props.connection || Meteor;
       connection.call(methodName, text, function (error, response) {
         if (error) {
           console.log('[select-with-method] Recieved error from "' + methodName + '"', error);
@@ -165,7 +196,7 @@ var SelectWithMethodComponent = function (_FieldType) {
     key: 'onItemSelected',
     value: function onItemSelected(item, index) {
       var selected = this.state.response[index];
-      if (this.mrf.multi) {
+      if (this.props.multi) {
         //console.log('clean on item selected');
         this.refs.input.setState({ searchText: '' });
         if (_.contains(this.props.value || [], selected.value)) return;
@@ -250,23 +281,11 @@ var SelectWithMethodComponent = function (_FieldType) {
   return SelectWithMethodComponent;
 }(_simpleReactForm.FieldType);
 
+SelectWithMethodComponent.propTypes = propTypes;
+SelectWithMethodComponent.defaultProps = defaultProps;
+
 (0, _simpleReactForm.registerType)({
   type: 'select-with-method',
   component: SelectWithMethodComponent,
-  allowedTypes: [String, Number, [String], [Number]],
-  description: 'A select input that connects to a Meteor Method to fetch data.',
-  optionsDefinition: {
-    multi: _react2.default.PropTypes.bool,
-    methodName: _react2.default.PropTypes.string.isRequired,
-    labelMethodName: _react2.default.PropTypes.string.isRequired,
-    connection: _react2.default.PropTypes.any,
-    throttleTime: _react2.default.PropTypes.number
-  },
-  optionsDescription: {
-    multi: 'Allow to select multiple items',
-    methodName: 'Meteor method that recieves the search string and returns an array of items with ```label``` and ```value```.',
-    labelMethodName: 'Meteor method that recieves the value and must return the label. If ```multi``` is set to true, it will recieve an array and it must return an with the labels in the same order.',
-    connection: 'A Meteor connection.',
-    throttleTime: 'Minimum time between 2 calls to ```methodName```. Defaults to 200.'
-  }
+  description: 'A select input that connects to a Meteor Method to fetch data.'
 });

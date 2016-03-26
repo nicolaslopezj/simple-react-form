@@ -5,6 +5,37 @@ import Colors from 'material-ui/lib/styles/colors';
 import {FieldType, registerType} from 'simple-react-form';
 import styles from '../styles';
 
+const propTypes = {
+  /**
+   * Allow to select multiple items.
+   */
+  multi: React.PropTypes.bool,
+  /**
+   * Meteor method that recieves the search string and returns an array of items
+   * with "label" and "value" attributes.
+   */
+  methodName: React.PropTypes.string.isRequired,
+  /**
+   * Meteor method that recieves the value and must return the label. If
+   * ```multi``` is set to true, it will recieve an array and it must return an
+   * with the labels in the same order.
+   */
+  labelMethodName: React.PropTypes.string.isRequired,
+  /**
+   * A Meteor connection.
+   */
+  connection: React.PropTypes.any,
+  /**
+   * Time with no changes that activates the search.
+   */
+  waitTime: React.PropTypes.number,
+};
+
+const defaultProps = {
+  multi: false,
+  waitTime: 200,
+};
+
 class SelectWithMethodComponent extends FieldType {
 
   constructor(props) {
@@ -19,7 +50,7 @@ class SelectWithMethodComponent extends FieldType {
       hasTitleFor: null,
     };
 
-    this.throttledSearch = _.throttle(this.search.bind(this), this.mrf.throttleTime || 200, { leading: false });
+    this.throttledSearch = _.throttle(this.search.bind(this), this.props.waitTime, { leading: false });
   }
 
   componentDidMount() {
@@ -47,14 +78,14 @@ class SelectWithMethodComponent extends FieldType {
     });
 
     if (missingLabels.length > 0) {
-      var labelMethodName = this.mrf.labelMethodName;
-      var connection = this.mrf.connection || Meteor;
-      var labelsMethod = this.mrf.multi ? missingLabels : missingLabels[0];
+      var labelMethodName = this.props.labelMethodName;
+      var connection = this.props.connection || Meteor;
+      var labelsMethod = this.props.multi ? missingLabels : missingLabels[0];
       connection.call(labelMethodName, labelsMethod, (error, response) => {
         if (error) {
           console.log(`[select-with-method] Recieved error from "${labelMethodName}"`, error);
         } else {
-          if (this.mrf.multi) {
+          if (this.props.multi) {
             missingLabels.map((value, index) => {
               knownLabels[value] = response[index];
             });
@@ -69,7 +100,7 @@ class SelectWithMethodComponent extends FieldType {
         }
       });
     } else {
-      if (!this.mrf.multi) {
+      if (!this.props.multi) {
         //console.log('setting to known label', knownLabels[values]);
         this.refs.input.setState({ searchText: knownLabels[values] });
       }
@@ -77,7 +108,7 @@ class SelectWithMethodComponent extends FieldType {
   }
 
   updateLabel(value) {
-    if (!this.mrf.multi && !value) {
+    if (!this.props.multi && !value) {
       //console.log('clean on update');
       this.refs.input.setState({ searchText: '' });
       return;
@@ -90,12 +121,12 @@ class SelectWithMethodComponent extends FieldType {
     //console.log('searching with text', text);
     this.setState({ selected: null, isCalling: true });
 
-    if (!this.mrf.multi) {
+    if (!this.props.multi) {
       this.props.onChange(null);
     }
 
-    var methodName = this.props.fieldSchema.mrf.methodName;
-    var connection = this.props.fieldSchema.mrf.connection || Meteor;
+    var methodName = this.props.methodName;
+    var connection = this.props.connection || Meteor;
     connection.call(methodName, text, (error, response) => {
       if (error) {
         console.log(`[select-with-method] Recieved error from "${methodName}"`, error);
@@ -119,7 +150,7 @@ class SelectWithMethodComponent extends FieldType {
 
   onItemSelected(item, index) {
     var selected = this.state.response[index];
-    if (this.mrf.multi) {
+    if (this.props.multi) {
       //console.log('clean on item selected');
       this.refs.input.setState({ searchText: '' });
       if (_.contains(this.props.value || [], selected.value)) return;
@@ -190,23 +221,11 @@ class SelectWithMethodComponent extends FieldType {
   }
 }
 
+SelectWithMethodComponent.propTypes = propTypes;
+SelectWithMethodComponent.defaultProps = defaultProps;
+
 registerType({
   type: 'select-with-method',
   component: SelectWithMethodComponent,
-  allowedTypes: [String, Number, [String], [Number]],
   description: 'A select input that connects to a Meteor Method to fetch data.',
-  optionsDefinition: {
-    multi: React.PropTypes.bool,
-    methodName: React.PropTypes.string.isRequired,
-    labelMethodName: React.PropTypes.string.isRequired,
-    connection: React.PropTypes.any,
-    throttleTime: React.PropTypes.number,
-  },
-  optionsDescription: {
-    multi: 'Allow to select multiple items',
-    methodName: 'Meteor method that recieves the search string and returns an array of items with ```label``` and ```value```.',
-    labelMethodName: 'Meteor method that recieves the value and must return the label. If ```multi``` is set to true, it will recieve an array and it must return an with the labels in the same order.',
-    connection: 'A Meteor connection.',
-    throttleTime: 'Minimum time between 2 calls to ```methodName```. Defaults to 200.',
-  },
 });

@@ -2,6 +2,14 @@ import React from 'react';
 import TextField from 'material-ui/lib/text-field';
 import {FieldType, registerType} from 'simple-react-form';
 
+const propTypes = {
+  changeOnKeyDown: React.PropTypes.bool,
+  fieldType: React.PropTypes.string,
+};
+
+const defaultProps = {
+};
+
 class TextFieldComponent extends FieldType {
 
   constructor(props) {
@@ -21,13 +29,13 @@ class TextFieldComponent extends FieldType {
 
   onChange(event) {
     this.setState({ value: event.target.value });
-    if (this.mrf.changeOnKeyDown) {
+    if (this.props.changeOnKeyDown) {
       this.props.onChange(event.target.value);
     }
   }
 
   render() {
-    var type = this.mrf.type || this.type;
+    var type = this.props.fieldType || this.type;
     return (
       <TextField
         ref='input'
@@ -46,16 +54,12 @@ class TextFieldComponent extends FieldType {
   }
 }
 
+TextFieldComponent.propTypes = propTypes;
+TextFieldComponent.defaultProps = defaultProps;
+
 registerType({
   type: 'text',
   component: TextFieldComponent,
-  description: 'Simple checkbox field.',
-  optionsDefinition: {
-    changeOnKeyDown: React.PropTypes.bool,
-  },
-  optionsDescription: {
-    changeOnKeyDown: 'Update the input value on any keyup',
-  },
 });
 
 class StringFieldComponent extends TextFieldComponent {
