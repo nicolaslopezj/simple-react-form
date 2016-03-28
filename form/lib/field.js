@@ -93,10 +93,15 @@ var defaultProps = {
 var Field = function (_React$Component) {
   _inherits(Field, _React$Component);
 
-  function Field() {
+  function Field(props) {
     _classCallCheck(this, Field);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Field).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Field).call(this, props));
+
+    if (!props.schema && !props.type) {
+      throw new Error('You must set the type for the field "' + props.fieldName + '" or pass a schema to the form');
+    }
+    return _this;
   }
 
   _createClass(Field, [{
