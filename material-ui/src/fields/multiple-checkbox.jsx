@@ -1,5 +1,6 @@
 import React from 'react';
 import Checkbox from 'material-ui/lib/checkbox';
+import Colors from 'material-ui/lib/styles/colors';
 import {FieldType, registerType} from 'simple-react-form';
 
 const propTypes = {
@@ -12,6 +13,7 @@ const propTypes = {
       React.PropTypes.string,
       React.PropTypes.number,
     ]).isRequired,
+    description: React.PropTypes.string,
   })).isRequired,
 };
 
@@ -34,16 +36,21 @@ class MultipleCheckboxComponent extends FieldType {
 
   renderOptions() {
     var currentVal = this.props.value || [];
-    return this.props.options.map((option) => {
+    return this.props.options.map(option => {
       return (
         <div key={option.value} style={{ marginTop: 10 }}>
           <Checkbox
-            checked={_.contains(currentVal, option.value)}
-            onCheck={() => this.onCheck(option.value, currentVal)}
-            label={option.label}
-            disabled={this.props.disabled}
-            {...this.passProps}
+          checked={_.contains(currentVal, option.value)}
+          onCheck={() => this.onCheck(option.value, currentVal)}
+          label={option.label}
+          disabled={this.props.disabled}
+          {...this.passProps}
           />
+          <div
+          style={{ marginLeft: 40, color: Colors.grey500, cursor: 'pointer' }}
+          onClick={() => this.onCheck(option.value, currentVal)}>
+            {(option.description || '').split('\n').map((text, index) => <div key={index}>{text}</div>)}
+          </div>
         </div>
       );
     });
