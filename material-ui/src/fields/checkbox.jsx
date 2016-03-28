@@ -14,14 +14,6 @@ const defaultProps = {
 
 class CheckboxComponent extends FieldType {
 
-  checkedIcon() {
-    return <FontIcon className="material-icons">check_box</FontIcon>;
-  }
-
-  unCheckedIcon() {
-    return <FontIcon className="material-icons">check_box_outline_blank</FontIcon>;
-  }
-
   render() {
     return (
       <div style={{ paddingTop: 10, paddingBottom: 10 }}>
@@ -30,8 +22,6 @@ class CheckboxComponent extends FieldType {
           disabled={this.props.disabled}
           checked={this.props.value}
           onCheck={() => this.props.onChange(!this.props.value)}
-          checkedIcon={this.checkedIcon()}
-          unCheckedIcon={this.unCheckedIcon()}
           {...this.passProps}
         />
         <span style={{ color: Colors.red500 }}>{this.props.errorMessage}</span>
