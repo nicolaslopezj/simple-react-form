@@ -299,8 +299,7 @@ export default class Form extends React.Component {
       var keySchema = schema._schema[fullKey];
       var options = keySchema.mrf;
       if (options && options.omit) return true;
-      if (_.contains(this.props.omit, key)) {
-        return true;
+      if (_.contains(this.props.omit, key)) return true;
       }
     });
     return keys.map((key) => {
