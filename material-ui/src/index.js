@@ -2,6 +2,7 @@ import './fields/array';
 import './fields/object';
 
 import './fields/checkbox';
+import './fields/radio';
 import './fields/date-picker';
 import './fields/multiple-checkbox';
 import './fields/select-with-method';
