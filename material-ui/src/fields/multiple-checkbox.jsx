@@ -58,10 +58,12 @@ class MultipleCheckboxComponent extends FieldType {
 
   render() {
     return (
-      <div style={{ paddingBottom: 20 }}>
-        <div style={{ marginBottom: 20 }}>{this.props.label}</div>
-        <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
+      <div style={styles.fieldContainer}>
+        <div style={styles.mirrorLabel}>
+          {this.props.label}
+        </div>
         {this.renderOptions()}
+        <div style={styles.errorMessage}>{this.props.errorMessage}</div>
       </div>
     );
   }
