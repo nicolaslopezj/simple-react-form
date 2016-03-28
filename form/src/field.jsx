@@ -104,8 +104,10 @@ export default class Field extends React.Component {
   getLabel() {
     if (this.props.label) {
       return this.props.label;
-    } else {
+    } else if (this.getSchema()) {
       return this.getSchema().label(this.props.fieldName);
+    } else {
+      return '';
     }
   }
 
