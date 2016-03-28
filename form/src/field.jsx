@@ -76,6 +76,13 @@ const defaultProps = {
 
 export default class Field extends React.Component {
 
+  constructor(props) {
+    super(props);
+    if (!props.schema && !props.type) {
+      throw new Error(`You must set the type for the field "${props.fieldName}" or pass a schema to the form`);
+    }
+  }
+
   onChange(value) {
     this.props.onChange(this.props.fieldName, value);
   }
