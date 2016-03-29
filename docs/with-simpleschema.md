@@ -12,11 +12,11 @@ Automatic forms creation with [aldeed:simple-schema](http://github.com/aldeed/si
 import 'simple-react-form-material-ui';
 ```
 
-##### Allow ```mrf``` field for schemas
+##### Allow ```srf``` field for schemas
 
 ```js
 SimpleSchema.extendOptions({
-  mrf: Match.Optional(Object),
+  srf: Match.Optional(Object),
 });
 ```
 
