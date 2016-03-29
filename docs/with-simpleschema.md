@@ -46,6 +46,7 @@ An insert form.
 ```jsx
 import React from 'react';
 import { Form } from 'simple-react-form';
+import Posts from '../../collections/posts';
 
 class PostsCreate extends React.Component {
   render() {
@@ -70,6 +71,7 @@ An update form.
 ```jsx
 import React from 'react';
 import { Form, Field } from 'simple-react-form';
+import Posts from '../../collections/posts';
 
 class PostsUpdate extends React.Component {
   render() {
