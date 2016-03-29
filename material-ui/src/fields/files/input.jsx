@@ -202,6 +202,9 @@ export default class Component extends FieldType {
   }
 }
 
+Component.propTypes = propTypes;
+Component.defaultProps = defaultProps;
+
 registerType({
   type: 'file',
   component: Component,
