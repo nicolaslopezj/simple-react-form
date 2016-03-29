@@ -2,49 +2,63 @@
 
 React Simple Form is built from the idea that you can create custom components easily.
 
-First, you have to register the type:
+Basically this consist in a component that have the prop ```value``` and the prop ```onChange```. 
+You must render the ```value``` and call ```onChange``` passing the new value
+when the value has changed.
 
-```js
-import { registerType } from 'simple-react-form';
+You can also pass props to this components setting them in the srf parameter of 
+the simple-schema object:
 
-registerType(options);
+```
+Post.attachSchema({
+  picture: {
+    type: String,
+    srf: {
+      type: 'my-upload-picture',
+      squareOnly: true,
+    },
+  },
+});
 ```
 
-**Options:**
+Or simply in the field while rendering:
 
-- **type**: *String*. The name of the attribute.
-- **component**: *React Component*. The component of the field.
+```jsx
+<Field fieldName="picture" type="my-upload-picuture" squareOnly={true}/>
+```
 
-And the component have the following propTypes:
+### Creating field types
 
-- **value**: *Any* Optional. The value of the field.
-- **label**: *String*. The label for the field.
-- **errorMessage**: *String* Optional. If there is a error, this will be the message.
-- **onChange**: *Function*. Call this function when the value changes. If the value change, the prop ```value``` will change too.
-
-#### Example:
+You must create a React component that extends ```FieldType```
+and register the field type
 
 ```jsx
 import { FieldType, registerType } from 'simple-react-form';
 
-class MyTextareaComponent extends FieldType {
+class MyUploadPicture extends FieldType {
   render() {
     return (
-      <TextField
-        ref="input"
-        fullWidth={true}
-        multiLine={true}
-        rows={2}
+      <div>
+        <p>
+          {this.props.label}
+        </p>
+        <img src={this.props.value} />
+        <TextField
         value={this.props.value}
-        floatingLabelText={this.props.label}
-        errorText={this.props.errorMessage}
+        hintText='Image Url'
         onChange={(event) => this.props.onChange(event.target.value)} />
+        <p>
+          {this.props.errorMessage}
+        </p>
+      </div>  
     );
   }
 }
 
 registerType({
   type: 'textarea',
-  component: MyTextareaComponent,
+  component: MyUploadPicture,
 });
 ```
+
+You can view the full list of props [here](https://github.com/nicolaslopezj/simple-react-form/blob/master/form/src/field.jsx#L9).
