@@ -131,17 +131,26 @@ export default class Field extends React.Component {
       typeName = getFieldTypeName({ fieldName: this.props.fieldName, fieldSchema: this.getFieldSchema(), schema: this.getSchema() });
     }
 
+    /**
+     * This gets the props that are defined in the propTypes of the registered component.
+     */
     const type = getFieldType(typeName);
     const propOptions = _.omit(this.props, _.keys(propTypes));
     const schemaOptions = (this.getFieldSchema() && (this.getFieldSchema().srf || this.getFieldSchema().mrf)) || {};
     const totalOptions = _.extend(schemaOptions, propOptions);
     const allowedKeys = _.keys(type.component.propTypes || {});
     const onlyAllowedOptions = _.pick(totalOptions, allowedKeys);
+    
     const error = getFieldOptionsError({ type, options: onlyAllowedOptions });
     if (error) {
       throw new Error(`Options for field "${this.props.fieldName}" are not allowed for field type "${type.name}": ${error.message}`);
     }
-
+  
+    /**
+     * Options that are not registered in the propTypes are passed separatly.
+     * This options are in the variable this.passProps of the component, they should be
+     * passed to the main component of it.
+     */
     const notDefinedOptions = _.omit(totalOptions, allowedKeys);
 
     const props = {
