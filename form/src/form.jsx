@@ -109,7 +109,7 @@ const propTypes = {
   /**
    * Fields to be omited
    */
-  omit: React.PropTypes.array,
+  omit: React.PropTypes.arrayOf(React.PropTypes.strings),
 };
 
 const defaultProps = {
