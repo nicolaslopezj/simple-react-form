@@ -34,7 +34,7 @@ Posts.attachSchema({
   body: {
     type: String,
     label: 'Content',
-    mrf: {
+    srf: {
       type: 'textarea',
     },
   }
@@ -47,6 +47,7 @@ An insert form.
 import React from 'react';
 import { Form } from 'simple-react-form';
 import Posts from '../../collections/posts';
+import RaisedButton from 'material-ui/lib/raised-button';
 
 class PostsCreate extends React.Component {
   render() {
@@ -72,8 +73,17 @@ An update form.
 import React from 'react';
 import { Form, Field } from 'simple-react-form';
 import Posts from '../../collections/posts';
+import RaisedButton from 'material-ui/lib/raised-button';
 
-class PostsUpdate extends React.Component {
+class PostsUpdate extends MeteorDataComponent {
+  getMeteorData() {
+    const subs = Meteor.subscribe("posts.by.user");
+    const post = Posts.findOne(this.props.post);
+    return {
+      post
+    }
+  }
+  
   render() {
     return (
       <div>
@@ -82,7 +92,7 @@ class PostsUpdate extends React.Component {
           collection={Posts}
           type="update"
           ref="form"
-          doc={this.props.post}>
+          doc={this.data.post}>
           <Field fieldName="title"/>
           <Field fieldName="body"/>
         </Form>
