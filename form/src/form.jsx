@@ -2,7 +2,7 @@ import React from 'react';
 import ArrayComponent from './array';
 import ObjectComponent from './object';
 import DotObject from './dot';
-import Utility from './utility';
+import { docToModifier } from './utility';
 import Field from './field';
 import { getFieldTypeName } from './types';
 
@@ -207,7 +207,7 @@ export default class Form extends React.Component {
       const doc = DotObject.object(dot);
       this.props.collection.insert(doc, this.getValidationOptions(), this.onCommit.bind(this));
     } else if (this.props.type == 'update') {
-      var modifier = Utility.docToModifier(data, { keepArrays: this.props.keepArrays });
+      var modifier = docToModifier(data, { keepArrays: this.props.keepArrays });
       if (!_.isEqual(modifier, {})) {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this));
       } else {

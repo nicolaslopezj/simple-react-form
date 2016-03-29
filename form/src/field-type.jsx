@@ -40,24 +40,17 @@ const propTypes = {
    * Use hint instead of label
    */
   useHint: React.PropTypes.bool,
-
-  /**
-   * The field should be read only mode
-   */
-  disabled: React.PropTypes.bool,
 };
 
 export default class FieldType extends React.Component {
 
   constructor(props) {
     super(props);
-    this.mrf = props.mrf;
     this.passProps = props.passProps;
     this.registerComponent();
   }
 
   componentWillReceiveProps(nextProps) {
-    this.mrf = nextProps.mrf;
     this.passProps = nextProps.passProps;
   }
 

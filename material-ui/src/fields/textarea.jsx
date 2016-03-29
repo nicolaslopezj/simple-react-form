@@ -35,5 +35,4 @@ registerType({
   type: 'textarea',
   component: TextareaComponent,
   allowedTypes: [String],
-  description: 'Textarea',
 });

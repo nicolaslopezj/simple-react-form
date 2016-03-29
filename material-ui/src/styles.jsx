@@ -1,7 +1,7 @@
 import React from 'react';
 import Colors from 'material-ui/lib/styles/colors';
 
-export default styles = {
+export default {
   label: {
     color: 'rgba(0,0,0,0.5)',
     marginBottom: 5,

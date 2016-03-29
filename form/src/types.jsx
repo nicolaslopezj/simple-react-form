@@ -17,9 +17,10 @@ export const getFieldType = function (typeName) {
 
 export const getFieldTypeName = function ({ fieldName, schema }) {
   const fieldSchema = schema.schema(fieldName);
+  const srf = fieldSchema.srf || fieldSchema.mrf;
   var typeName = null;
-  if (fieldSchema.mrf && fieldSchema.mrf.type) {
-    typeName = fieldSchema.mrf.type;
+  if (srf && srf.type) {
+    typeName = srf.type;
   } else if (fieldSchema.type === String) {
     typeName = 'string';
   } else if (fieldSchema.type === Number) {
@@ -72,7 +73,7 @@ export const getFieldComponent = function ({ fieldName, schema }) {
       contains = true;
     }
 
-    var options = fieldSchema.mrf || {};
+    var options = fieldSchema.srf || fieldSchema.mrf || {};
     /*
     const error = getFieldOptionsError({ type, options });
     if (error) {
