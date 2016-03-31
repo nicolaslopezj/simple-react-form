@@ -58,7 +58,8 @@ class SelectWithMethodComponent extends FieldType {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.value !== nextProps.value) {
+    //console.log('will recieve props', nextProps);
+    if (this.props.value !== nextProps.value && nextProps.value) {
       this.updateLabel(nextProps.value);
     }
   }

@@ -32,9 +32,7 @@
     "react": ">=0.13.0"
   },
   "scripts": {
-    "build-js": "babel ./src --out-dir ./lib",
-    "build": "npm run build-js",
-    "precommit": "npm run lint -s",
+    "build": "babel ./src --out-dir ./lib",
     "prepublish": "npm run build"
   }
 }
