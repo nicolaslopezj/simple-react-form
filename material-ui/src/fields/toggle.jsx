@@ -1,6 +1,7 @@
 import React from 'react';
 import Toggle from 'material-ui/lib/toggle';
 import {FieldType, registerType} from 'simple-react-form';
+import styles from '../styles';
 
 const propTypes = {
 
