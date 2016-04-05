@@ -2,7 +2,7 @@ import React from 'react';
 import ArrayComponent from './array';
 import ObjectComponent from './object';
 import DotObject from './dot';
-import Utility from './utility';
+import { docToModifier } from './utility';
 import Field from './field';
 import { getFieldTypeName } from './types';
 
@@ -109,7 +109,7 @@ const propTypes = {
   /**
    * Fields to be omited
    */
-  omit: React.PropTypes.arrayOf(React.PropTypes.strings),
+  omit: React.PropTypes.arrayOf(React.PropTypes.string),
 };
 
 const defaultProps = {
@@ -213,7 +213,7 @@ export default class Form extends React.Component {
       const doc = DotObject.object(dot);
       this.props.collection.insert(doc, this.getValidationOptions(), this.onCommit.bind(this));
     } else if (this.props.type == 'update') {
-      var modifier = Utility.docToModifier(data, { keepArrays: this.props.keepArrays });
+      var modifier = docToModifier(data, { keepArrays: this.props.keepArrays });
       if (!_.isEqual(modifier, {})) {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this));
       } else {
@@ -292,14 +292,14 @@ export default class Form extends React.Component {
     });
   }
 
-  generateInputsForKeys(keys, parent = '') {
+  generateInputsForKeys(keys, parent = '', omit = this.props.omit) {
     var schema = this.getSchema();
     keys = _.reject(keys, (key) => {
       var fullKey = parent ? `${parent}.${key}` : key;
       var keySchema = schema._schema[fullKey];
-      var options = keySchema.mrf;
+      var options = keySchema.srf;
       if (options && options.omit) return true;
-      if (_.contains(this.props.omit, key)) return true;
+      if (_.contains(omit, fullKey)) return true;
     });
     return keys.map((key) => {
       var fullKey = parent ? `${parent}.${key}` : key;
@@ -315,7 +315,7 @@ export default class Form extends React.Component {
         var _keys = schema.objectKeys(fullKey);
         return (
           <this.props.objectComponent fieldName={key} key={fullKey}>
-            {this.generateInputsForKeys(_keys, fullKey)}
+            {this.generateInputsForKeys(_keys, fullKey, omit)}
           </this.props.objectComponent>
         );
       } else {
