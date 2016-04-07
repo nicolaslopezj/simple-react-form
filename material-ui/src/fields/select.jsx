@@ -15,7 +15,7 @@ const propTypes = {
       React.PropTypes.string,
       React.PropTypes.number,
     ]).isRequired,
-  })).isRequired,
+  })),
 };
 
 const defaultProps = {
@@ -25,7 +25,19 @@ const defaultProps = {
 class SelectComponent extends FieldType {
 
   renderItems() {
-    return this.props.options.map((item) => {
+    var options = [];
+    if (this.props.fieldSchema.allowedValues && !this.props.options) {
+      options = _.map(this.props.fieldSchema.allowedValues, function (allowedValue) {
+        return {
+          label: allowedValue,
+          value: allowedValue,
+        };
+      });
+    } else {
+      options = this.props.options;
+    }
+
+    return options.map((item) => {
       return <MenuItem key={item.value} value={item.value} primaryText={item.label} />;
     });
   }
