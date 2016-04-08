@@ -36,6 +36,6 @@ ToggleComponent.defaultProps = defaultProps;
 registerType({
   type: 'toggle',
   component: ToggleComponent,
-  allowedTypes: Boolean,
+  allowedTypes: [Boolean],
   description: 'Material UI toggle.',
 });
