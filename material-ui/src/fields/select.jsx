@@ -25,8 +25,10 @@ const defaultProps = {
 class SelectComponent extends FieldType {
 
   renderItems() {
-    var options = [];
-    if (this.props.fieldSchema.allowedValues && !this.props.options) {
+    var options = null;
+    if (this.props.options) {
+      options = this.props.options;
+    } else if (this.props.fieldSchema.allowedValues) {
       options = _.map(this.props.fieldSchema.allowedValues, function (allowedValue) {
         return {
           label: allowedValue,
@@ -34,7 +36,7 @@ class SelectComponent extends FieldType {
         };
       });
     } else {
-      options = this.props.options;
+      throw new Error('You must set the options for the select field');
     }
 
     return options.map((item) => {
