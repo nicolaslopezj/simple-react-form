@@ -16,7 +16,7 @@ export default class MaterialObject extends ObjectComponent {
       <Paper style={{ marginTop: 20, marginBottom: 20, padding: 20 }}>
         <div style={styles.label}>{this.getLabel()}</div>
         <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
-        {this.renderChildren()}
+        {this.renderChildren(this.props.children)}
       </Paper>
     );
   }
