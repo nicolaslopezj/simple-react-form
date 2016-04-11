@@ -105,6 +105,11 @@ const propTypes = {
    * Minimum wait time between auto saves
    */
   autoSaveWaitTime: React.PropTypes.number,
+
+  /**
+   * Fields to be omited
+   */
+  omit: React.PropTypes.arrayOf(React.PropTypes.string),
 };
 
 const defaultProps = {
@@ -121,6 +126,7 @@ const defaultProps = {
   logErrors: false,
   commitOnlyChanges: true,
   autoSaveWaitTime: 500,
+  omit: [],
 };
 
 export default class Form extends React.Component {
@@ -286,13 +292,14 @@ export default class Form extends React.Component {
     });
   }
 
-  generateInputsForKeys(keys, parent = '') {
+  generateInputsForKeys(keys, parent = '', omit = this.props.omit) {
     var schema = this.getSchema();
     keys = _.reject(keys, (key) => {
       var fullKey = parent ? `${parent}.${key}` : key;
       var keySchema = schema._schema[fullKey];
-      var options = keySchema.mrf;
+      var options = keySchema.srf;
       if (options && options.omit) return true;
+      if (_.contains(omit, fullKey)) return true;
     });
     return keys.map((key) => {
       var fullKey = parent ? `${parent}.${key}` : key;
@@ -308,7 +315,7 @@ export default class Form extends React.Component {
         var _keys = schema.objectKeys(fullKey);
         return (
           <this.props.objectComponent fieldName={key} key={fullKey}>
-            {this.generateInputsForKeys(_keys, fullKey)}
+            {this.generateInputsForKeys(_keys, fullKey, omit)}
           </this.props.objectComponent>
         );
       } else {
