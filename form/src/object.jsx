@@ -64,6 +64,7 @@ export default class ObjectComponent extends React.Component {
   }
 
   renderChildren(children) {
+    var children = children ? children : this.props.children;
     return React.Children.map(children, (child) => {
       var fieldName = child.props.fieldName;
       var options = {};
