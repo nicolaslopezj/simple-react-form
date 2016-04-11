@@ -292,14 +292,14 @@ export default class Form extends React.Component {
     });
   }
 
-  generateInputsForKeys(keys, parent = '', omit = this.props.omit) {
+  generateInputsForKeys(keys, parent = '') {
     var schema = this.getSchema();
     keys = _.reject(keys, (key) => {
       var fullKey = parent ? `${parent}.${key}` : key;
       var keySchema = schema._schema[fullKey];
       const options = keySchema.srf || keySchema.mrf;
       if (options && options.omit) return true;
-      if (_.contains(omit, fullKey)) return true;
+      if (_.contains(this.props.omit, fullKey)) return true;
     });
     return keys.map((key) => {
       var fullKey = parent ? `${parent}.${key}` : key;
@@ -315,7 +315,7 @@ export default class Form extends React.Component {
         var _keys = schema.objectKeys(fullKey);
         return (
           <this.props.objectComponent fieldName={key} key={fullKey}>
-            {this.generateInputsForKeys(_keys, fullKey, omit)}
+            {this.generateInputsForKeys(_keys, fullKey)}
           </this.props.objectComponent>
         );
       } else {
