@@ -297,7 +297,7 @@ export default class Form extends React.Component {
     keys = _.reject(keys, (key) => {
       var fullKey = parent ? `${parent}.${key}` : key;
       var keySchema = schema._schema[fullKey];
-      var options = keySchema.srf;
+      const options = keySchema.srf || keySchema.mrf;
       if (options && options.omit) return true;
       if (_.contains(omit, fullKey)) return true;
     });
