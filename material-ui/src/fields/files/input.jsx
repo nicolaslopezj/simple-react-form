@@ -133,9 +133,10 @@ export default class Component extends FieldType {
   deleteFile(file) {
     this.toDelete.push(_.clone(file));
     if (this.props.multi) {
-      const index = this.props.value.indexOf(file);
-      this.props.value.splice(index, 1);
-      this.props.onChange(this.props.value);
+      var value = _.clone(this.props.value);
+      const index = value.indexOf(file);
+      value.splice(index, 1);
+      this.props.onChange(value);
     } else {
       this.props.onChange(null);
     }
