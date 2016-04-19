@@ -5,6 +5,10 @@
   "author": "Nicolás López <nicolaslopezj@me.com>",
   "description": "Material UI components for simple react form",
   "main": "./lib",
+  "repository" : { 
+    "type" : "git",
+    "url" : "https://github.com/nicolaslopezj/simple-react-form/tree/master/material-ui"
+  },
   "devDependencies": {
     "babel-cli": "6.5.1",
     "babel-eslint": "^5.0.0",
