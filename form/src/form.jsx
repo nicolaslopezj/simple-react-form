@@ -77,6 +77,11 @@ const propTypes = {
   onSuccess: React.PropTypes.func,
 
   /**
+   * A function that is called when the form is submitted.
+   */
+  onSubmit: React.PropTypes.func,
+
+  /**
    * Id of the form.
    */
   formId: React.PropTypes.string,
@@ -113,6 +118,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+  type: 'function',
   keepArrays: true,
   autoSave: false,
   removeEmptyStrings: true,
@@ -224,7 +230,10 @@ export default class Form extends React.Component {
       }
     } else if (this.props.type == 'function') {
       const doc = DotObject.object(DotObject.dot(data));
-      const isValid = this.getSchema().namedContext(this.getValidationOptions().validationContext).validate(doc);
+      var isValid = true;
+      if (this.getSchema()) {
+        isValid = this.getSchema().namedContext(this.getValidationOptions().validationContext).validate(doc);
+      }
       if (isValid) {
         var success = this.props.onSubmit(doc);
         if (success === false) {
