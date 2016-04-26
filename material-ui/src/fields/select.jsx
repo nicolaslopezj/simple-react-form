@@ -19,7 +19,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-
 };
 
 class SelectComponent extends FieldType {
@@ -29,7 +28,7 @@ class SelectComponent extends FieldType {
     if (this.props.options) {
       options = this.props.options;
     } else if (this.props.fieldSchema.allowedValues) {
-      options = _.map(this.props.fieldSchema.allowedValues, function (allowedValue) {
+      options = _.map(this.props.fieldSchema.allowedValues, function(allowedValue) {
         return {
           label: allowedValue,
           value: allowedValue,
@@ -46,20 +45,16 @@ class SelectComponent extends FieldType {
 
   render() {
     return (
-      <div style={styles.fieldContainer}>
-        <div style={styles.mirrorLabel}>
-          {this.props.label}
-        </div>
-        <SelectField
-          value={this.props.value}
-          onChange={(event, index, value) => this.props.onChange(value)}
-          fullWidth={true}
-          disabled={this.props.disabled}
-          {...this.passProps}>
-          {this.renderItems()}
-        </SelectField>
-        <div style={styles.errorMessage}>{this.props.errorMessage}</div>
-      </div>
+      <SelectField
+        value={this.props.value}
+        onChange={(event, index, value) => this.props.onChange(value)}
+        fullWidth={true}
+        disabled={this.props.disabled}
+        floatingLabelText={this.props.label}
+        errorText={this.props.errorMessage}
+        {...this.passProps}>
+        {this.renderItems()}
+      </SelectField>
     );
   }
 }
