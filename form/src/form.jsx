@@ -17,7 +17,8 @@ const propTypes = {
   doc: React.PropTypes.object,
 
   /**
-   * A callback that fires when the form value changes. The argument will be the value.
+   * A callback that fires when the form value changes.
+   * The argument will be the value.
    */
   onChange: React.PropTypes.func,
 
@@ -37,27 +38,33 @@ const propTypes = {
   type: React.PropTypes.oneOf(['insert', 'update', 'function']),
 
   /**
-   * Set to true to enable automatic form submission for a type="update" form. Whenever the form change event is emitted, the change will be automatically saved to the database.
+   * Set to true to enable automatic form submission for a type="update" form.
+   * When the form change event is emitted, the change will be automatically
+   * saved to the database.
    */
   autoSave: React.PropTypes.bool,
 
   /**
-   * Set to false for an insert or update form to keep empty string values when cleaning the form document.
+   * Set to false for an insert or update form to keep empty string values when
+   * cleaning the form document.
    */
   removeEmptyStrings: React.PropTypes.bool,
 
   /**
-   * Set to false for an insert or update form to skip filtering out unknown properties when cleaning the form document.
+   * Set to false for an insert or update form to skip filtering out unknown
+   * properties when cleaning the form document.
    */
   filter: React.PropTypes.bool,
 
   /**
-   * Set to false for an insert or update form to keep leading and trailing spaces for string values when cleaning the form document.
+   * Set to false for an insert or update form to keep leading and trailing
+   * spaces for string values when cleaning the form document.
    */
   trimStrings: React.PropTypes.bool,
 
   /**
-   * Set to false for an insert or update form to skip autoconverting property values when cleaning the form document.
+   * Set to false for an insert or update form to skip autoconverting property
+   * values when cleaning the form document.
    */
   autoConvert: React.PropTypes.bool,
 
@@ -115,6 +122,11 @@ const propTypes = {
    * Fields to be omited
    */
   omit: React.PropTypes.arrayOf(React.PropTypes.string),
+
+  /**
+   * Validate schema. Only for onSubmit
+   */
+  validate: React.PropTypes.bool,
 };
 
 const defaultProps = {
@@ -133,6 +145,7 @@ const defaultProps = {
   commitOnlyChanges: true,
   autoSaveWaitTime: 500,
   omit: [],
+  validate: true,
 };
 
 export default class Form extends React.Component {
@@ -161,7 +174,7 @@ export default class Form extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    //console.log('did update form', prevProps, prevState);
+    //Console.log('did update form', prevProps, prevState);
   }
 
   getSchema() {
@@ -231,10 +244,13 @@ export default class Form extends React.Component {
     } else if (this.props.type == 'function') {
       const doc = DotObject.object(DotObject.dot(data));
       var isValid = true;
-      if (this.getSchema()) {
+      if (this.props.validate && this.getSchema()) {
         isValid = this.getSchema().namedContext(this.getValidationOptions().validationContext).validate(doc);
       }
       if (isValid) {
+        if (!_.isFunction(this.props.onSubmit)) {
+          throw new Error('You must pass a onSubmit function or set the form type to insert or update');
+        }
         var success = this.props.onSubmit(doc);
         if (success === false) {
           this.onCommit('onSubmit error');
@@ -247,18 +263,29 @@ export default class Form extends React.Component {
     }
   }
 
-  handleError() {
-    var context = this.getSchema().namedContext(this.getValidationOptions().validationContext);
+  setErrorMessage(fieldName, message) {
+    const errorMessages = _.clone(this.state.errorMessages);
+    errorMessages[fieldName] = message;
+    this.setState({ errorMessages });
+  }
+
+  setErrorsWithContext(context) {
     var invalidKeys = context.invalidKeys();
     var errorMessages = {};
     invalidKeys.map((field) => {
       errorMessages[field.name] = context.keyErrorMessage(field.name);
     });
+
     if (this.props.logErrors) {
       console.log(`[form-${this.props.formId}-error-messages]`, errorMessages);
     }
 
     this.setState({ errorMessages });
+  }
+
+  handleError() {
+    var context = this.getSchema().namedContext(this.getValidationOptions().validationContext);
+    this.setErrorsWithContext(context);
   }
 
   onValueChange(fieldName, newValue) {
