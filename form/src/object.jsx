@@ -67,7 +67,7 @@ export default class ObjectComponent extends React.Component {
     return React.Children.map(children, (child) => {
       var fieldName = child.props.fieldName;
       var options = {};
-      if (child.type.recieveMRFData) {
+      if (_.isObject(child) && child.type && child.type.recieveMRFData) {
         options = {
           fieldName: `${this.props.fieldName}.${fieldName}`,
           schema: this.getSchema(),
@@ -77,7 +77,7 @@ export default class ObjectComponent extends React.Component {
           errorMessages: this.props.errorMessages,
           form: this.props.form,
         };
-      } else if (child.props) {
+      } else if (_.isObject(child) && child.props) {
         options = {
           children: this.renderChildren(child.props.children),
         };

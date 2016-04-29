@@ -308,7 +308,7 @@ export default class Form extends React.Component {
   renderChildren(children) {
     return React.Children.map(children, (child) => {
       var options = null;
-      if (child.type && child.type.recieveMRFData) {
+      if (_.isObject(child) && child.type && child.type.recieveMRFData) {
         var fieldName = child.props.fieldName;
         options = {
           schema: this.getSchema(),
@@ -318,7 +318,7 @@ export default class Form extends React.Component {
           errorMessages: this.state.errorMessages,
           form: this,
         };
-      } else if (child.props) {
+      } else if (_.isObject(child) && child.props) {
         options = {
           children: this.renderChildren(child.props.children),
         };
@@ -347,16 +347,16 @@ export default class Form extends React.Component {
             {this.generateInputsForKeys(_keys, `${fullKey}.$`)}
           </this.props.arrayComponent>
         );
-      } else if (type == 'object') {
+      }
+      if (type == 'object') {
         var _keys = schema.objectKeys(fullKey);
         return (
           <this.props.objectComponent fieldName={key} key={fullKey}>
             {this.generateInputsForKeys(_keys, fullKey)}
           </this.props.objectComponent>
         );
-      } else {
-        return <Field fieldName={key} key={fullKey}/>;
       }
+      return <Field fieldName={key} key={fullKey}/>;
     });
   }
 
