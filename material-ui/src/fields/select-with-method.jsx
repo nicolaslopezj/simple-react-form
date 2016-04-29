@@ -29,11 +29,25 @@ const propTypes = {
    * Time with no changes that activates the search.
    */
   waitTime: React.PropTypes.number,
+  /**
+   * A function that creates a document and pass the value in a callback
+   */
+  create: React.PropTypes.func,
+  /**
+   * A function that returns the create label
+   */
+  createLabel: React.PropTypes.func,
+  /**
+   * A function that returns if a value can be created
+   */
+  canCreate: React.PropTypes.func,
 };
 
 const defaultProps = {
   multi: false,
   waitTime: 200,
+  createLabel: (search) => `Create "${search}"`,
+  canCreate: () => true,
 };
 
 class SelectWithMethodComponent extends FieldType {
@@ -58,7 +72,7 @@ class SelectWithMethodComponent extends FieldType {
   }
 
   componentWillReceiveProps(nextProps) {
-    //console.log('will recieve props', nextProps);
+    //Console.log('will recieve props', nextProps);
     if (this.props.value !== nextProps.value && nextProps.value) {
       this.updateLabel(nextProps.value);
     }
@@ -93,7 +107,7 @@ class SelectWithMethodComponent extends FieldType {
           } else {
             knownLabels[labelsMethod] = response;
 
-            //console.log('setting to response', response);
+            //Console.log('setting to response', response);
             this.refs.input.setState({ searchText: response });
           }
 
@@ -102,7 +116,7 @@ class SelectWithMethodComponent extends FieldType {
       });
     } else {
       if (!this.props.multi) {
-        //console.log('setting to known label', knownLabels[values]);
+        //Console.log('setting to known label', knownLabels[values]);
         this.refs.input.setState({ searchText: knownLabels[values] });
       }
     }
@@ -110,7 +124,7 @@ class SelectWithMethodComponent extends FieldType {
 
   updateLabel(value) {
     if (!this.props.multi && !value) {
-      //console.log('clean on update');
+      //Console.log('clean on update');
       this.refs.input.setState({ searchText: '' });
       return;
     }
@@ -119,7 +133,7 @@ class SelectWithMethodComponent extends FieldType {
   }
 
   search(text) {
-    //console.log('searching with text', text);
+    //Console.log('searching with text', text);
     this.setState({ selected: null, isCalling: true });
 
     if (!this.props.multi) {
@@ -140,6 +154,12 @@ class SelectWithMethodComponent extends FieldType {
             value: <MenuItem primaryText={item.label} />,
           };
         });
+        if (_.isFunction(this.props.create) && text && this.props.canCreate(text)) {
+          dataSource.push({
+            text: text,
+            value: <MenuItem primaryText={this.props.createLabel(text)} />,
+          })
+        }
         this.setState({ dataSource });
       }
     });
@@ -149,10 +169,27 @@ class SelectWithMethodComponent extends FieldType {
     this.throttledSearch(text);
   }
 
+  createItem(item) {
+    this.props.create(item, (value) => {
+      if (this.props.multi) {
+        this.refs.input.setState({ searchText: '' });
+        if (_.contains(this.props.value || [], value)) {
+          return;
+        }
+        this.props.onChange(_.union(this.props.value || [], [value]));
+      } else {
+        this.props.onChange(value);
+      }
+    });
+  }
+
   onItemSelected(item, index) {
+    if (index == this.state.response.length && _.isFunction(this.props.create)) {
+      return this.createItem(item);
+    }
     var selected = this.state.response[index];
     if (this.props.multi) {
-      //console.log('clean on item selected');
+      //Console.log('clean on item selected');
       this.refs.input.setState({ searchText: '' });
       if (_.contains(this.props.value || [], selected.value)) return;
       this.props.onChange(_.union(this.props.value || [], [selected.value]));
@@ -171,7 +208,7 @@ class SelectWithMethodComponent extends FieldType {
   }
 
   onFocus() {
-    //console.log('on focus');
+    //Console.log('on focus');
     this.setState({ open: true });
     this.search('');
   }
