@@ -35,11 +35,17 @@ const propTypes = {
    * you must set [Object] to the type.
    */
   multi: React.PropTypes.bool,
+
+  /**
+   * Pass the styles props to the preview
+   */
+  previewStyles: React.PropTypes.object,
 };
 
 const defaultProps = {
   image: false,
   multi: false,
+  previewStyles: {},
 };
 
 export default class Component extends FieldType {
@@ -146,6 +152,7 @@ export default class Component extends FieldType {
     const uploadingPreviews = this.uploads.map((upload, index) => {
       return <Preview
         key={upload.key}
+        styles={this.props.previewStyles}
         base64={upload.base64}
         file={upload.file}
         isUploading={upload.isUploading}
@@ -159,6 +166,7 @@ export default class Component extends FieldType {
     const previews = value.map((file, index) => {
       return <Preview
         key={`preview-${file.url}`}
+        styles={this.props.previewStyles}
         url={file.url}
         isImage={!!this.props.image}
         deleteLabel='Delete'

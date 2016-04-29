@@ -6,16 +6,16 @@ import Paper from 'material-ui/lib/paper';
 import Colors from 'material-ui/lib/styles/colors';
 
 const styles = {
-  container: {
+  image: {
     marginBottom: 10,
     marginRight: 10,
     cursor: 'pointer',
     display: 'inline-block',
-  },
-  image: {
     maxHeight: 150,
     maxWidth: '100%',
-    marginBottom: -5,
+    backgroundColor: 'white',
+    borderRadius: 2,
+    boxShadow: '0 1px 6px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.12)',
   },
   imageLoading: {
     maxHeight: 150,
@@ -39,6 +39,7 @@ const propTypes = {
   onDelete: React.PropTypes.func,
   deleteLabel: React.PropTypes.string,
   confirmDeleteText: React.PropTypes.string,
+  styles: React.PropTypes.object.isRequired,
 };
 
 export default class FilesPreview extends React.Component {
@@ -59,18 +60,19 @@ export default class FilesPreview extends React.Component {
 
   renderBase64() {
     return (
-      <Paper style={styles.container}>
+      <div>
         <img src={this.props.base64} style={styles.imageLoading}/>
         <CircularProgress style={styles.progress} mode='determinate' value={this.props.progress * 100} size={0.5} />
-      </Paper>
+      </div>
     );
   }
 
   renderPreviewImage() {
     return (
-      <Paper style={styles.container} onClick={this.askDelete.bind(this)}>
-        <img src={this.props.url} style={styles.image}/>
-      </Paper>
+      <img
+      src={this.props.url}
+      style={{...styles.image, ...this.props.styles}}
+      onClick={this.askDelete.bind(this)} />
     );
   }
 
