@@ -161,6 +161,7 @@ export default class Form extends React.Component {
     };
     this.fields = [];
     this.autoSave = _.debounce(this.submit.bind(this), this.props.autoSaveWaitTime);
+    this.errorMessages = {};
   }
 
   componentWillReceiveProps(nextProps) {
@@ -263,9 +264,15 @@ export default class Form extends React.Component {
     }
   }
 
+  cleanErrorMessages() {
+    this.errorMessages = {};
+    this.setState({ errorMessages: {} });
+  }
+
   setErrorMessage(fieldName, message) {
-    const errorMessages = _.clone(this.state.errorMessages);
+    const errorMessages = _.clone(this.errorMessages);
     errorMessages[fieldName] = message;
+    this.errorMessages = errorMessages;
     this.setState({ errorMessages });
   }
 
@@ -280,6 +287,7 @@ export default class Form extends React.Component {
       console.log(`[form-${this.props.formId}-error-messages]`, errorMessages);
     }
 
+    this.errorMessages = errorMessages;
     this.setState({ errorMessages });
   }
 
