@@ -35,13 +35,13 @@ class TextFieldComponent extends FieldType {
   }
 
   render() {
-    var type = this.props.fieldType || this.type;
+    var fieldType = this.props.fieldType || this.type;
     return (
       <TextField
         ref='input'
         fullWidth={true}
-        value={this.state.value}
-        type={type}
+        value={this.state.value || ''}
+        type={fieldType}
         floatingLabelText={this.props.useHint ? null : this.props.label}
         hintText={this.props.useHint ? this.props.label : null}
         errorText={this.props.errorMessage}
