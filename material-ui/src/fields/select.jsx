@@ -1,7 +1,7 @@
 import React from 'react';
-import SelectField from 'material-ui/lib/select-field';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import Colors from 'material-ui/lib/styles/colors';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import * as Colors from 'material-ui/styles/colors';
 import {FieldType, registerType} from 'simple-react-form';
 import styles from '../styles';
 

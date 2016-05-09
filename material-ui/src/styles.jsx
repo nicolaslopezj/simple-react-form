@@ -1,5 +1,5 @@
 import React from 'react';
-import Colors from 'material-ui/lib/styles/colors';
+import * as Colors from 'material-ui/styles/colors';
 
 export default {
   label: {

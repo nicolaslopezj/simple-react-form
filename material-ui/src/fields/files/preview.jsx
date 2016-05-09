@@ -1,9 +1,9 @@
 import React from 'react';
-import RaisedButton from 'material-ui/lib/raised-button';
-import LinearProgress from 'material-ui/lib/linear-progress';
-import CircularProgress from 'material-ui/lib/circular-progress';
-import Paper from 'material-ui/lib/paper';
-import Colors from 'material-ui/lib/styles/colors';
+import RaisedButton from 'material-ui/RaisedButton';
+import LinearProgress from 'material-ui/LinearProgress';
+import CircularProgress from 'material-ui/CircularProgress';
+import Paper from 'material-ui/Paper';
+import * as Colors from 'material-ui/styles/colors';
 
 const styles = {
   image: {

@@ -1,6 +1,6 @@
 import React from 'react';
-import Checkbox from 'material-ui/lib/checkbox';
-import Colors from 'material-ui/lib/styles/colors';
+import Checkbox from 'material-ui/Checkbox';
+import * as Colors from 'material-ui/styles/colors';
 import {FieldType, registerType} from 'simple-react-form';
 import styles from '../styles';
 

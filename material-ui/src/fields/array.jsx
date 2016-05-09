@@ -1,7 +1,7 @@
 import React from 'react';
-import Paper from 'material-ui/lib/paper';
-import IconButton from 'material-ui/lib/icon-button';
-import RaisedButton from 'material-ui/lib/raised-button';
+import Paper from 'material-ui/Paper';
+import IconButton from 'material-ui/IconButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import { Form, ArrayComponent } from 'simple-react-form';
 
 const styles = {

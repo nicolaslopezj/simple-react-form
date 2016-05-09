@@ -1,6 +1,6 @@
 import React from 'react';
-import RadioButton from 'material-ui/lib/radio-button';
-import Colors from 'material-ui/lib/styles/colors';
+import RadioButton from 'material-ui/RadioButton';
+import Colors from 'material-ui/styles/colors';
 import {FieldType, registerType} from 'simple-react-form';
 import styles from '../styles';
 

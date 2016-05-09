@@ -1,8 +1,8 @@
 import React from 'react';
-import RaisedButton from 'material-ui/lib/raised-button';
-import LinearProgress from 'material-ui/lib/linear-progress';
-import Paper from 'material-ui/lib/paper';
-import Colors from 'material-ui/lib/styles/colors';
+import RaisedButton from 'material-ui/RaisedButton';
+import LinearProgress from 'material-ui/LinearProgress';
+import Paper from 'material-ui/Paper';
+import * as Colors from 'material-ui/styles/colors';
 
 import {FieldType, registerType} from 'simple-react-form';
 
