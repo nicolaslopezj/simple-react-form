@@ -62,6 +62,7 @@ class SelectWithMethodComponent extends FieldType {
       response: [],
       isCalling: false,
       hasTitleFor: null,
+      searchText: '',
     };
 
     this.throttledSearch = _.throttle(this.search.bind(this), this.props.waitTime, { leading: false });
@@ -75,6 +76,12 @@ class SelectWithMethodComponent extends FieldType {
     //Console.log('will recieve props', nextProps);
     if (this.props.value !== nextProps.value && nextProps.value) {
       this.updateLabel(nextProps.value);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.searchText !== this.refs.input.state.searchText) {
+      this.refs.input.setState({ searchText: this.state.searchText });
     }
   }
 
@@ -108,7 +115,7 @@ class SelectWithMethodComponent extends FieldType {
             knownLabels[labelsMethod] = response;
 
             //Console.log('setting to response', response);
-            this.refs.input.setState({ searchText: response });
+            this.setState({ searchText: response });
           }
 
           this.setState({ knownLabels });
@@ -117,7 +124,7 @@ class SelectWithMethodComponent extends FieldType {
     } else {
       if (!this.props.multi) {
         //Console.log('setting to known label', knownLabels[values]);
-        this.refs.input.setState({ searchText: knownLabels[values] });
+        this.setState({ searchText: knownLabels[values] });
       }
     }
   }
@@ -125,7 +132,7 @@ class SelectWithMethodComponent extends FieldType {
   updateLabel(value) {
     if (!this.props.multi && !value) {
       //Console.log('clean on update');
-      this.refs.input.setState({ searchText: '' });
+      this.setState({ searchText: '' });
       return;
     }
 
@@ -134,7 +141,7 @@ class SelectWithMethodComponent extends FieldType {
 
   search(text) {
     //Console.log('searching with text', text);
-    this.setState({ selected: null, isCalling: true });
+    this.setState({ selected: null, isCalling: true, searchText: text });
 
     if (!this.props.multi) {
       this.props.onChange(null);
@@ -172,7 +179,7 @@ class SelectWithMethodComponent extends FieldType {
   createItem(item) {
     this.props.create(item, (value) => {
       if (this.props.multi) {
-        this.refs.input.setState({ searchText: '' });
+        this.setState({ searchText: '' });
         if (_.contains(this.props.value || [], value)) {
           return;
         }
@@ -190,7 +197,9 @@ class SelectWithMethodComponent extends FieldType {
     var selected = this.state.response[index];
     if (this.props.multi) {
       //Console.log('clean on item selected');
-      this.refs.input.setState({ searchText: '' });
+      setTimeout(() => {
+        this.setState({ searchText: '' });
+      }, 101);
       if (_.contains(this.props.value || [], selected.value)) return;
       this.props.onChange(_.union(this.props.value || [], [selected.value]));
     } else {
@@ -208,15 +217,18 @@ class SelectWithMethodComponent extends FieldType {
   }
 
   onFocus() {
-    //Console.log('on focus');
-    this.setState({ open: true });
     this.search('');
   }
 
   onBlur() {
     this.setState({ open: false });
     if (!this.props.value) {
-      //This.refs.input.setState({ searchText: '' });
+      this.setState({ searchText: '' });
+    }
+
+    if (this.state.searchText !== this.refs.input.state.searchText) {
+      console.log('did blur, not equal');
+      this.refs.input.setState({ searchText: this.state.searchText });
     }
   }
 
@@ -237,7 +249,7 @@ class SelectWithMethodComponent extends FieldType {
         <AutoComplete
           ref='input'
           fullWidth={true}
-          searchText=''
+          searchText={this.state.searchText}
           dataSource={this.state.dataSource}
           filter={AutoComplete.noFilter}
           onUpdateInput={this.onUpdateText.bind(this)}
@@ -248,8 +260,9 @@ class SelectWithMethodComponent extends FieldType {
           onFocus={this.onFocus.bind(this)}
           onBlur={this.onBlur.bind(this)}
           open={this.state.open}
-          triggerUpdateOnFocus={true}
+          openOnFocus={true}
           disabled={this.props.disabled}
+          menuCloseDelay={100}
           {...this.passProps} />
         <div>
           {this.renderItems()}
