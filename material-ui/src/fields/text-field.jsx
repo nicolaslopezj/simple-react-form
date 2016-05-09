@@ -38,18 +38,18 @@ class TextFieldComponent extends FieldType {
     var fieldType = this.props.fieldType || this.type;
     return (
       <TextField
-        ref='input'
-        fullWidth={true}
-        value={this.state.value || ''}
-        type={fieldType}
-        floatingLabelText={this.props.useHint ? null : this.props.label}
-        hintText={this.props.useHint ? this.props.label : null}
-        errorText={this.props.errorMessage}
-        disabled={this.props.disabled}
-        onChange={this.onChange.bind(this)}
-        onKeyDown={this.onKeyDown.bind(this)}
-        onBlur={() => this.props.onChange(this.state.value)}
-        {...this.passProps} />
+      ref='input'
+      fullWidth={true}
+      value={this.state.value || ''}
+      type={fieldType}
+      floatingLabelText={this.props.useHint ? null : this.props.label}
+      hintText={this.props.useHint ? this.props.label : null}
+      errorText={this.props.errorMessage}
+      disabled={this.props.disabled}
+      onChange={this.onChange.bind(this)}
+      onKeyDown={this.onKeyDown.bind(this)}
+      onBlur={() => this.props.onChange(this.state.value)}
+      {...this.passProps} />
     );
   }
 }
