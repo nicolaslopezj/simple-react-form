@@ -25,7 +25,7 @@ const propTypes = {
    * onReady is a function with no input.
    * onError input is message.
    */
-  delete: React.PropTypes.func.isRequired,
+  delete: React.PropTypes.func,
   /**
    * Only accept images
    */
@@ -46,6 +46,7 @@ const defaultProps = {
   image: false,
   multi: false,
   previewStyles: {},
+  delete: ({ file, onReady, onError }) => {onReady()},
 };
 
 export default class Component extends FieldType {
