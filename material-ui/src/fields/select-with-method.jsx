@@ -204,6 +204,9 @@ class SelectWithMethodComponent extends FieldType {
       this.props.onChange(_.union(this.props.value || [], [selected.value]));
     } else {
       this.props.onChange(selected ? selected.value : null);
+      setTimeout(() => {
+        this.setState({ searchText: selected.label });
+      }, 101);
     }
 
     if (selected) {
