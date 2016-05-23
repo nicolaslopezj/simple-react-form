@@ -220,7 +220,9 @@ class SelectWithMethodComponent extends FieldType {
   }
 
   onFocus() {
-    this.search('');
+    if (!this.props.multi && !this.props.value) {
+      this.search('');
+    }
   }
 
   onBlur() {

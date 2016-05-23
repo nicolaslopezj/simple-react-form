@@ -172,7 +172,6 @@ export default class Field extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div>{this.getComponent()}</div>
     );
