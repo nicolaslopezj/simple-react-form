@@ -56,6 +56,12 @@ export const getFieldComponent = function ({ fieldName, schema }) {
   }
 
   const typeName = getFieldTypeName({ fieldName, fieldSchema, schema });
+  if (typeName == 'object') {
+    throw new Error(`You should use ObjectComponent instead of Field for "${fieldName}".`);
+  }
+  if (typeName == 'array') {
+    throw new Error(`You should use ArrayComponent instead of Field for "${fieldName}".`);
+  }
   const type = getFieldType(typeName);
   if (!type) {
     throw new Error(`No component for field "${fieldName}".`);
