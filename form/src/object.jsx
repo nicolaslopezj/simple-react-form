@@ -43,6 +43,7 @@ const propTypes = {
 
 const defaultProps = {
   showLabel: true,
+  errorMessages: {},
 };
 
 export default class ObjectComponent extends React.Component {
@@ -73,7 +74,7 @@ export default class ObjectComponent extends React.Component {
           schema: this.getSchema(),
           value: this.props.value ? this.props.value[fieldName] : undefined,
           onChange: this.props.onChange,
-          errorMessage: this.props.errorMessages ? this.props.errorMessages[`${this.props.fieldName}.${fieldName}`] : undefined,
+          errorMessage: child.props.errorMessage || this.props.errorMessages[`${this.props.fieldName}.${fieldName}`],
           errorMessages: this.props.errorMessages,
           form: this.props.form,
         };

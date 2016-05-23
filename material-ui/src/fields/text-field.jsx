@@ -8,6 +8,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+  changeOnKeyDown: true,
 };
 
 class TextFieldComponent extends FieldType {

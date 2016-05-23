@@ -58,12 +58,12 @@ const propTypes = {
   type: React.PropTypes.string,
 
   /**
-   * The parent form element (automatically set).
+   * The parent form element.
    */
   form: React.PropTypes.any,
 
   /**
-   * The error message for the form (automatically set).
+   * The error message for the form.
    */
   errorMessages: React.PropTypes.object,
 };
@@ -140,12 +140,12 @@ export default class Field extends React.Component {
     const totalOptions = _.extend(schemaOptions, propOptions);
     const allowedKeys = _.keys(type.component.propTypes || {});
     const onlyAllowedOptions = _.pick(totalOptions, allowedKeys);
-    
+
     const error = getFieldOptionsError({ type, options: onlyAllowedOptions });
     if (error) {
       throw new Error(`Options for field "${this.props.fieldName}" are not allowed for field type "${type.name}": ${error.message}`);
     }
-  
+
     /**
      * Options that are not registered in the propTypes are passed separatly.
      * This options are in the variable this.passProps of the component, they should be
@@ -172,6 +172,7 @@ export default class Field extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <div>{this.getComponent()}</div>
     );

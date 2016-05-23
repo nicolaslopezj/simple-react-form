@@ -57,6 +57,7 @@ const defaultProps = {
   addLabel: 'Add',
   removeLabel: 'Remove',
   showLabel: true,
+  errorMessages: {}
 };
 
 export default class ArrayComponent extends ObjectComponent {
@@ -100,7 +101,7 @@ export default class ArrayComponent extends ObjectComponent {
           schema: this.getSchema(),
           value: this.props.value[index] ? this.props.value[index][fieldName] : undefined,
           onChange: this.onValueChange.bind(this),
-          errorMessage: this.props.errorMessages ? this.props.errorMessages[`${this.props.fieldName}.${index}.${fieldName}`] : undefined,
+          errorMessage: child.props.errorMessage || this.props.errorMessages[`${this.props.fieldName}.${index}.${fieldName}`],
           errorMessages: this.props.errorMessages,
           form: this.props.form,
         };

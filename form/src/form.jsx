@@ -297,7 +297,7 @@ export default class Form extends React.Component {
   }
 
   onValueChange(fieldName, newValue) {
-    newValue = typeof newValue === 'undefined' ? null : newValue;
+    //newValue = typeof newValue === 'undefined' ? null : newValue;
     DotObject.del(fieldName, this.state.doc);
     var doc = DotObject.str(`val.${fieldName}`, newValue, { val: this.state.doc }).val;
     DotObject.del(fieldName, this.state.changes);
@@ -317,12 +317,13 @@ export default class Form extends React.Component {
     return React.Children.map(children, (child) => {
       var options = null;
       if (_.isObject(child) && child.type && child.type.recieveMRFData) {
-        var fieldName = child.props.fieldName;
+        const fieldName = child.props.fieldName;
+        const errorMessage = child.props.errorMessage || this.state.errorMessages[fieldName];
         options = {
           schema: this.getSchema(),
           value: this.state.doc ? DotObject.pick(fieldName, this.state.doc) : undefined,
           onChange: this.onValueChange.bind(this),
-          errorMessage: this.state.errorMessages[fieldName],
+          errorMessage,
           errorMessages: this.state.errorMessages,
           form: this,
         };
