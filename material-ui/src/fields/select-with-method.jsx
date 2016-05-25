@@ -177,9 +177,11 @@ class SelectWithMethodComponent extends FieldType {
   }
 
   createItem(item) {
-    this.props.create(item, (value) => {
+    this.props.create(item.text, (value) => {
       if (this.props.multi) {
-        this.setState({ searchText: '' });
+        setTimeout(() => {
+          this.setState({ searchText: '' });
+        }, 101);
         if (_.contains(this.props.value || [], value)) {
           return;
         }
