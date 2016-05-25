@@ -23,12 +23,22 @@ const defaultProps = {
 
 class SelectComponent extends FieldType {
 
-  renderItems() {
+  onChange(event, index, value) {
+
+    const options = this.getOptions();
+    options.map(option => {
+      if (String(option.value) == value) {
+        this.props.onChange(option.value);
+      }
+    });
+  }
+
+  getOptions() {
     var options = null;
     if (this.props.options) {
-      options = this.props.options;
+      return this.props.options;
     } else if (this.props.fieldSchema.allowedValues) {
-      options = _.map(this.props.fieldSchema.allowedValues, function(allowedValue) {
+      return _.map(this.props.fieldSchema.allowedValues, function(allowedValue) {
         return {
           label: allowedValue,
           value: allowedValue,
@@ -37,17 +47,21 @@ class SelectComponent extends FieldType {
     } else {
       throw new Error('You must set the options for the select field');
     }
+  }
+
+  renderItems() {
+    const options = this.getOptions();
 
     return options.map((item) => {
-      return <MenuItem key={item.value} value={item.value} primaryText={item.label} />;
+      return <MenuItem key={item.value} value={String(item.value)} primaryText={item.label} />;
     });
   }
 
   render() {
     return (
       <SelectField
-        value={this.props.value}
-        onChange={(event, index, value) => this.props.onChange(value)}
+        value={String(this.props.value)}
+        onChange={this.onChange.bind(this)}
         fullWidth={true}
         disabled={this.props.disabled}
         floatingLabelText={this.props.label}

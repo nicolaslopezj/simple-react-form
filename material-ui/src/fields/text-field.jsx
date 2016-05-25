@@ -23,16 +23,19 @@ class TextFieldComponent extends FieldType {
   }
 
   onKeyDown(event) {
-    if (event.keyCode == 13) {
-      this.props.onChange(this.state.value);
+    if (this.props.changeOnKeyDown) {
+      this.props.onChange(event.target.value);
+    } else if (event.keyCode == 13) {
+      this.props.onChange(event.target.value);
     }
+  }
+
+  onBlur(event) {
+    this.props.onChange(this.state.value);
   }
 
   onChange(event) {
     this.setState({ value: event.target.value });
-    if (this.props.changeOnKeyDown) {
-      this.props.onChange(event.target.value);
-    }
   }
 
   render() {
@@ -49,7 +52,7 @@ class TextFieldComponent extends FieldType {
       disabled={this.props.disabled}
       onChange={this.onChange.bind(this)}
       onKeyDown={this.onKeyDown.bind(this)}
-      onBlur={() => this.props.onChange(this.state.value)}
+      onBlur={this.onBlur.bind(this)}
       {...this.passProps} />
     );
   }
