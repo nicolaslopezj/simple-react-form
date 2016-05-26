@@ -141,7 +141,7 @@ class SelectWithMethodComponent extends FieldType {
 
   search(text) {
     //Console.log('searching with text', text);
-    this.setState({ selected: null, isCalling: true, searchText: text });
+    this.setState({selected: null, isCalling: true});
 
     if (!this.props.multi) {
       this.props.onChange(null);
@@ -173,6 +173,7 @@ class SelectWithMethodComponent extends FieldType {
   }
 
   onUpdateText(text) {
+    this.setState({searchText: text});
     this.throttledSearch(text);
   }
 
@@ -256,7 +257,7 @@ class SelectWithMethodComponent extends FieldType {
         <AutoComplete
           ref='input'
           fullWidth={true}
-          searchText={this.state.searchText}
+          searchText=""
           dataSource={this.state.dataSource}
           filter={AutoComplete.noFilter}
           onUpdateInput={this.onUpdateText.bind(this)}
