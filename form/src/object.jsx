@@ -61,7 +61,9 @@ export default class ObjectComponent extends React.Component {
   }
 
   getLabel() {
-    return this.props.showLabel ? this.getSchema().label(this.props.fieldName) : '';
+    if (this.props.showLabel === false) return;
+    if (this.props.label) return this.props.label;
+    return this.getSchema().label(this.props.fieldName);
   }
 
   renderChildren(children) {
