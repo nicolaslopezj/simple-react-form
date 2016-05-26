@@ -2,8 +2,8 @@ import React from 'react';
 
 export var Attributes = {};
 
-export const registerType = function ({ type, component, description, optionsDefinition, optionsDescription, defaultOptions, allowedTypes }) {
-  Attributes[type] = { name: type, component, description, optionsDefinition, optionsDescription, allowedTypes, defaultOptions };
+export const registerType = function ({type, component}) {
+  Attributes[type] = {name: type, component};
 };
 
 export const getFieldType = function (typeName) {
