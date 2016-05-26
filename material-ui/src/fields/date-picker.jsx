@@ -26,9 +26,14 @@ const defaultProps = {
 
 class DatePickerComponent extends FieldType {
 
+  openDialog() {
+    this.refs.input.openDialog();
+  }
+
   render() {
     return (
-      <DatePicker
+      <div onTouchTap={this.openDialog.bind(this)}>
+        <DatePicker
         ref='input'
         fullWidth={true}
         value={this.props.value}
@@ -38,6 +43,7 @@ class DatePickerComponent extends FieldType {
         disabled={this.props.disabled}
         onChange={(_, date) => this.props.onChange(date)}
         {...this.passProps} />
+      </div>
     );
   }
 }
