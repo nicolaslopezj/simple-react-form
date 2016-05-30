@@ -40,6 +40,11 @@ const propTypes = {
    * Use hint instead of label
    */
   useHint: React.PropTypes.bool,
+
+  /**
+   * Form
+   */
+  form: React.PropTypes.object.isRequired,
 };
 
 export default class FieldType extends React.Component {
@@ -55,6 +60,10 @@ export default class FieldType extends React.Component {
   }
 
   registerComponent() {
+    if (!this.props.form) {
+      console.warn('Error registering field in form. Form is not passed into props');
+      return;
+    }
     this.props.form.registerComponent({
       field: this.props.fieldName,
       component: this,
