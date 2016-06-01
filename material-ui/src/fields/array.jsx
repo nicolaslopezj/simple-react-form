@@ -13,19 +13,16 @@ const styles = {
 };
 
 const propTypes = {
-  fieldName: React.PropTypes.string.isRequired,
-  addLabel: React.PropTypes.string.isRequired,
-  removeLabel: React.PropTypes.string.isRequired,
+  ...ArrayComponent.propTypes,
   parentClassName: React.PropTypes.string,
   childrenClassName: React.PropTypes.string,
   useSmallSpace: React.PropTypes.bool,
 };
 
 const defaultProps = {
+  ...ArrayComponent.defaultProps,
   childrenClassName: '',
   parentClassName: '',
-  addLabel: 'Add',
-  removeLabel: 'Remove',
   useSmallSpace: false,
 };
 

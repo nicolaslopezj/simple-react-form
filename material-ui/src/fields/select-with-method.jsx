@@ -150,7 +150,6 @@ class SelectWithMethodComponent extends FieldType {
   search(text) {
     //Console.log('searching with text', text);
     this.setState({selected: null, isFetchingData: true});
-    console.log('will search', text);
 
     if (!this.props.multi) {
       this.props.onChange(null);

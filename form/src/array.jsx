@@ -51,28 +51,39 @@ const propTypes = {
    * The field should be read only mode
    */
   disabled: React.PropTypes.bool,
+
+  /**
+   *
+   */
+  autoAddItem: React.PropTypes.bool,
 };
 
 const defaultProps = {
   addLabel: 'Add',
   removeLabel: 'Remove',
   showLabel: true,
-  errorMessages: {}
+  errorMessages: {},
+  autoAddItem: false,
 };
 
 export default class ArrayComponent extends ObjectComponent {
 
   onValueChange(fieldName, newValue) {
-    var withoutSelf = fieldName.replace(`${this.props.fieldName}.`, '');
-    var index = withoutSelf.split('.')[0];
-    var plainFieldName = withoutSelf.replace(`${index}.`, '');
+    const withoutSelf = fieldName.replace(`${this.props.fieldName}.`, '');
+    const index = withoutSelf.split('.')[0];
+    const plainFieldName = withoutSelf.replace(`${index}.`, '');
+    let value = _.clone(this.props.value);
 
-    if (!this.props.value[index]) {
-      this.props.value[index] = {};
+    if (!value) {
+      value = [];
     }
 
-    this.props.value[index][plainFieldName] = newValue;
-    this.props.onChange(this.props.fieldName, this.props.value);
+    if (!value[index]) {
+      value[index] = {};
+    }
+
+    value[index][plainFieldName] = newValue;
+    this.props.onChange(this.props.fieldName, value);
   }
 
   addItem() {
@@ -87,19 +98,21 @@ export default class ArrayComponent extends ObjectComponent {
   }
 
   removeItem(index) {
-    var newArray = _.without(this.props.value, this.props.value[index]);
+    const value = this.props.value || [];
+    var newArray = _.without(value, value[index]);
     this.props.onChange(this.props.fieldName, newArray);
   }
 
   renderChildrenComponent(children, index) {
     return React.Children.map(children, (child) => {
-      var fieldName = child.props.fieldName;
       var options = {};
       if (_.isObject(child) && child.type && child.type.recieveMRFData) {
+        var fieldName = child.props.fieldName;
+        const value = (this.props.value || [])[index] ? this.props.value[index][fieldName] : undefined;
         options = {
           fieldName: `${this.props.fieldName}.${index}.${fieldName}`,
           schema: this.getSchema(),
-          value: this.props.value[index] ? this.props.value[index][fieldName] : undefined,
+          value,
           onChange: this.onValueChange.bind(this),
           errorMessage: child.props.errorMessage || this.props.errorMessages[`${this.props.fieldName}.${index}.${fieldName}`],
           errorMessages: this.props.errorMessages,
@@ -116,7 +129,10 @@ export default class ArrayComponent extends ObjectComponent {
   }
 
   renderChildren() {
-    var value = this.props.value || [];
+    const value = this.props.value || [];
+    if (this.props.autoAddItem && !this.props.disabled && value.length == 0) {
+      value.push({});
+    }
     return value.map((item, index) => {
       var component = this.renderChildrenComponent(this.props.children, index);
       return this.renderChildrenItem({ index, component });
