@@ -1,6 +1,7 @@
 import React from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import MenuItem from 'material-ui/MenuItem';
+import CircularProgress from 'material-ui/CircularProgress';
 import * as Colors from 'material-ui/styles/colors';
 import {FieldType, registerType} from 'simple-react-form';
 import styles from '../styles';
@@ -45,7 +46,7 @@ const propTypes = {
 
 const defaultProps = {
   multi: false,
-  waitTime: 200,
+  waitTime: 400,
   createLabel: (search) => `Create "${search}"`,
   canCreate: () => true,
 };
@@ -60,12 +61,17 @@ class SelectWithMethodComponent extends FieldType {
       items: [],
       knownLabels: [],
       response: [],
-      isCalling: false,
+      isFetchingData: false,
+      isFetchingLabel: false,
       hasTitleFor: null,
       searchText: '',
     };
 
-    this.throttledSearch = _.throttle(this.search.bind(this), this.props.waitTime, { leading: false });
+    this.debouncedSearch = _.debounce(this.search.bind(this), this.props.waitTime);
+  }
+
+  isLoading() {
+    return this.state.isFetchingData || this.state.isFetchingLabel;
   }
 
   componentDidMount() {
@@ -103,7 +109,9 @@ class SelectWithMethodComponent extends FieldType {
       var labelMethodName = this.props.labelMethodName;
       var connection = this.props.connection || Meteor;
       var labelsMethod = this.props.multi ? missingLabels : missingLabels[0];
+      this.setState({isFetchingLabel: true});
       connection.call(labelMethodName, labelsMethod, (error, response) => {
+        this.setState({isFetchingLabel: false});
         if (error) {
           console.log(`[select-with-method] Recieved error from "${labelMethodName}"`, error);
         } else {
@@ -141,7 +149,8 @@ class SelectWithMethodComponent extends FieldType {
 
   search(text) {
     //Console.log('searching with text', text);
-    this.setState({selected: null, isCalling: true});
+    this.setState({selected: null, isFetchingData: true});
+    console.log('will search', text);
 
     if (!this.props.multi) {
       this.props.onChange(null);
@@ -150,11 +159,12 @@ class SelectWithMethodComponent extends FieldType {
     var methodName = this.props.methodName;
     var connection = this.props.connection || Meteor;
     connection.call(methodName, text, (error, response) => {
+      this.setState({isFetchingData: false});
       if (error) {
         console.log(`[select-with-method] Recieved error from "${methodName}"`, error);
       } else {
         response = response || [];
-        this.setState({ response, isCalling: false });
+        this.setState({ response });
         var dataSource = response.map((item) => {
           return {
             text: item.value,
@@ -173,8 +183,8 @@ class SelectWithMethodComponent extends FieldType {
   }
 
   onUpdateText(text) {
-    this.setState({searchText: text});
-    this.throttledSearch(text);
+    this.setState({searchText: text, isFetchingData: true});
+    this.debouncedSearch(text);
   }
 
   createItem(item) {
@@ -251,27 +261,38 @@ class SelectWithMethodComponent extends FieldType {
     });
   }
 
+  renderLoading() {
+    if (!this.isLoading()) return;
+
+    return (
+      <CircularProgress
+      style={{float: 'right', marginTop: -55, marginRight: -6}}
+      size={0.4}/>
+    );
+  }
+
   render() {
     return (
       <div>
         <AutoComplete
-          ref='input'
-          fullWidth={true}
-          searchText=""
-          dataSource={this.state.dataSource}
-          filter={AutoComplete.noFilter}
-          onUpdateInput={this.onUpdateText.bind(this)}
-          floatingLabelText={this.props.useHint ? null : this.props.label}
-          hintText={this.props.useHint ? this.props.label : null}
-          onNewRequest={this.onItemSelected.bind(this)}
-          errorText={this.props.errorMessage}
-          onFocus={this.onFocus.bind(this)}
-          onBlur={this.onBlur.bind(this)}
-          open={this.state.open}
-          openOnFocus={true}
-          disabled={this.props.disabled}
-          menuCloseDelay={100}
-          {...this.passProps} />
+        ref='input'
+        fullWidth={true}
+        searchText=""
+        dataSource={this.state.dataSource}
+        filter={AutoComplete.noFilter}
+        onUpdateInput={this.onUpdateText.bind(this)}
+        floatingLabelText={this.props.useHint ? null : this.props.label}
+        hintText={this.props.useHint ? this.props.label : null}
+        onNewRequest={this.onItemSelected.bind(this)}
+        errorText={this.props.errorMessage}
+        onFocus={this.onFocus.bind(this)}
+        onBlur={this.onBlur.bind(this)}
+        open={this.state.open}
+        openOnFocus={true}
+        disabled={this.props.disabled}
+        menuCloseDelay={100}
+        {...this.passProps} />
+        {this.renderLoading()}
         <div>
           {this.renderItems()}
         </div>
