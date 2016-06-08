@@ -33,9 +33,14 @@ const propTypes = {
   onChange: React.PropTypes.func,
 
   /**
-   * The add label
+   * The add button label
    */
   addLabel: React.PropTypes.string,
+
+  /**
+   * Show the add button
+   */
+  showAddButton: React.PropTypes.bool,
 
   /**
    * The remove label
@@ -64,6 +69,7 @@ const defaultProps = {
   showLabel: true,
   errorMessages: {},
   autoAddItem: false,
+  showAddButton: true,
 };
 
 export default class ArrayComponent extends ObjectComponent {
@@ -105,7 +111,7 @@ export default class ArrayComponent extends ObjectComponent {
 
   renderChildrenComponent(children, index) {
     return React.Children.map(children, (child) => {
-      var options = {};
+      var options = null;
       if (_.isObject(child) && child.type && child.type.recieveMRFData) {
         var fieldName = child.props.fieldName;
         const value = (this.props.value || [])[index] ? this.props.value[index][fieldName] : undefined;
@@ -124,7 +130,7 @@ export default class ArrayComponent extends ObjectComponent {
         };
       }
 
-      return React.cloneElement(child, options);
+      return options ? React.cloneElement(child, options) : child;
     });
   }
 

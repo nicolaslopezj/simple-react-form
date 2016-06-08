@@ -68,9 +68,9 @@ export default class ObjectComponent extends React.Component {
 
   renderChildren(children) {
     return React.Children.map(children, (child) => {
-      var fieldName = child.props.fieldName;
-      var options = {};
+      var options = null;
       if (_.isObject(child) && child.type && child.type.recieveMRFData) {
+        var fieldName = child.props.fieldName;
         options = {
           fieldName: `${this.props.fieldName}.${fieldName}`,
           schema: this.getSchema(),
@@ -86,7 +86,7 @@ export default class ObjectComponent extends React.Component {
         };
       }
 
-      return React.cloneElement(child, options);
+      return options ? React.cloneElement(child, options) : child;
     });
   }
 
