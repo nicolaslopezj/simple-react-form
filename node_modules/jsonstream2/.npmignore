@@ -1,0 +1,8 @@
+lib-cov
+coverage.cov
+.coveralls.yml
+.gitignore
+.jscsrc
+.tern-project
+.travis.yml
+readme.md

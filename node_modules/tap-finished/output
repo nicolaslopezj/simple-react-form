@@ -1,0 +1,30 @@
+ 
+refreshing cache
+Database selected,  8
+testing at: localhost.adobecc.com:8887
+Listening on port: 8887
+TAP version 13
+# /all
+ok 1 should not cause an error.
+ok 2 should return valid JSON string
+# /version
+ok 3 should not cause an error.
+ok 4 Should return a version string.
+# /sets
+ok 5 should not cause an error.
+ok 6 should return feature sets with feature arrays.
+# /features
+ok 7 should not cause an error.
+ok 8 features should be objects.
+ok 9 features should have names.
+ok 10 features should have descriptions.
+# /activefeatures
+ok 11 should not cause an error.
+ 
+1..11
+# tests 11
+# pass  11
+ 
+# ok
+refreshing cache
+refreshing cache
