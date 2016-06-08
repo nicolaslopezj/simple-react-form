@@ -61,6 +61,14 @@ const propTypes = {
    *
    */
   autoAddItem: React.PropTypes.bool,
+
+  /**
+   * Pass a function that returns the children components for the current item.
+   * The inputs of the function will be value and index.
+   * This is useful when you want to change the view of a item in the array depending
+   * on the current value.
+   */
+  renderItem: React.PropTypes.func,
 };
 
 const defaultProps = {
@@ -140,7 +148,8 @@ export default class ArrayComponent extends ObjectComponent {
       value.push({});
     }
     return value.map((item, index) => {
-      var component = this.renderChildrenComponent(this.props.children, index);
+      const children = this.props.renderItem ? this.props.renderItem(item, index) : this.props.children;
+      const component = this.renderChildrenComponent(children, index);
       return this.renderChildrenItem({ index, component });
     });
   }
