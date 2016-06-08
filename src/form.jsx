@@ -141,7 +141,7 @@ const defaultProps = {
   formId: 'defaultFormId',
   arrayComponent: ArrayComponent,
   objectComponent: ObjectComponent,
-  logErrors: false,
+  logErrors: true,
   commitOnlyChanges: true,
   autoSaveWaitTime: 500,
   omit: [],

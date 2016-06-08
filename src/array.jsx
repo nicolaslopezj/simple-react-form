@@ -100,12 +100,12 @@ export default class ArrayComponent extends ObjectComponent {
     this.props.onChange(this.props.fieldName, value);
   }
 
-  addItem() {
+  addItem(itemValue = {}) {
     var newArray = this.props.value;
     if (_.isArray(newArray)) {
-      newArray.push({});
+      newArray.push(itemValue);
     } else {
-      newArray = [{}];
+      newArray = [itemValue];
     }
 
     this.props.onChange(this.props.fieldName, newArray);
