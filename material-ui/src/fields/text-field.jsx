@@ -23,9 +23,7 @@ class TextFieldComponent extends FieldType {
   }
 
   onKeyDown(event) {
-    if (this.props.changeOnKeyDown) {
-      this.props.onChange(event.target.value);
-    } else if (event.keyCode == 13) {
+    if (event.keyCode == 13) {
       this.props.onChange(event.target.value);
     }
   }
@@ -36,6 +34,9 @@ class TextFieldComponent extends FieldType {
 
   onChange(event) {
     this.setState({ value: event.target.value });
+    if (this.props.changeOnKeyDown) {
+      this.props.onChange(event.target.value);
+    }
   }
 
   render() {
