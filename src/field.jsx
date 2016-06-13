@@ -165,6 +165,7 @@ export default class Field extends React.Component {
       form: this.props.form,
       disabled: this.props.disabled,
       passProps: notDefinedOptions,
+      ref: 'input',
       ...onlyAllowedOptions,
     };
 
