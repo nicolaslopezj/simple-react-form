@@ -1,5 +1,6 @@
-import React from 'react';
-import ObjectComponent from './object';
+import React from 'react'
+import ObjectComponent from './object'
+import _ from 'underscore'
 
 const propTypes = {
   /**
@@ -68,8 +69,8 @@ const propTypes = {
    * This is useful when you want to change the view of a item in the array depending
    * on the current value.
    */
-  renderItem: React.PropTypes.func,
-};
+  renderItem: React.PropTypes.func
+}
 
 const defaultProps = {
   addLabel: 'Add',
@@ -77,52 +78,52 @@ const defaultProps = {
   showLabel: true,
   errorMessages: {},
   autoAddItem: false,
-  showAddButton: true,
-};
+  showAddButton: true
+}
 
 export default class ArrayComponent extends ObjectComponent {
 
-  onValueChange(fieldName, newValue) {
-    const withoutSelf = fieldName.replace(`${this.props.fieldName}.`, '');
-    const index = withoutSelf.split('.')[0];
-    const plainFieldName = withoutSelf.replace(`${index}.`, '');
-    let value = _.clone(this.props.value);
+  onValueChange (fieldName, newValue) {
+    const withoutSelf = fieldName.replace(`${this.props.fieldName}.`, '')
+    const index = withoutSelf.split('.')[0]
+    const plainFieldName = withoutSelf.replace(`${index}.`, '')
+    let value = _.clone(this.props.value)
 
     if (!value) {
-      value = [];
+      value = []
     }
 
     if (!value[index]) {
-      value[index] = {};
+      value[index] = {}
     }
 
-    value[index][plainFieldName] = newValue;
-    this.props.onChange(this.props.fieldName, value);
+    value[index][plainFieldName] = newValue
+    this.props.onChange(this.props.fieldName, value)
   }
 
-  addItem(itemValue = {}) {
-    var newArray = this.props.value;
+  addItem (itemValue = {}) {
+    var newArray = this.props.value
     if (_.isArray(newArray)) {
-      newArray.push(itemValue);
+      newArray.push(itemValue)
     } else {
-      newArray = [itemValue];
+      newArray = [itemValue]
     }
 
-    this.props.onChange(this.props.fieldName, newArray);
+    this.props.onChange(this.props.fieldName, newArray)
   }
 
-  removeItem(index) {
-    const value = this.props.value || [];
-    var newArray = _.without(value, value[index]);
-    this.props.onChange(this.props.fieldName, newArray);
+  removeItem (index) {
+    const value = this.props.value || []
+    var newArray = _.without(value, value[index])
+    this.props.onChange(this.props.fieldName, newArray)
   }
 
-  renderChildrenComponent(children, index) {
+  renderChildrenComponent (children, index) {
     return React.Children.map(children, (child) => {
-      var options = null;
+      var options = null
       if (_.isObject(child) && child.type && child.type.recieveMRFData) {
-        var fieldName = child.props.fieldName;
-        const value = (this.props.value || [])[index] ? this.props.value[index][fieldName] : undefined;
+        var fieldName = child.props.fieldName
+        const value = (this.props.value || [])[index] ? this.props.value[index][fieldName] : undefined
         options = {
           fieldName: `${this.props.fieldName}.${index}.${fieldName}`,
           schema: this.getSchema(),
@@ -130,31 +131,31 @@ export default class ArrayComponent extends ObjectComponent {
           onChange: this.onValueChange.bind(this),
           errorMessage: child.props.errorMessage || this.props.errorMessages[`${this.props.fieldName}.${index}.${fieldName}`],
           errorMessages: this.props.errorMessages,
-          form: this.props.form,
-        };
+          form: this.props.form
+        }
       } else if (_.isObject(child) && child.props) {
         options = {
-          children: this.renderChildrenComponent(child.props.children, index),
-        };
+          children: this.renderChildrenComponent(child.props.children, index)
+        }
       }
 
-      return options ? React.cloneElement(child, options) : child;
-    });
+      return options ? React.cloneElement(child, options) : child
+    })
   }
 
-  renderChildren() {
-    const value = this.props.value || [];
-    if (this.props.autoAddItem && !this.props.disabled && value.length == 0) {
-      value.push({});
+  renderChildren () {
+    const value = this.props.value || []
+    if (this.props.autoAddItem && !this.props.disabled && value.length === 0) {
+      value.push({})
     }
     return value.map((item, index) => {
-      const children = this.props.renderItem ? this.props.renderItem(item, index) : this.props.children;
-      const component = this.renderChildrenComponent(children, index);
-      return this.renderChildrenItem({ index, component });
-    });
+      const children = this.props.renderItem ? this.props.renderItem(item, index) : this.props.children
+      const component = this.renderChildrenComponent(children, index)
+      return this.renderChildrenItem({ index, component })
+    })
   }
 
-  renderChildrenItem({ index, component }) {
+  renderChildrenItem ({ index, component }) {
     return (
       <div style={{ marginTop: 20, marginBottom: 20, padding: 20 }} key={`${this.props.fieldName}.${index}`}>
         {component}
@@ -164,10 +165,10 @@ export default class ArrayComponent extends ObjectComponent {
           </button>
         </div>
       </div>
-    );
+    )
   }
 
-  render() {
+  render () {
     return (
       <div style={{ marginTop: 20 }}>
         <div><b>{this.getLabel()}</b></div>
@@ -179,9 +180,9 @@ export default class ArrayComponent extends ObjectComponent {
           </button>
         </div>
       </div>
-    );
+    )
   }
 }
 
-ArrayComponent.propTypes = propTypes;
-ArrayComponent.defaultProps = defaultProps;
+ArrayComponent.propTypes = propTypes
+ArrayComponent.defaultProps = defaultProps

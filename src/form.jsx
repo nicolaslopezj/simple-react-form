@@ -1,10 +1,11 @@
-import React from 'react';
-import ArrayComponent from './array';
-import ObjectComponent from './object';
-import DotObject from './dot';
-import { docToModifier } from './utility';
-import Field from './field';
-import { getFieldTypeName } from './types';
+import React from 'react'
+import _ from 'underscore'
+import ArrayComponent from './array'
+import ObjectComponent from './object'
+import DotObject from './dot'
+import { docToModifier } from './utility'
+import Field from './field'
+import { getFieldTypeName } from './types'
 
 const propTypes = {
   /**
@@ -127,7 +128,12 @@ const propTypes = {
    * Validate schema. Only for onSubmit
    */
   validate: React.PropTypes.bool,
-};
+
+  /**
+   * The child components
+   */
+  children: React.PropTypes.any
+}
 
 const defaultProps = {
   type: 'function',
@@ -145,243 +151,243 @@ const defaultProps = {
   commitOnlyChanges: true,
   autoSaveWaitTime: 500,
   omit: [],
-  validate: true,
-};
+  validate: true
+}
 
 export default class Form extends React.Component {
 
-  constructor(props) {
-    super(props);
-    const state = this.props.state || this.props.doc || {};
+  constructor (props) {
+    super(props)
+    const state = this.props.state || this.props.doc || {}
     this.state = {
       doc: _.clone(state),
       changes: {},
       validationContext: this.getSchema() ? this.getSchema().newContext() : null,
-      errorMessages: {},
-    };
-    this.fields = [];
-    this.autoSave = _.debounce(this.submit.bind(this), this.props.autoSaveWaitTime);
-    this.errorMessages = {};
+      errorMessages: {}
+    }
+    this.fields = []
+    this.autoSave = _.debounce(this.submit.bind(this), this.props.autoSaveWaitTime)
+    this.errorMessages = {}
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (this.props.replaceOnChange || this.props.formId !== nextProps.formId) {
-      const state = this.props.state || this.props.doc || {};
-      const nextState = nextProps.state || nextProps.doc || {};
+      const state = this.props.state || this.props.doc || {}
+      const nextState = nextProps.state || nextProps.doc || {}
       if (!_.isEqual(state, nextState)) {
-        this.setState({ doc: _.clone(nextState), changes: {} });
+        this.setState({ doc: _.clone(nextState), changes: {} })
       }
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    //Console.log('did update form', prevProps, prevState);
+  componentDidUpdate (prevProps, prevState) {
+    //  Console.log('did update form', prevProps, prevState)
   }
 
-  getSchema() {
+  getSchema () {
     if (this.props.schema) {
-      return this.props.schema;
+      return this.props.schema
     } else if (this.props.collection) {
-      return this.props.collection.simpleSchema();
+      return this.props.collection.simpleSchema()
     } else {
-      //Throw new Error('no schema was specified.');
+      //  Throw new Error('no schema was specified.')
     }
   }
 
-  registerComponent({ field, component }) {
-    this.fields.push({ field, component });
+  registerComponent ({ field, component }) {
+    this.fields.push({ field, component })
   }
 
-  callChildFields({ method, input }) {
+  callChildFields ({ method, input }) {
     this.fields.map((field) => {
       if (_.isFunction(field.component[method])) {
-        field.component[method](input);
+        field.component[method](input)
       }
-    });
+    })
   }
 
-  onCommit(error, docId) {
-    this.setState({ errorMessages: {} });
+  onCommit (error, docId) {
+    this.setState({ errorMessages: {} })
     if (error) {
-      this.handleError();
+      this.handleError()
       if (this.props.logErrors) {
-        console.log(`[form-${this.props.formId}-error]`, error);
+        console.log(`[form-${this.props.formId}-error]`, error)
       }
     } else {
-      this.callChildFields({ method: 'onSuccess' });
+      this.callChildFields({ method: 'onSuccess' })
       if (_.isFunction(this.props.onSuccess)) {
-        this.props.onSuccess(docId);
-        this.setState({ changes: {} });
+        this.props.onSuccess(docId)
+        this.setState({ changes: {} })
       }
     }
   }
 
-  getValidationOptions() {
+  getValidationOptions () {
     return {
       validationContext: this.props.formId,
       filter: this.props.filter,
       autoConvert: this.props.autoConvert,
       removeEmptyStrings: this.props.removeEmptyStrings,
-      trimStrings: this.props.trimStrings,
-    };
+      trimStrings: this.props.trimStrings
+    }
   }
 
-  submit() {
-    const data = this.props.commitOnlyChanges ? this.state.changes : this.state.doc;
-    if (this.props.type == 'insert') {
-      const dot = DotObject.dot(data);
-      const doc = DotObject.object(dot);
-      this.props.collection.insert(doc, this.getValidationOptions(), this.onCommit.bind(this));
-    } else if (this.props.type == 'update') {
-      var modifier = docToModifier(data, { keepArrays: this.props.keepArrays });
+  submit () {
+    const data = this.props.commitOnlyChanges ? this.state.changes : this.state.doc
+    if (this.props.type === 'insert') {
+      const dot = DotObject.dot(data)
+      const doc = DotObject.object(dot)
+      this.props.collection.insert(doc, this.getValidationOptions(), this.onCommit.bind(this))
+    } else if (this.props.type === 'update') {
+      var modifier = docToModifier(data, { keepArrays: this.props.keepArrays })
       if (!_.isEqual(modifier, {})) {
-        this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this));
+        this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this))
       } else {
-        this.callChildFields({ method: 'onSuccess' });
+        this.callChildFields({ method: 'onSuccess' })
         if (_.isFunction(this.props.onSuccess)) {
-          this.props.onSuccess();
+          this.props.onSuccess()
         }
       }
-    } else if (this.props.type == 'function') {
-      const doc = DotObject.object(DotObject.dot(data));
-      var isValid = true;
+    } else if (this.props.type === 'function') {
+      const doc = DotObject.object(DotObject.dot(data))
+      var isValid = true
       if (this.props.validate && this.getSchema()) {
-        isValid = this.getSchema().namedContext(this.getValidationOptions().validationContext).validate(doc);
+        isValid = this.getSchema().namedContext(this.getValidationOptions().validationContext).validate(doc)
       }
       if (isValid) {
         if (!_.isFunction(this.props.onSubmit)) {
-          throw new Error('You must pass a onSubmit function or set the form type to insert or update');
+          throw new Error('You must pass a onSubmit function or set the form type to insert or update')
         }
-        var success = this.props.onSubmit(doc);
+        var success = this.props.onSubmit(doc)
         if (success === false) {
-          this.onCommit('onSubmit error');
+          this.onCommit('onSubmit error')
         } else {
-          this.onCommit();
+          this.onCommit()
         }
       } else {
-        this.onCommit('Validation error');
+        this.onCommit('Validation error')
       }
     }
   }
 
-  cleanErrorMessages() {
-    this.errorMessages = {};
-    this.setState({ errorMessages: {} });
+  cleanErrorMessages () {
+    this.errorMessages = {}
+    this.setState({ errorMessages: {} })
   }
 
-  setErrorMessage(fieldName, message) {
-    const errorMessages = _.clone(this.errorMessages);
-    errorMessages[fieldName] = message;
-    this.errorMessages = errorMessages;
-    this.setState({ errorMessages });
+  setErrorMessage (fieldName, message) {
+    const errorMessages = _.clone(this.errorMessages)
+    errorMessages[fieldName] = message
+    this.errorMessages = errorMessages
+    this.setState({ errorMessages })
   }
 
-  setErrorsWithContext(context) {
-    var invalidKeys = context.invalidKeys();
-    var errorMessages = {};
+  setErrorsWithContext (context) {
+    var invalidKeys = context.invalidKeys()
+    var errorMessages = {}
     invalidKeys.map((field) => {
-      errorMessages[field.name] = context.keyErrorMessage(field.name);
-    });
+      errorMessages[field.name] = context.keyErrorMessage(field.name)
+    })
 
     if (this.props.logErrors) {
-      console.log(`[form-${this.props.formId}-error-messages]`, errorMessages);
+      console.log(`[form-${this.props.formId}-error-messages]`, errorMessages)
     }
 
-    this.errorMessages = errorMessages;
-    this.setState({ errorMessages });
+    this.errorMessages = errorMessages
+    this.setState({ errorMessages })
   }
 
-  handleError() {
-    var context = this.getSchema().namedContext(this.getValidationOptions().validationContext);
-    this.setErrorsWithContext(context);
+  handleError () {
+    var context = this.getSchema().namedContext(this.getValidationOptions().validationContext)
+    this.setErrorsWithContext(context)
   }
 
-  onValueChange(fieldName, newValue) {
-    //newValue = typeof newValue === 'undefined' ? null : newValue;
-    DotObject.del(fieldName, this.state.doc);
-    var doc = DotObject.str(`val.${fieldName}`, newValue, { val: this.state.doc }).val;
-    DotObject.del(fieldName, this.state.changes);
-    var changes = DotObject.str(`val.${fieldName}`, newValue, { val: this.state.changes }).val;
-    this.setState({ doc, changes });
+  onValueChange (fieldName, newValue) {
+    //  newValue = typeof newValue === 'undefined' ? null : newValue
+    DotObject.del(fieldName, this.state.doc)
+    var doc = DotObject.str(`val.${fieldName}`, newValue, { val: this.state.doc }).val
+    DotObject.del(fieldName, this.state.changes)
+    var changes = DotObject.str(`val.${fieldName}`, newValue, { val: this.state.changes }).val
+    this.setState({ doc, changes })
 
     if (this.props.autoSave) {
-      this.autoSave();
+      this.autoSave()
     }
 
     if (_.isFunction(this.props.onChange)) {
-      this.props.onChange(this.state.doc, this.state.changes);
+      this.props.onChange(this.state.doc, this.state.changes)
     }
   }
 
-  renderChildren(children) {
+  renderChildren (children) {
     return React.Children.map(children, (child) => {
-      var options = null;
+      var options = null
       if (_.isObject(child) && child.type && child.type.recieveMRFData) {
-        const fieldName = child.props.fieldName;
-        const errorMessage = child.props.errorMessage || this.state.errorMessages[fieldName];
+        const fieldName = child.props.fieldName
+        const errorMessage = child.props.errorMessage || this.state.errorMessages[fieldName]
         options = {
           schema: this.getSchema(),
           value: this.state.doc ? DotObject.pick(fieldName, this.state.doc) : undefined,
           onChange: this.onValueChange.bind(this),
           errorMessage,
           errorMessages: this.state.errorMessages,
-          form: this,
-        };
+          form: this
+        }
       } else if (_.isObject(child) && child.props) {
         options = {
-          children: this.renderChildren(child.props.children),
-        };
+          children: this.renderChildren(child.props.children)
+        }
       }
 
-      return options ? React.cloneElement(child, options) : child;
-    });
+      return options ? React.cloneElement(child, options) : child
+    })
   }
 
-  generateInputsForKeys(keys, parent = '') {
-    var schema = this.getSchema();
+  generateInputsForKeys (keys, parent = '') {
+    var schema = this.getSchema()
     keys = _.reject(keys, (key) => {
-      var fullKey = parent ? `${parent}.${key}` : key;
-      var keySchema = schema._schema[fullKey];
-      const options = keySchema.srf || keySchema.mrf;
-      if (options && options.omit) return true;
-      if (_.contains(this.props.omit, fullKey)) return true;
-    });
+      var fullKey = parent ? `${parent}.${key}` : key
+      var keySchema = schema._schema[fullKey]
+      const options = keySchema.srf || keySchema.mrf
+      if (options && options.omit) return true
+      if (_.contains(this.props.omit, fullKey)) return true
+    })
     return keys.map((key) => {
-      var fullKey = parent ? `${parent}.${key}` : key;
-      var type = getFieldTypeName({ fieldName: fullKey, schema });
-      if (type == 'array') {
-        var _keys = schema.objectKeys(`${fullKey}.$`);
+      var fullKey = parent ? `${parent}.${key}` : key
+      var type = getFieldTypeName({ fieldName: fullKey, schema })
+      if (type === 'array') {
+        let _keys = schema.objectKeys(`${fullKey}.$`)
         return (
           <this.props.arrayComponent fieldName={key} key={key}>
             {this.generateInputsForKeys(_keys, `${fullKey}.$`)}
           </this.props.arrayComponent>
-        );
+        )
       }
-      if (type == 'object') {
-        var _keys = schema.objectKeys(fullKey);
+      if (type === 'object') {
+        let _keys = schema.objectKeys(fullKey)
         return (
           <this.props.objectComponent fieldName={key} key={fullKey}>
             {this.generateInputsForKeys(_keys, fullKey)}
           </this.props.objectComponent>
-        );
+        )
       }
-      return <Field fieldName={key} key={fullKey}/>;
-    });
+      return <Field fieldName={key} key={fullKey}/>
+    })
   }
 
-  generateChildren() {
-    var schema = this.getSchema();
-    return this.generateInputsForKeys(schema._firstLevelSchemaKeys);
+  generateChildren () {
+    var schema = this.getSchema()
+    return this.generateInputsForKeys(schema._firstLevelSchemaKeys)
   }
 
-  render() {
+  render () {
     if (!this.props.children) {
-      return <div>{this.renderChildren(this.generateChildren())}</div>;
+      return <div>{this.renderChildren(this.generateChildren())}</div>
     } else {
-      return <div>{this.renderChildren(this.props.children)}</div>;
+      return <div>{this.renderChildren(this.props.children)}</div>
     }
   }
-};
+}
 
-Form.propTypes = propTypes;
-Form.defaultProps = defaultProps;
+Form.propTypes = propTypes
+Form.defaultProps = defaultProps

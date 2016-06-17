@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const propTypes = {
   /**
@@ -45,31 +45,41 @@ const propTypes = {
    * Form
    */
   form: React.PropTypes.object.isRequired,
-};
+
+  /**
+   * The name of the field
+   */
+  fieldName: React.PropTypes.string.isRequired,
+
+  /**
+   * The props that must be passed to the child component
+   */
+  passProps: React.PropTypes.object
+}
 
 export default class FieldType extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.passProps = props.passProps;
-    this.registerComponent();
+  constructor (props) {
+    super(props)
+    this.passProps = props.passProps
+    this.registerComponent()
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.passProps = nextProps.passProps;
+  componentWillReceiveProps (nextProps) {
+    this.passProps = nextProps.passProps
   }
 
-  registerComponent() {
+  registerComponent () {
     if (!this.props.form) {
-      console.warn('Error registering field in form. Form is not passed into props');
-      return;
+      console.warn('Error registering field in form. Form is not passed into props')
+      return
     }
     this.props.form.registerComponent({
       field: this.props.fieldName,
-      component: this,
-    });
+      component: this
+    })
   }
 
 }
 
-FieldType.propTypes = propTypes;
+FieldType.propTypes = propTypes

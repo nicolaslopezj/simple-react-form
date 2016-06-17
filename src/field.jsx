@@ -1,10 +1,12 @@
-import React from 'react';
+import React from 'react'
+import _ from 'underscore'
+
 import {
   getFieldType,
   getFieldComponent,
   getFieldOptionsError,
-  getFieldTypeName,
-} from './types';
+  getFieldTypeName
+} from './types'
 
 const propTypes = {
   /**
@@ -65,85 +67,85 @@ const propTypes = {
   /**
    * The error message for the form.
    */
-  errorMessages: React.PropTypes.object,
-};
+  errorMessages: React.PropTypes.object
+}
 
 const defaultProps = {
   showLabel: true,
   useHint: false,
-  disabled: false,
-};
+  disabled: false
+}
 
 export default class Field extends React.Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     if (!props.schema && !props.type) {
-      throw new Error(`You must set the type for the field "${props.fieldName}" or pass a schema to the form`);
+      throw new Error(`You must set the type for the field "${props.fieldName}" or pass a schema to the form`)
     }
   }
 
-  onChange(value) {
-    this.props.onChange(this.props.fieldName, value);
+  onChange (value) {
+    this.props.onChange(this.props.fieldName, value)
   }
 
-  shouldComponentUpdate(nextProps) {
-    const notImportantFields = ['errorMessages', 'form', 'schema', 'onChange'];
-    const isPropsEqual = _.isEqual(_.omit(this.props, notImportantFields), _.omit(nextProps, notImportantFields));
-    return !isPropsEqual;
+  shouldComponentUpdate (nextProps) {
+    const notImportantFields = ['errorMessages', 'form', 'schema', 'onChange']
+    const isPropsEqual = _.isEqual(_.omit(this.props, notImportantFields), _.omit(nextProps, notImportantFields))
+    return !isPropsEqual
   }
 
-  getSchema() {
-    return this.props.schema;
+  getSchema () {
+    return this.props.schema
   }
 
-  getFieldSchema() {
-    return this.getSchema() ? this.getSchema().schema(this.props.fieldName) : null;
+  getFieldSchema () {
+    return this.getSchema() ? this.getSchema().schema(this.props.fieldName) : null
   }
 
-  getLabel() {
+  getLabel () {
     if (_.has(this.props, 'label')) {
-      return this.props.label;
+      return this.props.label
     } else if (this.getSchema()) {
-      return this.getSchema().label(this.props.fieldName);
+      return this.getSchema().label(this.props.fieldName)
     } else {
-      return '';
+      return ''
     }
   }
 
-  getComponent() {
-    var component = null;
+  getComponent () {
+    var component = null
     if (this.props.type) {
-      component = getFieldType(this.props.type).component;
+      component = getFieldType(this.props.type).component
     } else {
       component = getFieldComponent({
         fieldName: this.props.fieldName,
-        schema: this.getSchema(),
-      });
+        schema: this.getSchema()
+      })
     }
 
-    return React.createElement(component, this.getChildProps());
+    return React.createElement(component, this.getChildProps())
   }
 
-  getChildProps() {
-    var typeName = this.props.type;
+  getChildProps () {
+    var typeName = this.props.type
     if (!typeName) {
-      typeName = getFieldTypeName({ fieldName: this.props.fieldName, fieldSchema: this.getFieldSchema(), schema: this.getSchema() });
+      typeName = getFieldTypeName({ fieldName: this.props.fieldName, fieldSchema: this.getFieldSchema(), schema: this.getSchema() })
     }
 
     /**
      * This gets the props that are defined in the propTypes of the registered component.
      */
-    const type = getFieldType(typeName);
-    const propOptions = _.omit(this.props, _.keys(propTypes));
-    const schemaOptions = (this.getFieldSchema() && (this.getFieldSchema().srf || this.getFieldSchema().mrf)) || {};
-    const totalOptions = _.extend(schemaOptions, propOptions);
-    const allowedKeys = _.keys(type.component.propTypes || {});
-    const onlyAllowedOptions = _.pick(totalOptions, allowedKeys);
+    const type = getFieldType(typeName)
+    const propOptions = _.omit(this.props, _.keys(propTypes))
+    const schemaOptions = (this.getFieldSchema() && (this.getFieldSchema().srf || this.getFieldSchema().mrf)) || {}
+    const totalOptions = _.extend(schemaOptions, propOptions)
+    const allowedKeys = _.keys(type.component.propTypes || {})
+    const onlyAllowedOptions = _.pick(totalOptions, allowedKeys)
 
-    const error = getFieldOptionsError({ type, options: onlyAllowedOptions });
+    const error = getFieldOptionsError({ type, options: onlyAllowedOptions })
     if (error) {
-      throw new Error(`Options for field "${this.props.fieldName}" are not allowed for field type "${type.name}": ${error.message}`);
+      throw new Error(`Options for field "${this.props.fieldName}" are not allowed for field type "${type.name}": ${error.message}`)
     }
 
     /**
@@ -151,7 +153,7 @@ export default class Field extends React.Component {
      * This options are in the variable this.passProps of the component, they should be
      * passed to the main component of it.
      */
-    const notDefinedOptions = _.omit(totalOptions, allowedKeys);
+    const notDefinedOptions = _.omit(totalOptions, allowedKeys)
 
     const props = {
       value: this.props.value,
@@ -166,17 +168,17 @@ export default class Field extends React.Component {
       disabled: this.props.disabled,
       passProps: notDefinedOptions,
       ref: 'input',
-      ...onlyAllowedOptions,
-    };
+      ...onlyAllowedOptions
+    }
 
-    return props;
+    return props
   }
 
-  render() {
-    return this.getComponent();
+  render () {
+    return this.getComponent()
   }
-};
+}
 
-Field.propTypes = propTypes;
-Field.defaultProps = defaultProps;
-Field.recieveMRFData = true;
+Field.propTypes = propTypes
+Field.defaultProps = defaultProps
+Field.recieveMRFData = true
