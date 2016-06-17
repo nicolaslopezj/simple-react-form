@@ -2,11 +2,11 @@
 
 React Simple Form is built from the idea that you can create custom components easily.
 
-Basically this consist in a component that have the prop ```value``` and the prop ```onChange```. 
+Basically this consist in a component that have the prop ```value``` and the prop ```onChange```.
 You must render the ```value``` and call ```onChange``` passing the new value
 when the value has changed.
 
-You can also pass props to this components setting them in the srf parameter of 
+You can also pass props to this components setting them in the srf parameter of
 the simple-schema object:
 
 ```
@@ -61,4 +61,4 @@ registerType({
 });
 ```
 
-You can view the full list of props [here](https://github.com/nicolaslopezj/simple-react-form/blob/master/form/src/field.jsx#L9).
+You can view the full list of props [here](https://github.com/nicolaslopezj/simple-react-form/blob/master/src/field.jsx#L11).

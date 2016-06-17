@@ -9,15 +9,19 @@ Automatic forms creation with [aldeed:simple-schema](http://github.com/aldeed/si
 ##### Register the fields
 
 ```js
-import 'simple-react-form-material-ui';
+import 'simple-react-form-material-ui'
 ```
 
 ##### Allow ```srf``` field for schemas
 
+With simple-schema you must define the object attributes that are not the basics.
+
+Just add this code once in your app.
+
 ```js
 SimpleSchema.extendOptions({
-  srf: Match.Optional(Object),
-});
+  srf: Match.Optional(Object)
+})
 ```
 
 ## Basic Example
@@ -25,7 +29,7 @@ SimpleSchema.extendOptions({
 Schema
 
 ```js
-Posts = new Meteor.Collection('posts');
+Posts = new Meteor.Collection('posts')
 
 Posts.attachSchema({
   title: {
@@ -38,15 +42,15 @@ Posts.attachSchema({
       type: 'textarea',
     },
   }
-});
+})
 ```
 
 An insert form.
 
 ```jsx
-import React from 'react';
-import { Form } from 'simple-react-form';
-import Posts from '../../collections/posts';
+import React from 'react'
+import { Form } from 'simple-react-form'
+import Posts from '../../collections/posts'
 
 class PostsCreate extends React.Component {
   render() {
@@ -55,23 +59,23 @@ class PostsCreate extends React.Component {
         <h1>Create a post</h1>
         <Form
           collection={Posts}
-          type="insert"
-          ref="form"
+          type='insert'
+          ref='form'
           onSuccess={(docId) => FlowRouter.go('posts.update', { postId: docId })}
           />
-        <RaisedButton label="Create" onTouchTap={() => this.refs.form.submit()}/>
+        <RaisedButton label='Create' onTouchTap={() => this.refs.form.submit()}/>
       </div>
-    );
+    )
   },
-};
+}
 ```
 
 An update form.
 
 ```jsx
-import React from 'react';
-import { Form, Field } from 'simple-react-form';
-import Posts from '../../collections/posts';
+import React from 'react'
+import { Form, Field } from 'simple-react-form'
+import Posts from '../../collections/posts'
 
 class PostsUpdate extends React.Component {
   render() {
@@ -80,15 +84,15 @@ class PostsUpdate extends React.Component {
         <h1>Post update</h1>
         <Form
           collection={Posts}
-          type="update"
-          ref="form"
+          type='update'
+          ref='form'
           doc={this.props.post}>
-          <Field fieldName="title"/>
-          <Field fieldName="body"/>
+          <Field fieldName='title'/>
+          <Field fieldName='body'/>
         </Form>
-        <RaisedButton primary={true} label="Save" onTouchTap={() => this.refs.form.submit()}/>
+        <RaisedButton primary={true} label='Save' onTouchTap={() => this.refs.form.submit()}/>
       </div>
-    );
-  },
-};
+    )
+  }
+}
 ```

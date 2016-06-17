@@ -1,24 +1,63 @@
-# React Form
+# Simple React Form
 
-Easy to use react forms
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
-Made for Meteor, but works without it too.
+Simple React Form is a powerful framework that simplifies the use of forms in React.
 
-This was inspired by aldeed:autoform.
+This is just a framework, you must [create the form components](https://github.com/nicolaslopezj/simple-react-form/blob/master/docs/create-input-types.md) that you will use.
 
+If you use material-ui you are lucky, because I published a material-ui set of components.
+[simple-react-form-material-ui](https://github.com/nicolaslopezj/simple-react-form-material-ui).
+
+Made for Meteor, but works without Meteor too. This package was inspired by aldeed's autoform.
 
 ### Installation
 
-Install the base and the material-ui packages
+Install the base package
 
 ```sh
-npm install --save simple-react-form simple-react-form-material-ui
+npm install --save simple-react-form
 ```
 
-Register the material-ui components, just once.
+If you use material-ui install that package too
+
+```sh
+npm install --save simple-react-form-material-ui
+```
+
+And register the material-ui components, just once in your app.
 
 ```js
-import 'simple-react-form-material-ui';
+import 'simple-react-form-material-ui'
 ```
 
 Go to the [docs](https://github.com/nicolaslopezj/simple-react-form/tree/master/docs) folder to continue.
+
+### Example
+
+```jsx
+import React from 'react'
+import {Form, Field} from 'simple-react-form'
+
+class PostsCreate extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
+
+  render() {
+    return (
+      <Form
+        state={this.state}
+        onChange={changes => this.setState(changes)}>
+        <Field fieldName='title' type='string' label='Title'/>
+        <Field fieldName='body' type='textarea' label='Body'/>
+        <p>
+          The title is "{this.state.title}"
+        </p>
+      </Form>
+    )
+  }
+}
+```

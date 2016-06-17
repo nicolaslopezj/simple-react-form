@@ -7,7 +7,7 @@
 ##### Register the fields
 
 ```js
-import 'simple-react-form-material-ui';
+import 'simple-react-form-material-ui'
 ```
 
 
@@ -16,25 +16,28 @@ import 'simple-react-form-material-ui';
 An insert form.
 
 ```jsx
-import React from 'react';
-import { Form, Field } from 'simple-react-form';
+import React from 'react'
+import {Form, Field} from 'simple-react-form'
 
 class PostsCreate extends React.Component {
 
   constructor(props) {
-    super(props);
-    this.state = {};
+    super(props)
+    this.state = {}
   }
 
   render() {
     return (
       <Form
         state={this.state}
-        onChange={({ title, body }) => this.setState({ title, body })}>
-        <Field fieldName="title" type="string" label="Title"/>
-        <Field fieldName="body" type="textarea" label="Body"/>
+        onChange={changes => this.setState(changes)}>
+        <Field fieldName='title' type='string' label='Title'/>
+        <Field fieldName='body' type='textarea' label='Body'/>
+        <p>
+          The title is "{this.state.title}"
+        </p>
       </Form>
-    );
-  },
-};
+    )
+  }
+}
 ```
