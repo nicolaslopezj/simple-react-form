@@ -158,7 +158,7 @@ export default class Form extends React.Component {
 
   constructor (props) {
     super(props)
-    const state = this.props.state || this.props.doc || {}
+    const state = this.props.state || this.props.doc || {}
     this.state = {
       doc: _.clone(state),
       changes: {},
@@ -168,12 +168,13 @@ export default class Form extends React.Component {
     this.fields = []
     this.autoSave = _.debounce(this.submit.bind(this), this.props.autoSaveWaitTime)
     this.errorMessages = {}
+    this.onFormSubmit = this.onFormSubmit.bind(this)
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.replaceOnChange || this.props.formId !== nextProps.formId) {
-      const state = this.props.state || this.props.doc || {}
-      const nextState = nextProps.state || nextProps.doc || {}
+    if (this.props.replaceOnChange || this.props.formId !== nextProps.formId) {
+      const state = this.props.state || this.props.doc || {}
+      const nextState = nextProps.state || nextProps.doc || {}
       if (!_.isEqual(state, nextState)) {
         this.setState({ doc: _.clone(nextState), changes: {} })
       }
@@ -232,6 +233,11 @@ export default class Form extends React.Component {
     }
   }
 
+  onFormSubmit (event) {
+    event.preventDefault()
+    this.submit()
+  }
+
   submit () {
     const data = this.props.commitOnlyChanges ? this.state.changes : this.state.doc
     if (this.props.type === 'insert') {
@@ -240,7 +246,7 @@ export default class Form extends React.Component {
       this.props.collection.insert(doc, this.getValidationOptions(), this.onCommit.bind(this))
     } else if (this.props.type === 'update') {
       var modifier = docToModifier(data, { keepArrays: this.props.keepArrays })
-      if (!_.isEqual(modifier, {})) {
+      if (!_.isEqual(modifier, {})) {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this))
       } else {
         this.callChildFields({ method: 'onSuccess' })
@@ -324,7 +330,7 @@ export default class Form extends React.Component {
       var options = null
       if (_.isObject(child) && child.type && child.type.recieveMRFData) {
         const fieldName = child.props.fieldName
-        const errorMessage = child.props.errorMessage || this.state.errorMessages[fieldName]
+        const errorMessage = child.props.errorMessage || this.state.errorMessages[fieldName]
         options = {
           schema: this.getSchema(),
           value: this.state.doc ? DotObject.pick(fieldName, this.state.doc) : undefined,
@@ -348,7 +354,7 @@ export default class Form extends React.Component {
     keys = _.reject(keys, (key) => {
       var fullKey = parent ? `${parent}.${key}` : key
       var keySchema = schema._schema[fullKey]
-      const options = keySchema.srf || keySchema.mrf
+      const options = keySchema.srf || keySchema.mrf
       if (options && options.omit) return true
       if (_.contains(this.props.omit, fullKey)) return true
     })
@@ -380,12 +386,20 @@ export default class Form extends React.Component {
     return this.generateInputsForKeys(schema._firstLevelSchemaKeys)
   }
 
-  render () {
+  renderInsideForm () {
     if (!this.props.children) {
-      return <div>{this.renderChildren(this.generateChildren())}</div>
+      return this.renderChildren(this.generateChildren())
     } else {
-      return <div>{this.renderChildren(this.props.children)}</div>
+      return this.renderChildren(this.props.children)
     }
+  }
+
+  render () {
+    return (
+      <form onSubmit={this.onFormSubmit}>
+        {this.renderInsideForm()}
+      </form>
+    )
   }
 }
 
