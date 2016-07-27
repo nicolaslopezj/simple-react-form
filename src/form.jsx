@@ -239,7 +239,7 @@ export default class Form extends React.Component {
   }
 
   submit () {
-    const data = this.props.commitOnlyChanges ? this.state.changes : this.state.doc
+    const data = this.props.commitOnlyChanges && this.props.type !== 'insert' ? this.state.changes : this.state.doc
     if (this.props.type === 'insert') {
       const dot = DotObject.dot(data)
       const doc = DotObject.object(dot)
