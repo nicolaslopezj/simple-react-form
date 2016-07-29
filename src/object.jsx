@@ -1,36 +1,11 @@
 import React from 'react'
-import _ from 'underscore'
 
 const propTypes = {
-  /**
-   * Value of the object.
-   */
-  value: React.PropTypes.any,
-
-  /**
-   * The simple schema
-   */
-  schema: React.PropTypes.object,
-
-  /**
-   * Error message for the object, if there is one.
-   */
-  errorMessage: React.PropTypes.string,
-
-  /**
-   * Children error messages.
-   */
-  errorMessages: React.PropTypes.object,
-
   /**
    * Field name of the object in the parent object.
    */
   fieldName: React.PropTypes.string.isRequired,
 
-  /**
-   * Call this function when the value changes.
-   */
-  onChange: React.PropTypes.func,
   /**
    * Show the container label
    */
@@ -42,11 +17,6 @@ const propTypes = {
   disabled: React.PropTypes.bool,
 
   /**
-   * Form
-   */
-  form: React.PropTypes.object.isRequired,
-
-  /**
    * The label for the field
    */
   label: React.PropTypes.string,
@@ -54,12 +24,27 @@ const propTypes = {
   /**
    * The child components
    */
-  children: React.PropTypes.any
+  children: React.PropTypes.any,
+
+  /**
+   * Pass a error message
+   */
+  errorMessage: React.PropTypes.string
 }
 
 const defaultProps = {
   showLabel: true,
   errorMessages: {}
+}
+
+const contextTypes = {
+  schema: React.PropTypes.object,
+  parentFieldName: React.PropTypes.string,
+  errorMessages: React.PropTypes.object
+}
+
+const childContextTypes = {
+  parentFieldName: React.PropTypes.string
 }
 
 export default class ObjectComponent extends React.Component {
@@ -68,50 +53,45 @@ export default class ObjectComponent extends React.Component {
     this.state = {}
   }
 
+  getFieldName () {
+    if (this.context.parentFieldName) {
+      return `${this.context.parentFieldName}.${this.props.fieldName}`
+    } else {
+      return this.props.fieldName
+    }
+  }
+
+  getChildContext () {
+    return {
+      parentFieldName: this.getFieldName()
+    }
+  }
+
   getSchema () {
-    return this.props.schema
+    return this.context.schema
   }
 
   getFieldSchema () {
-    return this.getSchema().schema(this.props.fieldName)
+    return this.getSchema().schema(this.getFieldName())
   }
 
   getLabel () {
     if (this.props.showLabel === false) return
     if (this.props.label) return this.props.label
-    return this.getSchema().label(this.props.fieldName)
+    return this.getSchema().label(this.getFieldName())
   }
 
-  renderChildren (children) {
-    return React.Children.map(children, (child) => {
-      var options = null
-      if (_.isObject(child) && child.type && child.type.recieveMRFData) {
-        var fieldName = child.props.fieldName
-        options = {
-          fieldName: `${this.props.fieldName}.${fieldName}`,
-          schema: this.getSchema(),
-          value: this.props.value ? this.props.value[fieldName] : undefined,
-          onChange: this.props.onChange,
-          errorMessage: child.props.errorMessage || this.props.errorMessages[`${this.props.fieldName}.${fieldName}`],
-          errorMessages: this.props.errorMessages,
-          form: this.props.form
-        }
-      } else if (_.isObject(child) && child.props) {
-        options = {
-          children: this.renderChildren(child.props.children)
-        }
-      }
-
-      return options ? React.cloneElement(child, options) : child
-    })
+  getErrorMessage () {
+    const errorMessages = this.context.errorMessages || {}
+    return this.props.errorMessage || errorMessages[this.getFieldName()]
   }
 
   render () {
     return (
       <div style={{ marginTop: 20, marginBottom: 20, padding: 20 }}>
         <div><b>{this.getLabel()}</b></div>
-        <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
-        {this.renderChildren(this.props.children)}
+        <div style={{ color: 'red' }}>{this.getErrorMessage()}</div>
+        {this.props.children}
       </div>
     )
   }
@@ -119,4 +99,5 @@ export default class ObjectComponent extends React.Component {
 
 ObjectComponent.propTypes = propTypes
 ObjectComponent.defaultProps = defaultProps
-ObjectComponent.recieveMRFData = true
+ObjectComponent.contextTypes = contextTypes
+ObjectComponent.childContextTypes = childContextTypes

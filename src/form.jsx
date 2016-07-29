@@ -154,6 +154,14 @@ const defaultProps = {
   validate: true
 }
 
+const childContextTypes = {
+  schema: React.PropTypes.object,
+  doc: React.PropTypes.object,
+  onChange: React.PropTypes.func.isRequired,
+  errorMessages: React.PropTypes.object,
+  form: React.PropTypes.any.isRequired
+}
+
 export default class Form extends React.Component {
 
   constructor (props) {
@@ -169,6 +177,17 @@ export default class Form extends React.Component {
     this.autoSave = _.debounce(this.submit.bind(this), this.props.autoSaveWaitTime)
     this.errorMessages = {}
     this.onFormSubmit = this.onFormSubmit.bind(this)
+    this.onValueChange = this.onValueChange.bind(this)
+  }
+
+  getChildContext () {
+    return {
+      schema: this.getSchema(),
+      doc: this.state.doc,
+      onChange: this.onValueChange,
+      errorMessages: this.state.errorMessages,
+      form: this
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -325,30 +344,6 @@ export default class Form extends React.Component {
     }
   }
 
-  renderChildren (children) {
-    return React.Children.map(children, (child) => {
-      var options = null
-      if (_.isObject(child) && child.type && child.type.recieveMRFData) {
-        const fieldName = child.props.fieldName
-        const errorMessage = child.props.errorMessage || this.state.errorMessages[fieldName]
-        options = {
-          schema: this.getSchema(),
-          value: this.state.doc ? DotObject.pick(fieldName, this.state.doc) : undefined,
-          onChange: this.onValueChange.bind(this),
-          errorMessage,
-          errorMessages: this.state.errorMessages,
-          form: this
-        }
-      } else if (_.isObject(child) && child.props) {
-        options = {
-          children: this.renderChildren(child.props.children)
-        }
-      }
-
-      return options ? React.cloneElement(child, options) : child
-    })
-  }
-
   generateInputsForKeys (keys, parent = '') {
     var schema = this.getSchema()
     keys = _.reject(keys, (key) => {
@@ -388,9 +383,9 @@ export default class Form extends React.Component {
 
   renderInsideForm () {
     if (!this.props.children) {
-      return this.renderChildren(this.generateChildren())
+      return this.generateChildren()
     } else {
-      return this.renderChildren(this.props.children)
+      return this.props.children
     }
   }
 
@@ -405,3 +400,4 @@ export default class Form extends React.Component {
 
 Form.propTypes = propTypes
 Form.defaultProps = defaultProps
+Form.childContextTypes = childContextTypes
