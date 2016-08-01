@@ -262,7 +262,7 @@ You can view the full list of props [here](https://github.com/nicolaslopezj/simp
 
 ## React Native
 
-With React Native the api is the same, but you must pass the option ```useFormTag={false}``` to the form and register all the types you want to use.
+With React Native the api is the same, but you must pass the option ```useFormTag={false}``` to the form.
 
 Example:
 
