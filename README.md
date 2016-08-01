@@ -264,7 +264,7 @@ With React Native the api is the same, but you must pass the option ```useFormTa
 
 Example:
 
-Register the field types. Register the fields once in your app.
+You must create all your field types (Maybe someone makes a package in the future!)
 
 ```js
 import React from 'react'
