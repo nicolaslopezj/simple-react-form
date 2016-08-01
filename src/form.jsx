@@ -132,7 +132,12 @@ const propTypes = {
   /**
    * The child components
    */
-  children: React.PropTypes.any
+  children: React.PropTypes.any,
+
+  /**
+   * Render form tag
+   */
+  useFormTag: React.PropTypes.bool
 }
 
 const defaultProps = {
@@ -151,7 +156,8 @@ const defaultProps = {
   commitOnlyChanges: true,
   autoSaveWaitTime: 500,
   omit: [],
-  validate: true
+  validate: true,
+  useFormTag: true
 }
 
 const childContextTypes = {
@@ -377,7 +383,10 @@ export default class Form extends React.Component {
   }
 
   generateChildren () {
-    var schema = this.getSchema()
+    const schema = this.getSchema()
+    if (!schema) {
+      throw new Error('You must pass a schema or manually render the fields')
+    }
     return this.generateInputsForKeys(schema._firstLevelSchemaKeys)
   }
 
@@ -390,11 +399,15 @@ export default class Form extends React.Component {
   }
 
   render () {
-    return (
-      <form onSubmit={this.onFormSubmit}>
-        {this.renderInsideForm()}
-      </form>
-    )
+    if (this.props.useFormTag) {
+      return (
+        <form onSubmit={this.onFormSubmit}>
+          {this.renderInsideForm()}
+        </form>
+      )
+    } else {
+      return this.renderInsideForm()
+    }
   }
 }
 
