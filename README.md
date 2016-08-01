@@ -26,21 +26,17 @@ If you use material-ui install that package too
 npm install --save simple-react-form-material-ui
 ```
 
-And register the material-ui components, just once in your app.
-
-```js
-import 'simple-react-form-material-ui'
-```
-
 Go to the [docs](https://github.com/nicolaslopezj/simple-react-form/tree/master/docs) folder to continue.
 
 Browse the [examples](https://github.com/nicolaslopezj/simple-react-form-examples).
 
 ### Example
 
-```jsx
+```js
 import React from 'react'
 import {Form, Field} from 'simple-react-form'
+import DatePicker from 'simple-react-form-material-ui/lib/date-picker'
+import Text from 'simple-react-form-material-ui/lib/text'
 
 class PostsCreate extends React.Component {
 
@@ -51,15 +47,15 @@ class PostsCreate extends React.Component {
 
   render() {
     return (
-      <Form
-        state={this.state}
-        onChange={changes => this.setState(changes)}>
-        <Field fieldName='title' type='string' label='Title'/>
-        <Field fieldName='body' type='textarea' label='Body'/>
+      <div>
+        <Form state={this.state} onChange={changes => this.setState(changes)}>
+          <Field fieldName='name' label='Name' type={Text}/>
+          <Field fieldName='date' label='A Date' type={DatePicker}/>
+        </Form>
         <p>
-          The title is "{this.state.title}"
+          My name is {this.state.name}
         </p>
-      </Form>
+      </div>
     )
   }
 }
@@ -69,24 +65,15 @@ You can find more examples [here](https://github.com/nicolaslopezj/simple-react-
 
 # Docs
 
-## Preparation
-
-*You must add this lines of code in your app just once.*
-
-##### Register the fields
-
-```js
-import 'simple-react-form-material-ui'
-```
-
-
 ## Using with state
 
-An insert form.
+In this example, the current value of the form will be stored in ```this.state```
 
-```jsx
+```js
 import React from 'react'
 import {Form, Field} from 'simple-react-form'
+import DatePicker from 'simple-react-form-material-ui/lib/date-picker'
+import Text from 'simple-react-form-material-ui/lib/text'
 
 class PostsCreate extends React.Component {
 
@@ -97,15 +84,15 @@ class PostsCreate extends React.Component {
 
   render() {
     return (
-      <Form
-        state={this.state}
-        onChange={changes => this.setState(changes)}>
-        <Field fieldName='title' type='string' label='Title'/>
-        <Field fieldName='body' type='textarea' label='Body'/>
+      <div>
+        <Form state={this.state} onChange={changes => this.setState(changes)}>
+          <Field fieldName='name' label='Name' type={Text}/>
+          <Field fieldName='date' label='A Date' type={DatePicker}/>
+        </Form>
         <p>
-          The title is "{this.state.title}"
+          My name is {this.state.name}
         </p>
-      </Form>
+      </div>
     )
   }
 }
@@ -132,27 +119,36 @@ SimpleSchema.extendOptions({
 Schema
 
 ```js
-Posts = new Meteor.Collection('posts')
+import {Meteor} from 'meteor/meteor'
+import Textarea from 'simple-react-form-material-ui/lib/textarea'
+import Text from 'simple-react-form-material-ui/lib/text'
+
+const Posts = new Meteor.Collection('posts')
 
 Posts.attachSchema({
   title: {
     type: String,
+    srf: {
+      type: Text
+    }
   },
   body: {
     type: String,
     label: 'Content',
     mrf: {
-      type: 'textarea',
-    },
+      type: Textarea
+    }
   }
 })
+
+export default Posts
 ```
 
 An insert form.
 
 ```jsx
 import React from 'react'
-import { Form } from 'simple-react-form'
+import {Form} from 'simple-react-form'
 import Posts from '../../collections/posts'
 
 class PostsCreate extends React.Component {
@@ -161,11 +157,10 @@ class PostsCreate extends React.Component {
       <div>
         <h1>Create a post</h1>
         <Form
-          collection={Posts}
-          type='insert'
-          ref='form'
-          onSuccess={(docId) => FlowRouter.go('posts.update', { postId: docId })}
-          />
+        collection={Posts}
+        type='insert'
+        ref='form'
+        onSuccess={(docId) => FlowRouter.go('posts.update', { postId: docId })}/>
         <RaisedButton label='Create' onTouchTap={() => this.refs.form.submit()}/>
       </div>
     )
@@ -177,7 +172,7 @@ An update form.
 
 ```jsx
 import React from 'react'
-import { Form, Field } from 'simple-react-form'
+import {Form, Field} from 'simple-react-form'
 import Posts from '../../collections/posts'
 
 class PostsUpdate extends React.Component {
@@ -186,10 +181,10 @@ class PostsUpdate extends React.Component {
       <div>
         <h1>Post update</h1>
         <Form
-          collection={Posts}
-          type='update'
-          ref='form'
-          doc={this.props.post}>
+        collection={Posts}
+        type='update'
+        ref='form'
+        doc={this.props.post}>
           <Field fieldName='title'/>
           <Field fieldName='body'/>
         </Form>
@@ -212,11 +207,13 @@ You can also pass props to this components setting them in the srf parameter of
 the simple-schema object:
 
 ```
+import UploadImage from '../components/my-fields/upload'
+
 Post.attachSchema({
   picture: {
     type: String,
     srf: {
-      type: 'my-upload-picture',
+      type: UploadImage,
       squareOnly: true
     }
   }
@@ -225,19 +222,20 @@ Post.attachSchema({
 
 Or simply in the field while rendering:
 
-```jsx
-<Field fieldName='picture' type='my-upload-picuture' squareOnly={true}/>
+```js
+import UploadImage from '../components/my-fields/upload'
+
+<Field fieldName='picture' type={UploadImage} squareOnly={true}/>
 ```
 
 ### Creating field types
 
-You must create a React component that extends ```FieldType```
-and register the field type
+You must create a React component that extends ```FieldType```.
 
-```jsx
-import {FieldType, registerType} from 'simple-react-form'
+```js
+import {FieldType} from 'simple-react-form'
 
-class MyUploadPicture extends FieldType {
+export default class UploadImage extends FieldType {
   render() {
     return (
       <div>
@@ -256,11 +254,6 @@ class MyUploadPicture extends FieldType {
     );
   }
 }
-
-registerType({
-  type: 'textarea',
-  component: MyUploadPicture
-})
 ```
 
 You can view the full list of props [here](https://github.com/nicolaslopezj/simple-react-form/blob/master/src/field.jsx#L11).
@@ -286,7 +279,7 @@ const defaultProps = {
   ...FieldType.defaultProps
 }
 
-class TextFieldComponent extends FieldType {
+export default class TextFieldComponent extends FieldType {
 
   render () {
     return (
@@ -302,17 +295,14 @@ class TextFieldComponent extends FieldType {
 
 TextFieldComponent.propTypes = propTypes
 TextFieldComponent.defaultProps = defaultProps
-
-registerType({
-  type: 'text',
-  component: TextFieldComponent
-})
 ```
 
 Render the form in the component you want
 
 ```js
+import Text from '../components/my-fields/text'
+
 <Form state={this.state} onChange={changes => this.setState(changes)} useFormTag={false}>
-  <Field fieldName='name' type='text'/>
+  <Field fieldName='name' type={Text}/>
 </Form>
 ```

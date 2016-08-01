@@ -5,7 +5,6 @@ import DotObject from './dot'
 import {
   getFieldType,
   getFieldComponent,
-  getFieldOptionsError,
   getFieldTypeName
 } from './types'
 
@@ -36,9 +35,9 @@ const propTypes = {
   disabled: React.PropTypes.bool,
 
   /**
-   * The type of the input.
+   * The type of the input. It can be a component
    */
-  type: React.PropTypes.string,
+  type: React.PropTypes.any,
 
   /**
    * Pass a error message
@@ -103,17 +102,16 @@ export default class Field extends React.Component {
   }
 
   getComponent () {
-    var component = null
-    if (this.props.type) {
-      component = getFieldType(this.props.type).component
+    if (_.isString(this.props.type)) {
+      return getFieldType(this.props.type).component
+    } else if (this.props.type) {
+      return this.props.type
     } else {
-      component = getFieldComponent({
+      return getFieldComponent({
         fieldName: this.getFieldName(),
         schema: this.getSchema()
       })
     }
-
-    return React.createElement(component, this.getChildProps())
   }
 
   getValue () {
@@ -134,23 +132,19 @@ export default class Field extends React.Component {
     /**
      * This gets the props that are defined in the propTypes of the registered component.
      */
-    const type = getFieldType(typeName)
+    const fieldComponent = this.getComponent()
     const propOptions = _.omit(this.props, _.keys(propTypes))
     const schemaOptions = (this.getFieldSchema() && (this.getFieldSchema().srf || this.getFieldSchema().mrf)) || {}
     const totalOptions = _.extend(schemaOptions, propOptions)
-    const allowedKeys = _.keys(type.component.propTypes || {})
+    const allowedKeys = _.keys(fieldComponent.propTypes || {})
     const onlyAllowedOptions = _.pick(totalOptions, allowedKeys)
-
-    const error = getFieldOptionsError({ type, options: onlyAllowedOptions })
-    if (error) {
-      throw new Error(`Options for field "${this.getFieldName()}" are not allowed for field type "${type.name}": ${error.message}`)
-    }
 
     /**
      * Options that are not registered in the propTypes are passed separatly.
      * This options are in the variable this.passProps of the component, they should be
      * passed to the main component of it.
      */
+    allowedKeys.push('type')
     const notDefinedOptions = _.omit(totalOptions, allowedKeys)
 
     const props = {
@@ -173,7 +167,8 @@ export default class Field extends React.Component {
   }
 
   render () {
-    return this.getComponent()
+    const component = this.getComponent()
+    return React.createElement(component, this.getChildProps())
   }
 }
 

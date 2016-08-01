@@ -115,7 +115,6 @@ export default class ArrayComponent extends React.Component {
 
   getErrorMessage () {
     const errorMessages = this.context.errorMessages || {}
-    console.log(errorMessages)
     return this.props.errorMessage || errorMessages[this.getFieldName()]
   }
 

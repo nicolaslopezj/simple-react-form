@@ -17,7 +17,7 @@ export const getFieldType = function (typeName) {
 
 export const getFieldTypeName = function ({ fieldName, schema }) {
   const fieldSchema = schema.schema(fieldName)
-  const srf = fieldSchema.srf || fieldSchema.mrf
+  const srf = fieldSchema.srf || fieldSchema.mrf
   var typeName = null
   if (srf && srf.type) {
     typeName = srf.type
@@ -56,6 +56,9 @@ export const getFieldComponent = function ({ fieldName, schema }) {
   }
 
   const typeName = getFieldTypeName({ fieldName, fieldSchema, schema })
+  if (!_.isString(typeName)) {
+    return typeName
+  }
   if (typeName === 'object') {
     throw new Error(`You should use ObjectComponent instead of Field for "${fieldName}".`)
   }
@@ -80,7 +83,7 @@ export const getFieldComponent = function ({ fieldName, schema }) {
     }
 
     /*
-    var options = fieldSchema.srf || fieldSchema.mrf || {}
+    var options = fieldSchema.srf || fieldSchema.mrf || {}
     const error = getFieldOptionsError({ type, options })
     if (error) {
       throw new Error(`MRF options of field "${fieldName}" are not allowed for "${type.name}". ${error.message}`)
