@@ -9,6 +9,12 @@
     "type" : "git",
     "url" : "https://github.com/nicolaslopezj/simple-react-form/tree/master/form"
   },
+  "keywords": [
+    "react-component",
+    "react-native",
+    "ios",
+    "android"
+  ],
   "dependencies": {
     "underscore": "^1.8.3"
   },
