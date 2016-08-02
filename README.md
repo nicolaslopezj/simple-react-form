@@ -305,6 +305,11 @@ Render the form in the component you want
 import Text from '../components/my-fields/text'
 
 <Form state={this.state} onChange={changes => this.setState(changes)} useFormTag={false}>
-  <Field fieldName='name' type={Text}/>
+  <View>
+    <Field fieldName='email' type={Text}/>
+    <Field fieldName='password' type={Text}/>
+  </View>
 </Form>
 ```
+
+> You should always render your fields inside a View when using react native.
