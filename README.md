@@ -197,7 +197,7 @@ class PostsUpdate extends React.Component {
 }
 ```
 
-## Create Input Types
+## Custom Input Types
 
 React Simple Form is built from the idea that you can create custom components easily.
 
@@ -230,7 +230,7 @@ import UploadImage from '../components/my-fields/upload'
 <Field fieldName='picture' type={UploadImage} squareOnly={true}/>
 ```
 
-### Creating field types
+### Creating the field type
 
 You must create a React component that extends ```FieldType```.
 
@@ -259,6 +259,8 @@ export default class UploadImage extends FieldType {
 ```
 
 You can view the full list of props [here](https://github.com/nicolaslopezj/simple-react-form/blob/master/src/field.jsx#L11).
+
+*Props that are not define in propTypes will be stored in ```this.passProps``` and deleted from propTypes.*
 
 ## React Native
 

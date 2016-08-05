@@ -1,5 +1,10 @@
 # Changelog
 
+### v1.6
+
+- Array and object components are fields now.
+
+
 ### v1.5
 
 - Field types should be passed in the type prop of the Field component.

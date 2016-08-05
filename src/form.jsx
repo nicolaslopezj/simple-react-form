@@ -361,23 +361,6 @@ export default class Form extends React.Component {
     })
     return keys.map((key) => {
       var fullKey = parent ? `${parent}.${key}` : key
-      var type = getFieldTypeName({ fieldName: fullKey, schema })
-      if (type === 'array') {
-        let _keys = schema.objectKeys(`${fullKey}.$`)
-        return (
-          <this.props.arrayComponent fieldName={key} key={key}>
-            {this.generateInputsForKeys(_keys, `${fullKey}.$`)}
-          </this.props.arrayComponent>
-        )
-      }
-      if (type === 'object') {
-        let _keys = schema.objectKeys(fullKey)
-        return (
-          <this.props.objectComponent fieldName={key} key={fullKey}>
-            {this.generateInputsForKeys(_keys, fullKey)}
-          </this.props.objectComponent>
-        )
-      }
       return <Field fieldName={key} key={fullKey}/>
     })
   }

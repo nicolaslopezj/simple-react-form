@@ -1,103 +1,49 @@
+/**
+ * You can use this field as array field but the main purporse is to extend it
+ * and create your own (like the material-ui fields do)
+ */
+
 import React from 'react'
+import FieldType from './field-type'
 
 const propTypes = {
+  ...FieldType.propTypes,
   /**
-   * Field name of the object in the parent object.
+   * Each item component
    */
-  fieldName: React.PropTypes.string.isRequired,
-
-  /**
-   * Show the container label
-   */
-  showLabel: React.PropTypes.bool,
-
-  /**
-   * The field should be read only mode
-   */
-  disabled: React.PropTypes.bool,
-
-  /**
-   * The label for the field
-   */
-  label: React.PropTypes.string,
-
-  /**
-   * The child components
-   */
-  children: React.PropTypes.any,
-
-  /**
-   * Pass a error message
-   */
-  errorMessage: React.PropTypes.string
-}
-
-const defaultProps = {
-  showLabel: true,
-  errorMessages: {}
-}
-
-const contextTypes = {
-  schema: React.PropTypes.object,
-  parentFieldName: React.PropTypes.string,
-  errorMessages: React.PropTypes.object
+  children: React.PropTypes.any
 }
 
 const childContextTypes = {
   parentFieldName: React.PropTypes.string
 }
 
-export default class ObjectComponent extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {}
-  }
-
-  getFieldName () {
-    if (this.context.parentFieldName) {
-      return `${this.context.parentFieldName}.${this.props.fieldName}`
-    } else {
-      return this.props.fieldName
-    }
-  }
+export default class ObjectComponent extends FieldType {
 
   getChildContext () {
     return {
-      parentFieldName: this.getFieldName()
+      parentFieldName: this.props.fieldName
     }
   }
 
-  getSchema () {
-    return this.context.schema
-  }
-
-  getFieldSchema () {
-    return this.getSchema().schema(this.getFieldName())
-  }
-
-  getLabel () {
-    if (this.props.showLabel === false) return
-    if (this.props.label) return this.props.label
-    return this.getSchema().label(this.getFieldName())
-  }
-
-  getErrorMessage () {
-    const errorMessages = this.context.errorMessages || {}
-    return this.props.errorMessage || errorMessages[this.getFieldName()]
+  getChildrenComponents () {
+    if (this.props.children) return this.props.children
+    if (!this.props.schema) throw new Error(`You must pass children to the object field "${this.props.fieldName}"`)
+    const keys = this.props.schema.objectKeys(this.props.fieldName)
+    return this.props.form.generateInputsForKeys(keys, this.props.fieldName)
   }
 
   render () {
     return (
       <div style={{ marginTop: 20, marginBottom: 20, padding: 20 }}>
-        <div><b>{this.getLabel()}</b></div>
-        <div style={{ color: 'red' }}>{this.getErrorMessage()}</div>
-        {this.props.children}
+        <div><b>{this.props.label}</b></div>
+        <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
+        {this.getChildrenComponents()}
       </div>
     )
   }
+
 }
 
 ObjectComponent.propTypes = propTypes
-ObjectComponent.defaultProps = defaultProps
-ObjectComponent.contextTypes = contextTypes
 ObjectComponent.childContextTypes = childContextTypes
