@@ -9,7 +9,7 @@ const docToModifier = function (doc, options) {
   options = options || {}
   mDoc = new MongoObject(doc)
   flatDoc = mDoc.getFlatObject({
-    keepArrays: !!options.keepArrays,
+    keepArrays: !!options.keepArrays
   })
   nulls = reportNulls(flatDoc, !!options.keepEmptyStrings)
   flatDoc = cleanNulls(flatDoc, false, !!options.keepEmptyStrings)
