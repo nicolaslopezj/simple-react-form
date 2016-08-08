@@ -3,9 +3,8 @@ import _ from 'underscore'
 import ArrayComponent from './array'
 import ObjectComponent from './object'
 import DotObject from './dot'
-import { docToModifier } from './utility'
+import {docToModifier} from './utility'
 import Field from './field'
-import { getFieldTypeName } from './types'
 
 const propTypes = {
   /**
@@ -142,7 +141,7 @@ const propTypes = {
 
 const defaultProps = {
   type: 'function',
-  keepArrays: true,
+  keepArrays: false,
   autoSave: false,
   removeEmptyStrings: true,
   trimStrings: true,
@@ -271,6 +270,7 @@ export default class Form extends React.Component {
       this.props.collection.insert(doc, this.getValidationOptions(), this.onCommit.bind(this))
     } else if (this.props.type === 'update') {
       var modifier = docToModifier(data, { keepArrays: this.props.keepArrays })
+      console.log(modifier)
       if (!_.isEqual(modifier, {})) {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this))
       } else {

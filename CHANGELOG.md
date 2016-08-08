@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.6.1
+
+- ```keepArrays``` prop is now default ```false```.
+
 ### v1.6
 
 - Array and object components are fields now.
