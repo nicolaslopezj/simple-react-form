@@ -3,7 +3,7 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/simple-react-form)
 
-Simple React Form is a framework that simplifies the use of forms in React and [React Native](https://github.com/nicolaslopezj/simple-react-form#react-native).
+Simple React Form is a framework to make reusable form components in React [React Native](https://github.com/nicolaslopezj/simple-react-form#react-native).
 
 This is just a framework, you must [create the form components](https://github.com/nicolaslopezj/simple-react-form/blob/master/docs/create-input-types.md) that you will use.
 
