@@ -65,6 +65,11 @@ class PostsCreate extends React.Component {
 
 You can find more examples [here](https://github.com/nicolaslopezj/simple-react-form-examples).
 
+## Contributions
+
+- [simple-react-form-material-ui](https://github.com/nicolaslopezj/simple-react-form-material-ui) Material UI set of fields.
+- [simple-react-form-bootstrap](https://github.com/fermuch/simple-react-form-bootstrap) Bootstrap set of fields.
+
 # Docs
 
 ## Using with state
