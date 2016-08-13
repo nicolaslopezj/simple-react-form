@@ -142,7 +142,7 @@ Posts.attachSchema({
   body: {
     type: String,
     label: 'Content',
-    mrf: {
+    srf: {
       type: Textarea
     }
   }
