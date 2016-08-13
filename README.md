@@ -28,7 +28,7 @@ If you use material-ui install that package too
 npm install --save simple-react-form-material-ui
 ```
 
-Go to the [docs](https://github.com/nicolaslopezj/simple-react-form/tree/master/docs) folder to continue.
+If you don't use material-ui check the [contributions](#contributions) if there is a package for you.
 
 Browse the [examples](https://github.com/nicolaslopezj/simple-react-form-examples).
 
