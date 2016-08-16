@@ -12,7 +12,7 @@ const propTypes = {
   /**
    * The label of the field.
    */
-  label: React.PropTypes.string,
+  label: React.PropTypes.any,
 
   /**
    * The name of the field in the object.

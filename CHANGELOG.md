@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.6.4
+
+- Accept any type of label in field.
+
 ### v1.6.3
 
 - Fix a bug with object or array fields in nested array with simple schema.
