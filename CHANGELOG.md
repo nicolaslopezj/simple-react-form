@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.6.3
+
+- Fix a bug with object or array fields in nested array with simple schema.
+
 ### v1.6.1
 
 - ```keepArrays``` prop is now default ```false```.

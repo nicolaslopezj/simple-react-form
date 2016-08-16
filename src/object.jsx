@@ -5,6 +5,7 @@
 
 import React from 'react'
 import FieldType from './field-type'
+import {replaceIndexKeys} from './utility'
 
 const propTypes = {
   ...FieldType.propTypes,
@@ -29,8 +30,9 @@ export default class ObjectComponent extends FieldType {
   getChildrenComponents () {
     if (this.props.children) return this.props.children
     if (!this.props.schema) throw new Error(`You must pass children to the object field "${this.props.fieldName}"`)
-    const keys = this.props.schema.objectKeys(this.props.fieldName)
-    return this.props.form.generateInputsForKeys(keys, this.props.fieldName)
+    const schemaFieldName = replaceIndexKeys(this.props.fieldName)
+    const keys = this.props.schema.objectKeys(schemaFieldName)
+    return this.props.form.generateInputsForKeys(keys, schemaFieldName)
   }
 
   render () {

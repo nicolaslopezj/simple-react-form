@@ -1,7 +1,7 @@
 import _ from 'underscore'
 
 // Taken from aldeed's autoform
-const docToModifier = function (doc, options) {
+export const docToModifier = function (doc, options) {
   var modifier = {}
   var mDoc
   var flatDoc
@@ -25,11 +25,11 @@ const docToModifier = function (doc, options) {
   return modifier
 }
 
-const isBasicObject = function (obj) {
+export const isBasicObject = function (obj) {
   return _.isObject(obj) && Object.getPrototypeOf(obj) === Object.prototype
 }
 
-const cleanNulls = function (doc, isArray, keepEmptyStrings) {
+export const cleanNulls = function (doc, isArray, keepEmptyStrings) {
   var newDoc = isArray ? [] : {}
   _.each(doc, (val, key) => {
     if (!_.isArray(val) && isBasicObject(val)) {
@@ -52,7 +52,7 @@ const cleanNulls = function (doc, isArray, keepEmptyStrings) {
   return newDoc
 }
 
-const reportNulls = function (flatDoc, keepEmptyStrings) {
+export const reportNulls = function (flatDoc, keepEmptyStrings) {
   var nulls = {}
 
   // Loop through the flat doc
@@ -73,14 +73,10 @@ const reportNulls = function (flatDoc, keepEmptyStrings) {
   return nulls
 }
 
-const isNullUndefinedOrEmptyString = function (val) {
+export const isNullUndefinedOrEmptyString = function (val) {
   return (val === void 0 || val === null || (typeof val === 'string' && val.length === 0))
 }
 
-export {
-  docToModifier,
-  isBasicObject,
-  cleanNulls,
-  reportNulls,
-  isNullUndefinedOrEmptyString
+export const replaceIndexKeys = function (key) {
+  return key.replace(/\.[0-9]+\./g, '.$.')
 }

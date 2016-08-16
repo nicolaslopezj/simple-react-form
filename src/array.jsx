@@ -7,6 +7,7 @@ import React from 'react'
 import FieldType from './field-type'
 import _ from 'underscore'
 import ArrayContextItem from './array-context-item'
+import {replaceIndexKeys} from './utility'
 
 const propTypes = {
   ...FieldType.propTypes,
@@ -95,8 +96,9 @@ export default class ArrayComponent extends FieldType {
     if (this.props.renderItem) return this.props.renderItem(item, index)
     if (this.props.children) return this.props.children
     if (!this.props.schema) throw new Error(`You must pass children to the array field "${this.props.fieldName}"`)
-    const keys = this.props.schema.objectKeys(`${this.props.fieldName}.$`)
-    return this.props.form.generateInputsForKeys(keys, `${this.props.fieldName}.$`)
+    const schemaFieldName = replaceIndexKeys(this.props.fieldName)
+    const keys = this.props.schema.objectKeys(`${schemaFieldName}.$`)
+    return this.props.form.generateInputsForKeys(keys, `${schemaFieldName}.$`)
   }
 
   renderChildren () {
