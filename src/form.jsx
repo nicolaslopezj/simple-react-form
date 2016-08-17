@@ -262,6 +262,13 @@ export default class Form extends React.Component {
     this.submit()
   }
 
+  getPresentFields () {
+    return _.filter(this.fields, field => {
+      const props = field.component.props
+      return !props.disabled
+    }).map(field => field.field)
+  }
+
   submit () {
     const data = this.props.commitOnlyChanges ? this.state.changes : this.state.doc
     if (this.props.type === 'insert') {
@@ -269,7 +276,7 @@ export default class Form extends React.Component {
       const doc = DotObject.object(dot)
       this.props.collection.insert(doc, this.getValidationOptions(), this.onCommit.bind(this))
     } else if (this.props.type === 'update') {
-      var modifier = docToModifier(data, { keepArrays: this.props.keepArrays, fields: _.pluck(this.fields, 'field') })
+      var modifier = docToModifier(data, { keepArrays: this.props.keepArrays, fields: this.getPresentFields() })
       if (!_.isEqual(modifier, {})) {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this))
       } else {

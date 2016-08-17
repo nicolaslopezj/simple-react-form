@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.6.6
+
+- Disabled fields don't count as registered fields when passing to modifiers.
+
 ### v1.6.5
 
 - ```keepArrays``` is now ```true``` by default.
