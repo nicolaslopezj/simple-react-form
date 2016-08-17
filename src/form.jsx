@@ -141,7 +141,7 @@ const propTypes = {
 
 const defaultProps = {
   type: 'function',
-  keepArrays: false,
+  keepArrays: true,
   autoSave: false,
   removeEmptyStrings: true,
   trimStrings: true,
@@ -152,7 +152,7 @@ const defaultProps = {
   arrayComponent: ArrayComponent,
   objectComponent: ObjectComponent,
   logErrors: true,
-  commitOnlyChanges: true,
+  commitOnlyChanges: false,
   autoSaveWaitTime: 500,
   omit: [],
   validate: true,
@@ -263,13 +263,13 @@ export default class Form extends React.Component {
   }
 
   submit () {
-    const data = this.props.commitOnlyChanges && this.props.type !== 'insert' ? this.state.changes : this.state.doc
+    const data = this.props.commitOnlyChanges ? this.state.changes : this.state.doc
     if (this.props.type === 'insert') {
-      const dot = DotObject.dot(data)
+      const dot = DotObject.dot(this.state.doc)
       const doc = DotObject.object(dot)
       this.props.collection.insert(doc, this.getValidationOptions(), this.onCommit.bind(this))
     } else if (this.props.type === 'update') {
-      var modifier = docToModifier(data, { keepArrays: this.props.keepArrays })
+      var modifier = docToModifier(data, { keepArrays: this.props.keepArrays, fields: _.pluck(this.fields, 'field') })
       if (!_.isEqual(modifier, {})) {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this))
       } else {

@@ -1,5 +1,12 @@
 # Changelog
 
+### v1.6.5
+
+- ```keepArrays``` is now ```true``` by default.
+- ```commitOnlyChanges``` is now ```false``` by default.
+- When updating a document, only fields that are present in the form (registered
+  in the main form component) will be passed to the modifiers.
+
 ### v1.6.4
 
 - Accept any type of label in field.

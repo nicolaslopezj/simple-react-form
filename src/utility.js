@@ -13,6 +13,7 @@ export const docToModifier = function (doc, options) {
   })
   nulls = reportNulls(flatDoc, !!options.keepEmptyStrings)
   flatDoc = cleanNulls(flatDoc, false, !!options.keepEmptyStrings)
+  flatDoc = cleanFields(flatDoc, options.fields)
 
   if (!_.isEmpty(flatDoc)) {
     modifier.$set = flatDoc
@@ -23,6 +24,18 @@ export const docToModifier = function (doc, options) {
   }
 
   return modifier
+}
+
+export const cleanFields = function (doc, fields) {
+  const newDoc = {}
+  console.log(doc, fields)
+  _.each(doc, (val, key) => {
+    if (_.contains(fields, key)) {
+      newDoc[key] = val
+    }
+  })
+  console.log(newDoc, fields)
+  return newDoc
 }
 
 export const isBasicObject = function (obj) {
