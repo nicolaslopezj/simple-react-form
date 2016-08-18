@@ -28,13 +28,11 @@ export const docToModifier = function (doc, options) {
 
 export const cleanFields = function (doc, fields) {
   const newDoc = {}
-  console.log(doc, fields)
   _.each(doc, (val, key) => {
     if (_.contains(fields, key)) {
       newDoc[key] = val
     }
   })
-  console.log(newDoc, fields)
   return newDoc
 }
 
