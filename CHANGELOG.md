@@ -1,5 +1,10 @@
 # Changelog
 
+### v1.6.8
+
+- Improve the algorithm that was implemented in 1.6.6. This fixes when fields that
+are object are removed from the update object.
+
 ### v1.6.6
 
 - Disabled fields don't count as registered fields when passing to modifiers.
