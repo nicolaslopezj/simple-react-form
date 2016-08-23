@@ -234,7 +234,11 @@ export default class Form extends React.Component {
   onCommit (error, docId) {
     this.setState({ errorMessages: {} })
     if (error) {
-      this.handleError()
+      if (error.reason === 'INVALID') {
+        this.handleServerError(error)
+      } else {
+        this.handleError()
+      }
       if (this.props.logErrors) {
         console.log(`[form-${this.props.formId}-error]`, error)
       }
@@ -337,6 +341,19 @@ export default class Form extends React.Component {
   handleError () {
     var context = this.getSchema().namedContext(this.getValidationOptions().validationContext)
     this.setErrorsWithContext(context)
+  }
+
+  handleServerError (error) {
+    const errors = JSON.parse(error.details)
+    let errorMessages = {}
+    errors.forEach(fieldError => {
+      errorMessages[fieldError.name] = this.getSchema().messageForError(fieldError.type, fieldError.name, null, fieldError.value)
+    })
+    if (this.props.logErrors) {
+      console.log(`[form-${this.props.formId}-error-messages]`, errorMessages)
+    }
+    this.errorMessages = errorMessages
+    this.setState({ errorMessages })
   }
 
   onValueChange (fieldName, newValue) {

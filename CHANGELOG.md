@@ -1,5 +1,10 @@
 # Changelog
 
+### v1.6.9
+
+- Better error handling when getting errors from the server.
+
+
 ### v1.6.8
 
 - Improve the algorithm that was implemented in 1.6.6. This fixes when fields that

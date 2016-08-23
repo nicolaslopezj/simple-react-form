@@ -1,6 +1,6 @@
 {
   "name": "simple-react-form",
-  "version": "1.6.8",
+  "version": "1.6.9",
   "license": "MIT",
   "author": "Nicolás López <nicolaslopezj@me.com>",
   "description": "Simply create forms using react",
