@@ -3,7 +3,7 @@
   "version": "1.6.10",
   "license": "MIT",
   "author": "Nicolás López <nicolaslopezj@me.com>",
-  "description": "Simply create forms using react",
+  "description": "A library to make reusable form components in React and React Native",
   "main": "./lib",
   "repository" : {
     "type" : "git",

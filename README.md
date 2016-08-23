@@ -3,16 +3,17 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/simple-react-form)
 
-Simple React Form is a framework to make reusable form components in React [React Native](https://github.com/nicolaslopezj/simple-react-form#react-native).
+Simple React Form is a library to make reusable form components in **React** and [React Native](#react-native) and works
+great with **Meteor**
 
-This is just a framework, you must [create the form components](https://github.com/nicolaslopezj/simple-react-form/blob/master/docs/create-input-types.md) that you will use.
+This is just a framework, you must [create the form components](#custom-input-types) that you will use.
 
 If you use material-ui you are lucky, because I published a material-ui set of components.
 [simple-react-form-material-ui](https://github.com/nicolaslopezj/simple-react-form-material-ui).
 
 Made for Meteor, but works without Meteor too. This package was inspired by aldeed's autoform.
 
-To use with react native [click here](https://github.com/nicolaslopezj/simple-react-form#react-native)
+To use with react native [click here](#react-native)
 
 ### Installation
 
