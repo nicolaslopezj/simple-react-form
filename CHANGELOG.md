@@ -1,9 +1,12 @@
 # Changelog
 
+### v1.6.10
+
+- Set changes to blank before passing the onSuccess callback. Fixes #4.
+
 ### v1.6.9
 
 - Better error handling when getting errors from the server.
-
 
 ### v1.6.8
 

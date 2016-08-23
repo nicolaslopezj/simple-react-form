@@ -245,8 +245,8 @@ export default class Form extends React.Component {
     } else {
       this.callChildFields({ method: 'onSuccess' })
       if (_.isFunction(this.props.onSuccess)) {
-        this.props.onSuccess(docId)
         this.setState({ changes: {} })
+        this.props.onSuccess(docId)
       }
     }
   }
