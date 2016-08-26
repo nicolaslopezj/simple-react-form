@@ -12,6 +12,7 @@ export const docToModifier = function (doc, options) {
     keepArrays: !!options.keepArrays
   })
   nulls = reportNulls(flatDoc, !!options.keepEmptyStrings)
+  nulls = cleanFields(nulls, options.fields)
   flatDoc = cleanNulls(flatDoc, false, !!options.keepEmptyStrings)
   flatDoc = cleanFields(flatDoc, options.fields)
 

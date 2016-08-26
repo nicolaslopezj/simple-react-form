@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.6.11
+
+- Nulls are also filtered when updating.
+
 ### v1.6.10
 
 - Set changes to blank before passing the onSuccess callback. Fixes #4.
