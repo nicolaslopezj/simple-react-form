@@ -74,6 +74,12 @@ const propTypes = {
   replaceOnChange: React.PropTypes.bool,
 
   /**
+   * Clear the form after a successful insert.
+   * Only works on insert and function types.
+   */
+  clearOnSuccess: React.PropTypes.bool,
+
+  /**
    * Keep arrays when updating.
    */
   keepArrays: React.PropTypes.bool,
@@ -245,8 +251,13 @@ export default class Form extends React.Component {
     } else {
       this.callChildFields({ method: 'onSuccess' })
       if (_.isFunction(this.props.onSuccess)) {
-        this.setState({ changes: {} })
         this.props.onSuccess(docId)
+      }
+      if (this.props.clearOnSuccess) {
+        this.clearForm()
+      } else {
+        // if clearOnSuccess is false, we still need to clear the changes
+        this.setState({ changes: {} })
       }
     }
   }
@@ -314,6 +325,10 @@ export default class Form extends React.Component {
   cleanErrorMessages () {
     this.errorMessages = {}
     this.setState({ errorMessages: {} })
+  }
+
+  clearForm () {
+    this.setState({doc: undefined, changes: undefined})
   }
 
   setErrorMessage (fieldName, message) {
