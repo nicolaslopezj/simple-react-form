@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.6.12
+
+- Clears the form (insert and function types) when onSuccess is called. By @fermuch at #28
+
 ### v1.6.11
 
 - Nulls are also filtered when updating.
