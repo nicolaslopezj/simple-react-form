@@ -154,6 +154,7 @@ const defaultProps = {
   autoConvert: true,
   filter: true,
   replaceOnChange: true,
+  clearOnSuccess: true,
   formId: 'defaultFormId',
   arrayComponent: ArrayComponent,
   objectComponent: ObjectComponent,
@@ -328,7 +329,7 @@ export default class Form extends React.Component {
   }
 
   clearForm () {
-    this.setState({doc: undefined, changes: undefined})
+    this.setState({doc: {}, changes: {}})
   }
 
   setErrorMessage (fieldName, message) {
