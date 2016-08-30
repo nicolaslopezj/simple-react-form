@@ -2,7 +2,7 @@
 
 ### v1.6.12
 
-- Clears the form (insert and function types) when onSuccess is called. By @fermuch at #28
+- Clears the form (insert and function types) when onSuccess is called. By [@fermuch](https://github.com/fermuch) at [#28](https://github.com/nicolaslopezj/simple-react-form/pull/28).
 
 ### v1.6.11
 
@@ -10,7 +10,7 @@
 
 ### v1.6.10
 
-- Set changes to blank before passing the onSuccess callback. Fixes #4.
+- Set changes to blank before passing the onSuccess callback. Fixes [#4](https://github.com/nicolaslopezj/simple-react-form/issues/4).
 
 ### v1.6.9
 
