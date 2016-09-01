@@ -154,7 +154,7 @@ const defaultProps = {
   autoConvert: true,
   filter: true,
   replaceOnChange: true,
-  clearOnSuccess: true,
+  clearOnSuccess: false,
   formId: 'defaultFormId',
   arrayComponent: ArrayComponent,
   objectComponent: ObjectComponent,

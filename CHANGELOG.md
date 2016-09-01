@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.6.13
+
+- Set the prop clearOnSuccess default to false.
+
 ### v1.6.12
 
 - Clears the form (insert and function types) when onSuccess is called. By [@fermuch](https://github.com/fermuch) at [#28](https://github.com/nicolaslopezj/simple-react-form/pull/28).
