@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'underscore'
 import ArrayComponent from './array'
 import ObjectComponent from './object'
-import DotObject from './dot'
+import DotObject from 'dot-object'
 import {docToModifier} from './utility'
 import Field from './field'
 
