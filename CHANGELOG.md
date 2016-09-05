@@ -3,6 +3,8 @@
 ### v1.6.14
 
 - Use dot-object as a dependency instead of including the code.
+- Create tests for clean fields function.
+- Put utility functions into different files.
 
 ### v1.6.13
 

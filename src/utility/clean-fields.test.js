@@ -1,6 +1,6 @@
-import {cleanFields} from './utility'
+import cleanFields from './clean-fields'
 
-test('[cleanFields] should remove simple not present fields', () => {
+test('Should remove simple not present fields', () => {
   const doc = {
     present: 'hi',
     otherPresent: 'good morning',
@@ -17,7 +17,7 @@ test('[cleanFields] should remove simple not present fields', () => {
   expect(result).toEqual(expected)
 })
 
-test('[cleanFields] should remove object not present fields', () => {
+test('Should remove object not present fields', () => {
   const doc = {
     'present.hi': 'hola',
     'present.bye': 'adios',
@@ -32,7 +32,7 @@ test('[cleanFields] should remove object not present fields', () => {
   expect(result).toEqual(expected)
 })
 
-test('[cleanFields] should remove array not present fields', () => {
+test('Should remove array not present fields', () => {
   const doc = {
     'presents.0.userId': '123',
     'presents.0.name': 'fdfd',
@@ -51,7 +51,7 @@ test('[cleanFields] should remove array not present fields', () => {
   expect(result).toEqual(expected)
 })
 
-test('[cleanFields] should remove array not present fields with deep array fields', () => {
+test('Should remove array not present fields with deep array fields', () => {
   const doc = {
     'presents.0.userId': '123',
     'presents.0.name': 'fdfd',
@@ -70,7 +70,7 @@ test('[cleanFields] should remove array not present fields with deep array field
   expect(result).toEqual(expected)
 })
 
-test('[cleanFields] should remove array not present fields keeping arrays', () => {
+test('Should remove array not present fields keeping arrays', () => {
   const doc = {
     presents: [
       {userId: '1234', name: '123'},
