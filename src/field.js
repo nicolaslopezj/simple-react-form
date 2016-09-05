@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'underscore'
-import DotObject from './dot'
+import DotObject from 'dot-object'
 
 import {
   getFieldType,

@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.6.15
+
+- Fix bug created by using dot-object as a dependency instead of including the code.
+
 ### v1.6.14
 
 - Use dot-object as a dependency instead of including the code.
