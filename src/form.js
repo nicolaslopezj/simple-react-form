@@ -90,6 +90,10 @@ const propTypes = {
   onSuccess: React.PropTypes.func,
 
   /**
+   * A function that is called when the form action error.
+   */
+  onError: React.PropTypes.func,
+  /**
    * A function that is called when the form is submitted.
    */
   onSubmit: React.PropTypes.func,
@@ -249,6 +253,10 @@ export default class Form extends React.Component {
       if (this.props.logErrors) {
         console.log(`[form-${this.props.formId}-error]`, error)
       }
+
+      if (this.props.onError) {
+        this.props.onError(error)
+      }
     } else {
       this.callChildFields({ method: 'onSuccess' })
       if (_.isFunction(this.props.onSuccess)) {
@@ -350,6 +358,10 @@ export default class Form extends React.Component {
       console.log(`[form-${this.props.formId}-error-messages]`, errorMessages)
     }
 
+    if (this.props.onError) {
+      this.props.onError(error)
+    }
+
     this.errorMessages = errorMessages
     this.setState({ errorMessages })
   }
@@ -368,6 +380,11 @@ export default class Form extends React.Component {
     if (this.props.logErrors) {
       console.log(`[form-${this.props.formId}-error-messages]`, errorMessages)
     }
+
+    if (this.props.onError) {
+      this.props.onError(error)
+    }
+
     this.errorMessages = errorMessages
     this.setState({ errorMessages })
   }
