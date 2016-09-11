@@ -103,7 +103,7 @@ export default class Field extends React.Component {
 
   getComponent () {
     if (_.isString(this.props.type)) {
-      return getFieldType(this.props.type).component
+      return getFieldType(this.props.type, this.props.fieldName).component
     } else if (this.props.type) {
       return this.props.type
     } else {

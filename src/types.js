@@ -6,10 +6,10 @@ export const registerType = function ({type, component}) {
   Attributes[type] = {name: type, component}
 }
 
-export const getFieldType = function (typeName) {
+export const getFieldType = function (typeName, fieldName) {
   const type = Attributes[typeName]
   if (!type) {
-    throw new Error(`You have no registered field type "${typeName}".`)
+    throw new Error(`You have no registered field type "${typeName}" for "${fieldName}".`)
   }
 
   return type
@@ -65,7 +65,7 @@ export const getFieldComponent = function ({ fieldName, schema }) {
   if (typeName === 'array') {
     // throw new Error(`You should use ArrayComponent instead of Field for "${fieldName}".`)
   }
-  const type = getFieldType(typeName)
+  const type = getFieldType(typeName, fieldName)
   if (!type) {
     throw new Error(`No component for field "${fieldName}".`)
   }

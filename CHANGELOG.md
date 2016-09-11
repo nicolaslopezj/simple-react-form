@@ -1,5 +1,9 @@
 # Changelog
 
+### vNEXT
+
+- Better warning when field has no field type.
+
 ### v1.6.15
 
 - Fix bug created by using dot-object as a dependency instead of including the code.
