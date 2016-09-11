@@ -1,8 +1,8 @@
 # Simple React Form
 
 [![travis-ci](https://travis-ci.org/nicolaslopezj/simple-react-form.svg?branch=master)](https://travis-ci.org/nicolaslopezj/simple-react-form)
+[![npm version](https://badge.fury.io/js/simple-react-form.svg)](https://badge.fury.io/js/simple-react-form)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
-[![Codewake](https://www.codewake.com/badges/ask_question.svg)](https://www.codewake.com/p/simple-react-form)
 
 Simple React Form is a library to make reusable form components in **React** and [React Native](#react-native) and works
 great with **Meteor**
