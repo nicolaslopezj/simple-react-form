@@ -445,7 +445,7 @@ export default class Form extends React.Component {
         </form>
       )
     } else {
-      return this.renderInsideForm()
+      return <div>{this.renderInsideForm()}</div>
     }
   }
 }
