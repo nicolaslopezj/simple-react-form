@@ -389,6 +389,17 @@ export default class Form extends React.Component {
     this.setState({ errorMessages })
   }
 
+  isRN () {
+    let isNative = false;
+    try {
+      let Platform = require('react-native').Platform;
+      if (Platform) {
+        isNative = true;
+      };
+    } catch(e) {}
+    return isNative;
+  }
+
   onValueChange (fieldName, newValue) {
     //  newValue = typeof newValue === 'undefined' ? null : newValue
     DotObject.del(fieldName, this.state.doc)
@@ -445,7 +456,11 @@ export default class Form extends React.Component {
         </form>
       )
     } else {
-      return <div>{this.renderInsideForm()}</div>
+      if (this.isRN()) {
+        return this.renderInsideForm()
+      } else {
+        return <div>{this.renderInsideForm()}</div>
+      }
     }
   }
 }
