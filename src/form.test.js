@@ -61,3 +61,23 @@ test('onChange should dispatch on changes', () => {
   calls = mockFn.mock.calls[0]
   expect(calls[calls.length - 1]).toEqual({bar: 'test', foo: 'barfoo'})
 })
+
+test('should render the form correctly', () => {
+  const component = mount(
+    <Form>
+      <Field fieldName="foo" type={DummyInput} />
+    </Form>
+  );
+
+  it('should render a <form>', () => {
+    expect(component.find('form').length).toBe(1)
+  })
+
+  it('should render the <Field>', () => {
+    expect(component.find('Field').length).toBe(1)
+  })
+
+  it('should render the <DummyInput>', () => {
+    expect(component.find('DummyInput').length).toBe(1)
+  })
+})
