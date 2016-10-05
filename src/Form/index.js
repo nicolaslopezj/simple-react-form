@@ -398,14 +398,7 @@ export default class Form extends React.Component {
   }
 
   isRN () {
-    let isNative = false
-    try {
-      let Platform = require('react-native').Platform
-      if (Platform) {
-        isNative = true
-      }
-    } catch (e) {}
-    return isNative
+    return navigator.product === 'ReactNative'
   }
 
   onValueChange (fieldName, newValue) {
