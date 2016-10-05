@@ -240,11 +240,12 @@ import UploadImage from '../components/my-fields/upload'
 ### Creating the field type
 
 You must create a React component that extends ```FieldType```.
+Check the props that are passed by default [here](https://github.com/nicolaslopezj/simple-react-form/blob/master/src/FieldType.js)
 
 ```js
-import {FieldType} from 'simple-react-form'
+import React from 'react'
 
-export default class UploadImage extends FieldType {
+export default class UploadImage extends React.Component {
   render() {
     return (
       <div>
@@ -279,18 +280,9 @@ You must create all your field types (Maybe someone makes a package in the futur
 
 ```js
 import React from 'react'
-import {FieldType, registerType} from 'simple-react-form'
 import {View, TextInput} from 'react-native'
 
-const propTypes = {
-  ...FieldType.propTypes
-}
-
-const defaultProps = {
-  ...FieldType.defaultProps
-}
-
-export default class TextFieldComponent extends FieldType {
+export default class TextFieldComponent extends React.Component {
 
   render () {
     return (
@@ -303,9 +295,6 @@ export default class TextFieldComponent extends FieldType {
     )
   }
 }
-
-TextFieldComponent.propTypes = propTypes
-TextFieldComponent.defaultProps = defaultProps
 ```
 
 Render the form in the component you want
