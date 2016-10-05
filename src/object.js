@@ -4,11 +4,11 @@
  */
 
 import React from 'react'
-import FieldType from './field-type'
+import {propTypes as fieldTypePropTypes} from './FieldType'
 import {replaceIndexKeys} from './utility'
 
 const propTypes = {
-  ...FieldType.propTypes,
+  ...fieldTypePropTypes,
   /**
    * Each item component
    */
@@ -19,7 +19,7 @@ const childContextTypes = {
   parentFieldName: React.PropTypes.string
 }
 
-export default class ObjectComponent extends FieldType {
+export default class ObjectComponent extends React.Component {
 
   getChildContext () {
     return {

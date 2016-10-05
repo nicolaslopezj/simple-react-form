@@ -1,10 +1,10 @@
 import React from 'react'
 import _ from 'underscore'
-import ArrayComponent from './array'
-import ObjectComponent from './object'
+import ArrayComponent from '../Array'
+import ObjectComponent from '../Object'
 import DotObject from 'dot-object'
-import {docToModifier} from './utility'
-import Field from './field'
+import {docToModifier} from '../utility'
+import Field from '../Field'
 
 const propTypes = {
   /**
@@ -231,7 +231,14 @@ export default class Form extends React.Component {
   }
 
   registerComponent ({ field, component }) {
+    console.log('registering field', field)
     this.fields.push({ field, component })
+  }
+
+  unregisterComponent (fieldName) {
+    console.log('unregistering component', fieldName)
+    const index = _.findIndex(this.fields, ({field}) => field === fieldName)
+    this.fields.splice(index, 1)
   }
 
   callChildFields ({ method, input }) {
@@ -442,6 +449,7 @@ export default class Form extends React.Component {
       return (
         <form onSubmit={this.onFormSubmit}>
           {this.renderInsideForm()}
+          <pre>{JSON.stringify(_.pluck(this.fields, 'field'), null, 2)}</pre>
         </form>
       )
     } else {

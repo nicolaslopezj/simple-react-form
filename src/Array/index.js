@@ -4,13 +4,13 @@
  */
 
 import React from 'react'
-import FieldType from './field-type'
 import _ from 'underscore'
-import ArrayContextItem from './array-context-item'
-import {replaceIndexKeys} from './utility'
+import ArrayContextItem from './ArrayContextItem'
+import {replaceIndexKeys} from '../utility'
+import {propTypes as fieldTypePropTypes} from '../FieldType'
 
 const propTypes = {
-  ...FieldType.propTypes,
+  ...fieldTypePropTypes,
   /**
    * The add button label
    */
@@ -63,7 +63,7 @@ const childContextTypes = {
   parentFieldName: React.PropTypes.string
 }
 
-export default class ArrayComponent extends FieldType {
+export default class ArrayComponent extends React.Component {
 
   constructor (props) {
     super(props)
