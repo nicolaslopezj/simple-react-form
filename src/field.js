@@ -1,6 +1,7 @@
 import React from 'react'
 import _ from 'underscore'
 import DotObject from 'dot-object'
+import {propTypes as fieldTypePropTypes} from './FieldType'
 
 import {
   getFieldType,
@@ -66,9 +67,38 @@ export default class Field extends React.Component {
     super(props)
     /* if (!this.context.schema && !props.type) {
       throw new Error(`You must set the type for the field "${props.fieldName}" or pass a schema to the form`)
-    }*/
+    } */
 
     this.onChange = this.onChange.bind(this)
+  }
+
+  componentDidMount () {
+    this.registerField()
+  }
+
+  componentDidUpdate (prevProps) {
+    if (!_.isEqual(prevProps, this.props)) {
+      this.unregisterField()
+      this.registerField()
+    }
+  }
+
+  componentWillUnmount () {
+    this.unregisterField()
+  }
+
+  unregisterField () {
+    this.context.form.unregisterComponent({
+      field: this.props.fieldName,
+      component: this.element
+    })
+  }
+
+  registerField () {
+    this.context.form.registerComponent({
+      field: this.props.fieldName,
+      component: this.element
+    })
   }
 
   getFieldName () {
@@ -136,7 +166,7 @@ export default class Field extends React.Component {
     const propOptions = _.omit(this.props, _.keys(propTypes))
     const schemaOptions = (this.getFieldSchema() && (this.getFieldSchema().srf || this.getFieldSchema().mrf)) || {}
     const totalOptions = _.extend(schemaOptions, propOptions)
-    const allowedKeys = _.keys(fieldComponent.propTypes || {})
+    const allowedKeys = _.keys({...fieldTypePropTypes, ...fieldComponent.propTypes})
     const onlyAllowedOptions = _.pick(totalOptions, allowedKeys)
 
     /**
@@ -168,7 +198,8 @@ export default class Field extends React.Component {
 
   render () {
     const component = this.getComponent()
-    return React.createElement(component, this.getChildProps())
+    this.element = React.createElement(component, this.getChildProps())
+    return this.element
   }
 }
 

@@ -1,10 +1,10 @@
 import React from 'react'
 import _ from 'underscore'
-import ArrayComponent from './array'
-import ObjectComponent from './object'
+import ArrayComponent from '../Array'
+import ObjectComponent from '../Object'
 import DotObject from 'dot-object'
-import {docToModifier} from './utility'
-import Field from './field'
+import {docToModifier} from '../utility'
+import Field from '../Field'
 
 const propTypes = {
   /**
@@ -230,8 +230,16 @@ export default class Form extends React.Component {
     }
   }
 
+  /*
+   * This is necesarry to allow the form to filter the fields when updating
+   */
   registerComponent ({ field, component }) {
     this.fields.push({ field, component })
+  }
+
+  unregisterComponent (fieldName) {
+    const index = _.findIndex(this.fields, ({field}) => field === fieldName)
+    this.fields.splice(index, 1)
   }
 
   callChildFields ({ method, input }) {
@@ -359,7 +367,7 @@ export default class Form extends React.Component {
     }
 
     if (this.props.onError) {
-      this.props.onError(error)
+      this.props.onError(errorMessages)
     }
 
     this.errorMessages = errorMessages
@@ -390,14 +398,7 @@ export default class Form extends React.Component {
   }
 
   isRN () {
-    let isNative = false;
-    try {
-      let Platform = require('react-native').Platform;
-      if (Platform) {
-        isNative = true;
-      };
-    } catch(e) {}
-    return isNative;
+    return navigator.product === 'ReactNative'
   }
 
   onValueChange (fieldName, newValue) {
@@ -428,7 +429,7 @@ export default class Form extends React.Component {
     })
     return keys.map((key) => {
       var fullKey = parent ? `${parent}.${key}` : key
-      return <Field fieldName={key} key={fullKey}/>
+      return <Field fieldName={key} key={fullKey} />
     })
   }
 

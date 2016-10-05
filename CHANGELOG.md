@@ -2,7 +2,14 @@
 
 ### vNEXT
 
+### v1.7.0
+
+- Tests. by @fermuch at [#36](https://github.com/nicolaslopezj/simple-react-form/pull/36).
+- Check javascript style when testing (js-standard).
+- Is no longer required to extend the FieldType to create fields.
+- Rename files.
 - Better warning when field has no field type.
+- Check React Native in other way
 
 ### v1.6.15
 

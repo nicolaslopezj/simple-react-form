@@ -1,37 +1,34 @@
 import React from 'react'
-import { shallow, mount, render } from 'enzyme'
-import Form from './form'
-import Field from './field'
-import FieldType from './field-type'
+import { shallow, mount } from 'enzyme'
+import Form from './index'
+import Field from '../Field'
 
-class DummyInput extends FieldType {
-  render() {
+class DummyInput extends React.Component {
+  render () {
     return (
       <input
         value={this.props.value || ''}
-        onChange={(e) => this.props.onChange(e.target.value)}
-      >
-      </input>
+        onChange={(e) => this.props.onChange(e.target.value)} />
     )
   }
 }
 
 // since simpleSchema comes from Meteor, we need to make a stub.
-class schemaStub {
-  constructor(schema) {
-    this._schema = schema;
+class SchemaStub {
+  constructor (schema) {
+    this._schema = schema
   }
 
-  schema(key) {
-    return this._schema[key] || {};
+  schema (key) {
+    return this._schema[key] || {}
   }
 
-  label(key) {
-    return `label-for-${key}`;
+  label (key) {
+    return `label-for-${key}`
   }
 
-  newContext() {
-    return this;
+  newContext () {
+    return this
   }
 }
 
@@ -40,29 +37,27 @@ test('Should render by default a <form>', () => {
     <Form>
       <div>dummy</div>
     </Form>
-  );
-  expect(component.find('form').length).toBe(1);
-});
+  )
+  expect(component.find('form').length).toBe(1)
+})
 
 test('Should not render a <form> if useFormTag is false', () => {
   const component = shallow(
     <Form useFormTag={false}>
       <div>dummy</div>
     </Form>
-  );
-  expect(component.find('form').length).toBe(0);
-});
+  )
+  expect(component.find('form').length).toBe(0)
+})
 
 test('onChange should dispatch on changes', () => {
-  let calls;
-  const mockFn = jest.fn();
+  let calls
+  const mockFn = jest.fn()
   const component = mount(
-    <Form
-      onChange={mockFn}
-    >
-      <Field fieldName="foo" type={DummyInput} />
+    <Form onChange={mockFn}>
+      <Field fieldName='foo' type={DummyInput} />
     </Form>
-  );
+  )
 
   component
     .find('input')
@@ -76,7 +71,6 @@ test('onChange should dispatch on changes', () => {
   calls = mockFn.mock.calls[0]
   expect(calls[calls.length - 1]).toEqual({foo: 'barfoo'})
 
-
   component.find('Form').get(0).onValueChange('bar', 'test')
   calls = mockFn.mock.calls[0]
   expect(calls[calls.length - 1]).toEqual({bar: 'test', foo: 'barfoo'})
@@ -85,9 +79,9 @@ test('onChange should dispatch on changes', () => {
 test('should render the form correctly', () => {
   const component = mount(
     <Form>
-      <Field fieldName="foo" type={DummyInput} />
+      <Field fieldName='foo' type={DummyInput} />
     </Form>
-  );
+  )
 
   it('should render a <form>', () => {
     expect(component.find('form').length).toBe(1)
@@ -106,7 +100,7 @@ test('should generate input keys correctly based on the schema', () => {
   const component = mount(
     <Form
       type='insert'
-      schema={new schemaStub({
+      schema={new SchemaStub({
         name: {
           type: String,
           srf: {
@@ -124,10 +118,10 @@ test('should generate input keys correctly based on the schema', () => {
         }
       })}
     >
-      <Field fieldName="name" type={DummyInput} />
-      <Field fieldName="deviceId" type={DummyInput} />
+      <Field fieldName='name' type={DummyInput} />
+      <Field fieldName='deviceId' type={DummyInput} />
     </Form>
-  );
+  )
 
   const generateInputsForKeys = component.instance().generateInputsForKeys.bind(component.instance())
 

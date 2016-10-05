@@ -1,4 +1,4 @@
-import docToModifier from './doc-to-modifier'
+// import docToModifier from './doc-to-modifier'
 
 // FIXME
 // This test throws an error since it depends on MongoObject, and
@@ -6,7 +6,7 @@ import docToModifier from './doc-to-modifier'
 // Since it's a meteor package, it can't be tested without
 // meteor, so for now we have to skip this test.
 xit('Should do something', () => {
-  const doc = {
+  /* const doc = {
     a: 1,
     b: '2'
   }
@@ -16,7 +16,7 @@ xit('Should do something', () => {
     fields: [ 'a', 'b' ]
   }
   const expected = {}
-
+  */
   // const result = docToModifier(doc, options)
   // expect(result).toEqual(expected)
 })

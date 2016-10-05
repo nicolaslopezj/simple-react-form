@@ -1,6 +1,6 @@
 {
   "name": "simple-react-form",
-  "version": "1.6.16",
+  "version": "1.7.0",
   "license": "MIT",
   "author": "Nicolás López <nicolaslopezj@me.com>",
   "description": "A library to make reusable form components in React and React Native",
@@ -12,8 +12,10 @@
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
     "prepublish": "npm run build",
-    "test": "jest",
-    "test-watch": "jest --watch"
+    "test": "standard \"src/**/*.js\" && jest",
+    "watch": "watch npm\\ run\\ build ./src",
+    "test-watch": "jest --watch",
+    "lint": "grunt tslint"
   },
   "keywords": [
     "react-component",
@@ -41,10 +43,11 @@
     "eslint-plugin-react": "^3.16.1",
     "jest-cli": "^15.1.1",
     "node-sass": "^3.4.2",
-    "react": ">=0.14.0",
-    "react-addons-test-utils": "^0.14.7",
-    "react-dom": ">=0.14.0",
+    "react": ">=15.0.0",
+    "react-addons-test-utils": "^15.0.0",
+    "react-dom": ">=15.0.0",
     "run-browser-babel": "^4.0.1",
+    "standard": "*",
     "tape": "^4.0.0",
     "uglify-js": "^2.6.1"
   },
@@ -55,6 +58,16 @@
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/lib"
+    ]
+  },
+  "standard": {
+    "globals": [
+      "it",
+      "xit",
+      "expect",
+      "test",
+      "jest",
+      "MongoObject"
     ]
   }
 }

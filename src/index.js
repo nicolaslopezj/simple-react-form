@@ -1,12 +1,11 @@
-export {default as Form} from './form'
-export {default as Field} from './field'
-export {default as FieldType} from './field-type'
-export {default as ArrayComponent} from './array'
-export {default as ObjectComponent} from './object'
+export {default as Form} from './Form/index'
+export {default as Field} from './Field'
+export {default as FieldType} from './FieldType'
+export {default as ArrayComponent} from './Array/index'
+export {default as ObjectComponent} from './Object'
 export {
   registerType,
   getFieldType,
   getFieldTypeName,
-  getFieldComponent,
-  getFieldOptionsError
+  getFieldComponent
 } from './types'

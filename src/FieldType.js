@@ -1,6 +1,6 @@
 import React from 'react'
 
-const propTypes = {
+export const propTypes = {
   /**
    * The current value of the field
    */
@@ -61,23 +61,7 @@ export default class FieldType extends React.Component {
 
   constructor (props) {
     super(props)
-    this.passProps = props.passProps
-    this.registerComponent()
-  }
-
-  componentWillReceiveProps (nextProps) {
-    this.passProps = nextProps.passProps
-  }
-
-  registerComponent () {
-    if (!this.props.form) {
-      console.warn('Error registering field in form. Form is not passed into props')
-      return
-    }
-    this.props.form.registerComponent({
-      field: this.props.fieldName,
-      component: this
-    })
+    console.warn('Now you don\'t have to extend FieldType to create components')
   }
 
 }

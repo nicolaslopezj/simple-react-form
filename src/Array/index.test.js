@@ -1,24 +1,24 @@
 import React from 'react'
-import { shallow, mount, render } from 'enzyme'
-import Form from './form'
-import Field from './field'
-import {default as ArrayField} from './array'
+import { mount } from 'enzyme'
+import Form from '../Form'
+import Field from '../Field'
+import {default as ArrayField} from './index'
 
 it('should render correctly', () => {
   const component = mount(
     <Form>
-      <Field fieldName="array" type={ArrayField} />
+      <Field fieldName='array' type={ArrayField} />
     </Form>
-  );
+  )
 
-  expect(component.find('ArrayComponent').length).toBe(1);
-});
+  expect(component.find('ArrayComponent').length).toBe(1)
+})
 
 it('addItem should add an item', () => {
   const component = mount(
     <Form>
-      <Field fieldName="array" type={ArrayField}>
-        <div className="children" />
+      <Field fieldName='array' type={ArrayField}>
+        <div className='children' />
       </Field>
     </Form>
   )
@@ -34,8 +34,8 @@ it('addItem should add an item', () => {
 it('removeItem should remove the item', () => {
   const component = mount(
     <Form>
-      <Field fieldName="array" type={ArrayField}>
-        <div className="children" />
+      <Field fieldName='array' type={ArrayField}>
+        <div className='children' />
       </Field>
     </Form>
   )
@@ -53,7 +53,7 @@ it('removeItem should remove the item', () => {
 it('should render an error if there is one', () => {
   const component = mount(
     <Form>
-      <Field fieldName="array" type={ArrayField} errorMessage="I AM AN ERROR"/>
+      <Field fieldName='array' type={ArrayField} errorMessage='I AM AN ERROR' />
     </Form>
   )
   expect(component.find('div').first().childAt(1).text()).toBe('I AM AN ERROR')

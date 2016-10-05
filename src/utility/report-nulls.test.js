@@ -33,7 +33,7 @@ test('Should not detect empty strings if option enabled', () => {
     emptyString: ''
   }
   const expected = {
-    notPresent: '',
+    notPresent: ''
   }
   const result = reportNulls(doc, true)
   expect(result).toEqual(expected)
