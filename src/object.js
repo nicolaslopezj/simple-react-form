@@ -1,17 +1,17 @@
+import React from 'react'
+import {propTypes as fieldTypePropTypes} from './FieldType'
+import {replaceIndexKeys} from './utility'
+
 /**
  * You can use this field as array field but the main purporse is to extend it
  * and create your own (like the material-ui fields do)
  */
 
-import React from 'react'
-import {propTypes as fieldTypePropTypes} from './FieldType'
-import {replaceIndexKeys} from './utility'
-
 const propTypes = {
   ...fieldTypePropTypes,
   /**
-   * Each item component
-   */
+  * Each item component
+  */
   children: React.PropTypes.any
 }
 
