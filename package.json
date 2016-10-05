@@ -12,7 +12,8 @@
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
     "prepublish": "npm run build",
-    "test": "jest"
+    "test": "jest",
+    "test-watch": "jest --watch"
   },
   "keywords": [
     "react-component",
