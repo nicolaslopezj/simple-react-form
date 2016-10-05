@@ -65,10 +65,6 @@ const childContextTypes = {
 
 export default class ArrayComponent extends React.Component {
 
-  constructor (props) {
-    super(props)
-  }
-
   getChildContext () {
     return {
       parentFieldName: this.props.fieldName

@@ -7,6 +7,5 @@ export {
   registerType,
   getFieldType,
   getFieldTypeName,
-  getFieldComponent,
-  getFieldOptionsError
+  getFieldComponent
 } from './types'

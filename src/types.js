@@ -82,32 +82,10 @@ export const getFieldComponent = function ({ fieldName, schema }) {
       contains = true
     }
 
-    /*
-    var options = fieldSchema.srf || fieldSchema.mrf || {}
-    const error = getFieldOptionsError({ type, options })
-    if (error) {
-      throw new Error(`MRF options of field "${fieldName}" are not allowed for "${type.name}". ${error.message}`)
-    }
-    */
     if (!contains) {
       throw new Error(`Type of field "${fieldName}" is not allowed for "${type.name}".`)
     }
   }
 
   return type.component
-}
-
-export const getFieldOptionsError = function ({ type, options }) {
-  if (type.optionsDefinition) {
-    // var optionsDefinition = _.clone(type.optionsDefinition)
-    /* optionsDefinition.type = Match.Optional(String)
-    optionsDefinition.passProps = Match.Optional(Object)
-    optionsDefinition.omit = Match.Optional(Boolean) */
-    try {
-      /* check(options, optionsDefinition) */
-      return null
-    } catch (e) {
-      return e
-    }
-  }
 }

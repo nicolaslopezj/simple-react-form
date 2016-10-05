@@ -67,7 +67,7 @@ export default class Field extends React.Component {
     super(props)
     /* if (!this.context.schema && !props.type) {
       throw new Error(`You must set the type for the field "${props.fieldName}" or pass a schema to the form`)
-    }*/
+    } */
 
     this.onChange = this.onChange.bind(this)
   }

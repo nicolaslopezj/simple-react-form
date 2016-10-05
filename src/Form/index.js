@@ -367,7 +367,7 @@ export default class Form extends React.Component {
     }
 
     if (this.props.onError) {
-      this.props.onError(error)
+      this.props.onError(errorMessages)
     }
 
     this.errorMessages = errorMessages
@@ -395,6 +395,17 @@ export default class Form extends React.Component {
 
     this.errorMessages = errorMessages
     this.setState({ errorMessages })
+  }
+
+  isRN () {
+    let isNative = false
+    try {
+      let Platform = require('react-native').Platform
+      if (Platform) {
+        isNative = true
+      }
+    } catch (e) {}
+    return isNative
   }
 
   onValueChange (fieldName, newValue) {
@@ -425,7 +436,7 @@ export default class Form extends React.Component {
     })
     return keys.map((key) => {
       var fullKey = parent ? `${parent}.${key}` : key
-      return <Field fieldName={key} key={fullKey}/>
+      return <Field fieldName={key} key={fullKey} />
     })
   }
 
@@ -453,7 +464,11 @@ export default class Form extends React.Component {
         </form>
       )
     } else {
-      return this.renderInsideForm()
+      if (this.isRN()) {
+        return this.renderInsideForm()
+      } else {
+        return <div>{this.renderInsideForm()}</div>
+      }
     }
   }
 }
