@@ -4,7 +4,8 @@ import ArrayComponent from '../Array'
 import ObjectComponent from '../Object'
 import DotObject from 'dot-object'
 import {docToModifier} from '../utility'
-import Field from '../Field'
+import generateInputsForKeys from '../utility/generateInputsForKeys'
+import getPresentFields from '../utility/getPresentFields'
 
 const propTypes = {
   /**
@@ -294,13 +295,6 @@ export default class Form extends React.Component {
     this.submit()
   }
 
-  getPresentFields () {
-    return _.filter(this.fields, field => {
-      const props = field.component.props
-      return !props.disabled
-    }).map(field => field.field)
-  }
-
   submit () {
     const data = this.props.commitOnlyChanges ? this.state.changes : this.state.doc
     if (this.props.type === 'insert') {
@@ -308,7 +302,7 @@ export default class Form extends React.Component {
       const doc = DotObject.object(dot)
       this.props.collection.insert(doc, this.getValidationOptions(), this.onCommit.bind(this))
     } else if (this.props.type === 'update') {
-      var modifier = docToModifier(data, { keepArrays: this.props.keepArrays, fields: this.getPresentFields() })
+      var modifier = docToModifier(data, { keepArrays: this.props.keepArrays, fields: getPresentFields(this.fields) })
       if (!_.isEqual(modifier, {})) {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this))
       } else {
@@ -418,27 +412,12 @@ export default class Form extends React.Component {
     }
   }
 
-  generateInputsForKeys (keys, parent = '') {
-    var schema = this.getSchema()
-    keys = _.reject(keys, (key) => {
-      var fullKey = parent ? `${parent}.${key}` : key
-      var keySchema = schema.schema(fullKey)
-      const options = keySchema.srf || keySchema.mrf
-      if (options && options.omit) return true
-      if (_.contains(this.props.omit, fullKey)) return true
-    })
-    return keys.map((key) => {
-      var fullKey = parent ? `${parent}.${key}` : key
-      return <Field fieldName={key} key={fullKey} />
-    })
-  }
-
   generateChildren () {
     const schema = this.getSchema()
     if (!schema) {
       throw new Error('You must pass a schema or manually render the fields')
     }
-    return this.generateInputsForKeys(schema._firstLevelSchemaKeys)
+    return generateInputsForKeys(schema._firstLevelSchemaKeys, '', schema, this.props.omit)
   }
 
   renderInsideForm () {

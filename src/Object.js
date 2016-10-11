@@ -1,6 +1,7 @@
 import React from 'react'
 import {propTypes as fieldTypePropTypes} from './FieldType'
 import {replaceIndexKeys} from './utility'
+import generateInputsForKeys from './utility/generateInputsForKeys'
 
 /**
  * You can use this field as array field but the main purporse is to extend it
@@ -32,7 +33,7 @@ export default class ObjectComponent extends React.Component {
     if (!this.props.schema) throw new Error(`You must pass children to the object field "${this.props.fieldName}"`)
     const schemaFieldName = replaceIndexKeys(this.props.fieldName)
     const keys = this.props.schema.objectKeys(schemaFieldName)
-    return this.props.form.generateInputsForKeys(keys, schemaFieldName)
+    return generateInputsForKeys(keys, schemaFieldName, this.props.schema, this.props.omit)
   }
 
   render () {

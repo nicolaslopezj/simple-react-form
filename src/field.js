@@ -89,14 +89,14 @@ export default class Field extends React.Component {
 
   unregisterField () {
     this.context.form.unregisterComponent({
-      field: this.props.fieldName,
+      field: this.getFieldName(),
       component: this.element
     })
   }
 
   registerField () {
     this.context.form.registerComponent({
-      field: this.props.fieldName,
+      field: this.getFieldName(),
       component: this.element
     })
   }

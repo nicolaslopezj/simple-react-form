@@ -2,6 +2,12 @@
 
 ### vNEXT
 
+### v1.7.1
+
+- Separate ```generateInputsForKeys``` from ```Form.js```.
+- Fix a bug with ```getPresentFields``` with deep keys.
+- Add tests for ```generateInputsForKeys``` and ```getPresentFields```.
+
 ### v1.7.0
 
 - Tests. by @fermuch at [#36](https://github.com/nicolaslopezj/simple-react-form/pull/36).
@@ -9,7 +15,7 @@
 - Is no longer required to extend the FieldType to create fields.
 - Rename files.
 - Better warning when field has no field type.
-- Check React Native in other way
+- Check React Native in other way.
 
 ### v1.6.15
 
