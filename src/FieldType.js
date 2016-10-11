@@ -9,7 +9,7 @@ export const propTypes = {
   /**
    * Field label
    */
-  label: React.PropTypes.string,
+  label: React.PropTypes.any,
 
   /**
    * The error message if there is a error

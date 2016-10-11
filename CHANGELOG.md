@@ -2,6 +2,10 @@
 
 ### vNEXT
 
+### v1.7.3
+
+- Set field type prop label to any to avoid warnings.
+
 ### v1.7.2
 
 - Fix a bug with ```unregisterField```.
