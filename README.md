@@ -239,7 +239,7 @@ import UploadImage from '../components/my-fields/upload'
 
 ### Creating the field type
 
-You must create a React component that extends ```FieldType```.
+You must create a React component.
 Check the props that are passed by default [here](https://github.com/nicolaslopezj/simple-react-form/blob/master/src/FieldType.js)
 
 ```js
