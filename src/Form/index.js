@@ -302,7 +302,8 @@ export default class Form extends React.Component {
       const doc = DotObject.object(dot)
       this.props.collection.insert(doc, this.getValidationOptions(), this.onCommit.bind(this))
     } else if (this.props.type === 'update') {
-      var modifier = docToModifier(data, { keepArrays: this.props.keepArrays, fields: getPresentFields(this.fields) })
+      const presentFields = getPresentFields(this.fields)
+      var modifier = docToModifier(data, { keepArrays: this.props.keepArrays, fields: presentFields })
       if (!_.isEqual(modifier, {})) {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this))
       } else {

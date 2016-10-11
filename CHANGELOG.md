@@ -2,6 +2,10 @@
 
 ### vNEXT
 
+### v1.7.2
+
+- Fix a bug with ```unregisterField```.
+
 ### v1.7.1
 
 - Separate ```generateInputsForKeys``` from ```Form.js```.

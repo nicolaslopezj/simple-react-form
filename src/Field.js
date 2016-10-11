@@ -76,9 +76,14 @@ export default class Field extends React.Component {
     this.registerField()
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (!_.isEqual(this.props, nextProps)) {
+      this.unregisterField()
+    }
+  }
+
   componentDidUpdate (prevProps) {
     if (!_.isEqual(prevProps, this.props)) {
-      this.unregisterField()
       this.registerField()
     }
   }
@@ -88,10 +93,7 @@ export default class Field extends React.Component {
   }
 
   unregisterField () {
-    this.context.form.unregisterComponent({
-      field: this.getFieldName(),
-      component: this.element
-    })
+    this.context.form.unregisterComponent(this.getFieldName())
   }
 
   registerField () {
