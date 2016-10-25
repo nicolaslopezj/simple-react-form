@@ -109,7 +109,7 @@ class PostsCreate extends React.Component {
 
 ## Use with Meteor Simple Schema
 
-Automatic forms creation with [aldeed:simple-schema](http://github.com/aldeed/simple-schema) and React.
+Automatic forms creation with [aldeed/meteor-simple-schema](https://github.com/aldeed/meteor-simple-schema) and React.
 
 ##### Allow ```srf``` field for schemas
 
