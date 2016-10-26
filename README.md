@@ -14,7 +14,7 @@ If you use material-ui you are lucky, because I published a material-ui set of c
 
 Made for Meteor, but works without Meteor too. This package was inspired by aldeed's autoform.
 
-To use with react native [click here](#react-native)
+To use with react native [check here](#react-native)
 
 ### Installation
 
