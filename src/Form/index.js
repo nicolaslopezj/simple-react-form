@@ -6,6 +6,7 @@ import DotObject from 'dot-object'
 import {docToModifier} from '../utility'
 import generateInputsForKeys from '../utility/generateInputsForKeys'
 import getPresentFields from '../utility/getPresentFields'
+import cleanFields from '../utility/clean-fields'
 
 const propTypes = {
   /**
@@ -322,7 +323,9 @@ export default class Form extends React.Component {
         if (!_.isFunction(this.props.onSubmit)) {
           throw new Error('You must pass a onSubmit function or set the form type to insert or update')
         }
-        var success = this.props.onSubmit(doc)
+        const presentFields = getPresentFields(this.fields)
+        const cleanDoc = cleanFields(doc, presentFields)
+        var success = this.props.onSubmit(cleanDoc)
         if (success === false) {
           this.onCommit('onSubmit error')
         } else {
