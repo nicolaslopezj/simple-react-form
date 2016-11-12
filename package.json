@@ -7,7 +7,7 @@
   "main": "./lib",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nicolaslopezj/simple-react-form/tree/master/form"
+    "url": "https://github.com/nicolaslopezj/simple-react-form"
   },
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
