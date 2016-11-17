@@ -188,7 +188,7 @@ export default class Form extends React.Component {
     this.state = {
       doc: _.clone(state),
       changes: {},
-      validationContext: this.getSchema() ? this.getSchema().newContext() : null,
+      validationContext: this.getSchema(props) ? this.getSchema(props).newContext() : null,
       errorMessages: {}
     }
     this.fields = []
@@ -222,14 +222,15 @@ export default class Form extends React.Component {
     //  Console.log('did update form', prevProps, prevState)
   }
 
-  getSchema () {
-    if (this.props.schema) {
-      return this.props.schema
-    } else if (this.props.collection) {
-      return this.props.collection.simpleSchema()
-    } else {
-      //  Throw new Error('no schema was specified.')
-    }
+  getSchema (props) {
+    props = props || this.props
+    if (props.schema) {
+        return props.schema
+      } else if (props.collection) {
+        return props.collection.simpleSchema()
+      } else {
+        //  Throw new Error('no schema was specified.')
+      }
   }
 
   /*

@@ -2,7 +2,7 @@
 
 ### vNEXT
 
-### v1.7.5
+### v1.7.6
 
 - Fix use of this.props on Form constructor
 
