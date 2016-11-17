@@ -2,6 +2,10 @@
 
 ### vNEXT
 
+### v1.7.5
+
+- Fix use of this.props on Form constructor
+
 ### v1.7.4
 
 - Pass only present fields in ```onSubmit``` callback.

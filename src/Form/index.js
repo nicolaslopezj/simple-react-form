@@ -184,7 +184,7 @@ export default class Form extends React.Component {
 
   constructor (props) {
     super(props)
-    const state = this.props.state || this.props.doc || {}
+    const state = props.state || props.doc || {}
     this.state = {
       doc: _.clone(state),
       changes: {},
@@ -192,7 +192,7 @@ export default class Form extends React.Component {
       errorMessages: {}
     }
     this.fields = []
-    this.autoSave = _.debounce(this.submit.bind(this), this.props.autoSaveWaitTime)
+    this.autoSave = _.debounce(this.submit.bind(this), props.autoSaveWaitTime)
     this.errorMessages = {}
     this.onFormSubmit = this.onFormSubmit.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
