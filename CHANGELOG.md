@@ -2,6 +2,10 @@
 
 ### vNEXT
 
+### v1.7.7
+
+- Fix onSubmit doc cleaning
+
 ### v1.7.6
 
 - Fix use of this.props on Form constructor

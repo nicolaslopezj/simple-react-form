@@ -223,14 +223,14 @@ export default class Form extends React.Component {
   }
 
   getSchema (props) {
-    props = props || this.props
+    props = props || this.props
     if (props.schema) {
-        return props.schema
-      } else if (props.collection) {
-        return props.collection.simpleSchema()
-      } else {
-        //  Throw new Error('no schema was specified.')
-      }
+      return props.schema
+    } else if (props.collection) {
+      return props.collection.simpleSchema()
+    } else {
+      //  Throw new Error('no schema was specified.')
+    }
   }
 
   /*
@@ -325,8 +325,8 @@ export default class Form extends React.Component {
           throw new Error('You must pass a onSubmit function or set the form type to insert or update')
         }
         const presentFields = getPresentFields(this.fields)
-        const cleanDoc = cleanFields(doc, presentFields)
-        var success = this.props.onSubmit(cleanDoc)
+        const cleanDoc = cleanFields(DotObject.dot(data), presentFields)
+        var success = this.props.onSubmit(DotObject.object(DotObject.dot(cleanDoc)))
         if (success === false) {
           this.onCommit('onSubmit error')
         } else {
