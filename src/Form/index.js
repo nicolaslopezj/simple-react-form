@@ -434,7 +434,7 @@ export default class Form extends React.Component {
   }
 
   render () {
-    const domProps = _.omit(this.props, _.keys(propTypes));
+    const domProps = _.omit(this.props, _.keys(propTypes))
     if (this.props.useFormTag) {
       return (
         <form {...domProps} onSubmit={this.onFormSubmit}>
