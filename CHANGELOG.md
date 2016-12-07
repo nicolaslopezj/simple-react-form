@@ -2,6 +2,10 @@
 
 ### vNEXT
 
+### v1.7.8
+
+- Pass props not present in propTypes to form element
+
 ### v1.7.7
 
 - Fix onSubmit doc cleaning
