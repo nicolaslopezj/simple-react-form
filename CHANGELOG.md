@@ -6,6 +6,7 @@
 
 - Not render form never in React Native
 - Add ```errorMessages``` prop to ```Form```
+- Pass props not present in propTypes to form element
 
 ### v1.7.7
 
