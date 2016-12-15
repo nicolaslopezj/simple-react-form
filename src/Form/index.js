@@ -148,7 +148,12 @@ const propTypes = {
   /**
    * Render form tag
    */
-  useFormTag: React.PropTypes.bool
+  useFormTag: React.PropTypes.bool,
+
+  /**
+   * Pass error messages
+   */
+  errorMessages: React.PropTypes.object
 }
 
 const defaultProps = {
@@ -169,7 +174,8 @@ const defaultProps = {
   autoSaveWaitTime: 500,
   omit: [],
   validate: true,
-  useFormTag: true
+  useFormTag: true,
+  errorMessages: {}
 }
 
 const childContextTypes = {
@@ -189,11 +195,11 @@ export default class Form extends React.Component {
       doc: _.clone(state),
       changes: {},
       validationContext: this.getSchema(props) ? this.getSchema(props).newContext() : null,
-      errorMessages: {}
+      errorMessages: props.errorMessages
     }
     this.fields = []
     this.autoSave = _.debounce(this.submit.bind(this), props.autoSaveWaitTime)
-    this.errorMessages = {}
+    this.errorMessages = props.errorMessages
     this.onFormSubmit = this.onFormSubmit.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
   }
@@ -215,6 +221,11 @@ export default class Form extends React.Component {
       if (!_.isEqual(state, nextState)) {
         this.setState({ doc: _.clone(nextState), changes: {} })
       }
+    }
+
+    if (!_.isEqual(nextProps.errorMessages, this.props.errorMessages)) {
+      this.setState({errorMessages: nextProps.errorMessages})
+      this.errorMessages = nextProps.errorMessages
     }
   }
 
@@ -435,7 +446,7 @@ export default class Form extends React.Component {
 
   render () {
     const domProps = _.omit(this.props, _.keys(propTypes))
-    if (this.props.useFormTag) {
+    if (this.props.useFormTag && !this.isRN()) {
       return (
         <form {...domProps} onSubmit={this.onFormSubmit}>
           {this.renderInsideForm()}

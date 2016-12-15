@@ -2,6 +2,11 @@
 
 ### vNEXT
 
+### v1.7.8
+
+- Not render form never in React Native
+- Add ```errorMessages``` prop to ```Form```
+
 ### v1.7.7
 
 - Fix onSubmit doc cleaning
