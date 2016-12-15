@@ -2,7 +2,7 @@
 
 ### vNEXT
 
-### v1.7.8
+### v1.7.9
 
 - Not render form never in React Native
 - Add ```errorMessages``` prop to ```Form```
