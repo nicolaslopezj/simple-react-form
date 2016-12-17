@@ -1,6 +1,6 @@
 {
   "name": "simple-react-form",
-  "version": "1.7.9",
+  "version": "1.8.0",
   "license": "MIT",
   "author": "Nicolás López <nicolaslopezj@me.com>",
   "description": "A library to make reusable form components in React and React Native",
@@ -25,7 +25,7 @@
   ],
   "dependencies": {
     "dot-object": "^1.5.1",
-    "underscore": "^1.8.3"
+    "lodash": "^4.17.2"
   },
   "devDependencies": {
     "babel-cli": "6.5.1",

@@ -2,6 +2,11 @@
 
 ### vNEXT
 
+### v1.8.0
+
+- Use lodash instead of underscore.
+- Use deepClone instead of clone to clone doc, state, and errorMessages props.
+
 ### v1.7.9
 
 - Not render form never in React Native

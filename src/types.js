@@ -1,6 +1,6 @@
-import _ from 'underscore'
-
 export var Attributes = {}
+import isString from 'lodash/isString'
+import isEqual from 'lodash/isEqual'
 
 export const registerType = function ({type, component}) {
   Attributes[type] = {name: type, component}
@@ -56,7 +56,7 @@ export const getFieldComponent = function ({ fieldName, schema }) {
   }
 
   const typeName = getFieldTypeName({ fieldName, fieldSchema, schema })
-  if (!_.isString(typeName)) {
+  if (!isString(typeName)) {
     return typeName
   }
   if (typeName === 'object') {
@@ -73,7 +73,7 @@ export const getFieldComponent = function ({ fieldName, schema }) {
   if (type.allowedTypes) {
     var contains = false
     type.allowedTypes.map((allowedType) => {
-      if (_.isEqual(fieldSchema.type, allowedType)) {
+      if (isEqual(fieldSchema.type, allowedType)) {
         contains = true
       }
     })
