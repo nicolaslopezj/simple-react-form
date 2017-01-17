@@ -96,10 +96,12 @@ class PostsCreate extends React.Component {
   render() {
     return (
       <div>
-        <Form state={this.state} onChange={changes => this.setState(changes)}>
-          <Field fieldName='name' label='Name' type={Text}/>
-          <Field fieldName='date' label='A Date' type={DatePicker}/>
-        </Form>
+        <MuiThemeProvider>
+          <Form state={this.state} onChange={changes => this.setState(changes)}>
+            <Field fieldName='name' label='Name' type={Text}/>
+            <Field fieldName='date' label='A Date' type={DatePicker}/>
+          </Form>
+        </MuiThemeProvider>
         <p>
           My name is {this.state.name}
         </p>
