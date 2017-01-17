@@ -65,6 +65,8 @@ class PostsCreate extends React.Component {
 }
 ```
 
+Since Material-UI V0.15.0 components require a theme to be provided. Recommended way is wrapping your component in
+a `MuiThemeProvider` component like shown in the example
 You can find more examples [here](https://github.com/nicolaslopezj/simple-react-form-examples).
 
 ## Contributions
