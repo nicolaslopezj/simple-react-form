@@ -41,6 +41,7 @@ import React from 'react'
 import {Form, Field} from 'simple-react-form'
 import DatePicker from 'simple-react-form-material-ui/lib/date-picker'
 import Text from 'simple-react-form-material-ui/lib/text'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 class PostsCreate extends React.Component {
 
@@ -52,10 +53,12 @@ class PostsCreate extends React.Component {
   render() {
     return (
       <div>
-        <Form state={this.state} onChange={changes => this.setState(changes)}>
-          <Field fieldName='name' label='Name' type={Text}/>
-          <Field fieldName='date' label='A Date' type={DatePicker}/>
-        </Form>
+        <MuiThemeProvider>
+          <Form state={this.state} onChange={changes => this.setState(changes)}>
+            <Field fieldName='name' label='Name' type={Text}/>
+            <Field fieldName='date' label='A Date' type={DatePicker}/>
+          </Form>
+        </MuiThemeProvider>
         <p>
           My name is {this.state.name}
         </p>
@@ -66,7 +69,7 @@ class PostsCreate extends React.Component {
 ```
 
 Since Material-UI V0.15.0 components require a theme to be provided. Recommended way is wrapping your component in
-a `MuiThemeProvider` component like shown in the example
+a `MuiThemeProvider` component like shown in the example  
 You can find more examples [here](https://github.com/nicolaslopezj/simple-react-form-examples).
 
 ## Contributions
@@ -85,6 +88,7 @@ import React from 'react'
 import {Form, Field} from 'simple-react-form'
 import DatePicker from 'simple-react-form-material-ui/lib/date-picker'
 import Text from 'simple-react-form-material-ui/lib/text'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 class PostsCreate extends React.Component {
 
