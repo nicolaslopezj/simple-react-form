@@ -311,7 +311,7 @@ export default class Form extends React.Component {
 
   onFormSubmit (event) {
     event.preventDefault()
-    this.submit()
+    return this.submit()
   }
 
   submit () {
@@ -349,8 +349,10 @@ export default class Form extends React.Component {
         } else {
           this.onCommit()
         }
+        return success
       } else {
         this.onCommit('Validation error')
+        return false
       }
     }
   }
