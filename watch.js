@@ -16,8 +16,18 @@ const fileChanged = function (filename) {
     // build.on('close', code => console.log('Build ready')) // ready
     build.on('error', error => console.log(error))
   } else if (filename.endsWith('.js')) {
-    const result = babel.transformFileSync('./src/' + filename).code
-    fs.writeFileSync('./lib/' + filename, result)
+    try {
+      const result = babel.transformFileSync('./src/' + filename).code
+      fs.writeFileSync('./lib/' + filename, result)
+    } catch (error) {
+      console.log(error.message.red + '\n')
+      if (error._babel) {
+        console.log(error.codeFrame)
+        console.log('')
+      } else {
+        console.log(error)
+      }
+    }
   } else if (fs.lstatSync('./src/' + filename).isDirectory()) {
     fs.mkdirSync('./lib/' + filename)
     fs.readdirSync('./src/' + filename).forEach(file => {
