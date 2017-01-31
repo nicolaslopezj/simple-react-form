@@ -2,6 +2,10 @@
 
 ### vNEXT
 
+### v1.8.1
+
+- submit function returns a boolean indicating the result.
+
 ### v1.8.0
 
 - Use lodash instead of underscore.
