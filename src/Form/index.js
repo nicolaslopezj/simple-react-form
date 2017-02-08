@@ -1,5 +1,4 @@
 import React from 'react'
-import _ from 'underscore'
 import ArrayComponent from '../Array'
 import ObjectComponent from '../Object'
 import DotObject from 'dot-object'
@@ -7,6 +6,13 @@ import {docToModifier} from '../utility'
 import generateInputsForKeys from '../utility/generateInputsForKeys'
 import getPresentFields from '../utility/getPresentFields'
 import cleanFields from '../utility/clean-fields'
+import cloneDeep from 'lodash/cloneDeep'
+import debounce from 'lodash/debounce'
+import isEqual from 'lodash/isEqual'
+import findIndex from 'lodash/findIndex'
+import isFunction from 'lodash/isFunction'
+import omit from 'lodash/omit'
+import keys from 'lodash/keys'
 
 const propTypes = {
   /**
@@ -148,7 +154,12 @@ const propTypes = {
   /**
    * Render form tag
    */
-  useFormTag: React.PropTypes.bool
+  useFormTag: React.PropTypes.bool,
+
+  /**
+   * Pass error messages
+   */
+  errorMessages: React.PropTypes.object
 }
 
 const defaultProps = {
@@ -169,7 +180,8 @@ const defaultProps = {
   autoSaveWaitTime: 500,
   omit: [],
   validate: true,
-  useFormTag: true
+  useFormTag: true,
+  errorMessages: {}
 }
 
 const childContextTypes = {
@@ -186,14 +198,14 @@ export default class Form extends React.Component {
     super(props)
     const state = props.state || props.doc || {}
     this.state = {
-      doc: _.clone(state),
+      doc: cloneDeep(state),
       changes: {},
       validationContext: this.getSchema(props) ? this.getSchema(props).newContext() : null,
-      errorMessages: {}
+      errorMessages: props.errorMessages
     }
     this.fields = []
-    this.autoSave = _.debounce(this.submit.bind(this), props.autoSaveWaitTime)
-    this.errorMessages = {}
+    this.autoSave = debounce(this.submit.bind(this), props.autoSaveWaitTime)
+    this.errorMessages = props.errorMessages
     this.onFormSubmit = this.onFormSubmit.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
   }
@@ -212,9 +224,14 @@ export default class Form extends React.Component {
     if (this.props.replaceOnChange || this.props.formId !== nextProps.formId) {
       const state = this.props.state || this.props.doc || {}
       const nextState = nextProps.state || nextProps.doc || {}
-      if (!_.isEqual(state, nextState)) {
-        this.setState({ doc: _.clone(nextState), changes: {} })
+      if (!isEqual(state, nextState)) {
+        this.setState({ doc: cloneDeep(nextState), changes: {} })
       }
+    }
+
+    if (!isEqual(nextProps.errorMessages, this.props.errorMessages)) {
+      this.setState({errorMessages: nextProps.errorMessages})
+      this.errorMessages = nextProps.errorMessages
     }
   }
 
@@ -241,13 +258,13 @@ export default class Form extends React.Component {
   }
 
   unregisterComponent (fieldName) {
-    const index = _.findIndex(this.fields, ({field}) => field === fieldName)
+    const index = findIndex(this.fields, ({field}) => field === fieldName)
     this.fields.splice(index, 1)
   }
 
   callChildFields ({ method, input }) {
     this.fields.map((field) => {
-      if (_.isFunction(field.component[method])) {
+      if (isFunction(field.component[method])) {
         field.component[method](input)
       }
     })
@@ -270,7 +287,7 @@ export default class Form extends React.Component {
       }
     } else {
       this.callChildFields({ method: 'onSuccess' })
-      if (_.isFunction(this.props.onSuccess)) {
+      if (isFunction(this.props.onSuccess)) {
         this.props.onSuccess(docId)
       }
       if (this.props.clearOnSuccess) {
@@ -294,7 +311,7 @@ export default class Form extends React.Component {
 
   onFormSubmit (event) {
     event.preventDefault()
-    this.submit()
+    return this.submit()
   }
 
   submit () {
@@ -306,11 +323,11 @@ export default class Form extends React.Component {
     } else if (this.props.type === 'update') {
       const presentFields = getPresentFields(this.fields)
       var modifier = docToModifier(data, { keepArrays: this.props.keepArrays, fields: presentFields })
-      if (!_.isEqual(modifier, {})) {
+      if (!isEqual(modifier, {})) {
         this.props.collection.update(this.state.doc._id, modifier, this.getValidationOptions(), this.onCommit.bind(this))
       } else {
         this.callChildFields({ method: 'onSuccess' })
-        if (_.isFunction(this.props.onSuccess)) {
+        if (isFunction(this.props.onSuccess)) {
           this.props.onSuccess()
         }
       }
@@ -321,7 +338,7 @@ export default class Form extends React.Component {
         isValid = this.getSchema().namedContext(this.getValidationOptions().validationContext).validate(doc)
       }
       if (isValid) {
-        if (!_.isFunction(this.props.onSubmit)) {
+        if (!isFunction(this.props.onSubmit)) {
           throw new Error('You must pass a onSubmit function or set the form type to insert or update')
         }
         const presentFields = getPresentFields(this.fields)
@@ -332,8 +349,10 @@ export default class Form extends React.Component {
         } else {
           this.onCommit()
         }
+        return success
       } else {
         this.onCommit('Validation error')
+        return false
       }
     }
   }
@@ -348,7 +367,7 @@ export default class Form extends React.Component {
   }
 
   setErrorMessage (fieldName, message) {
-    const errorMessages = _.clone(this.errorMessages)
+    const errorMessages = cloneDeep(this.errorMessages)
     errorMessages[fieldName] = message
     this.errorMessages = errorMessages
     this.setState({ errorMessages })
@@ -412,7 +431,7 @@ export default class Form extends React.Component {
       this.autoSave()
     }
 
-    if (_.isFunction(this.props.onChange)) {
+    if (isFunction(this.props.onChange)) {
       this.props.onChange(this.state.doc, this.state.changes)
     }
   }
@@ -434,9 +453,10 @@ export default class Form extends React.Component {
   }
 
   render () {
-    if (this.props.useFormTag) {
+    const domProps = omit(this.props, keys(propTypes))
+    if (this.props.useFormTag && !this.isRN()) {
       return (
-        <form onSubmit={this.onFormSubmit}>
+        <form {...domProps} onSubmit={this.onFormSubmit}>
           {this.renderInsideForm()}
         </form>
       )
