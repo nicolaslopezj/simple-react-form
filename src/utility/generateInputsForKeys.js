@@ -2,7 +2,7 @@ import Field from '../Field'
 import _ from 'underscore'
 import React from 'react'
 
-export default function (keys, parent = '', schema, omit = []) {
+export default function (keys, parent = '', schema, omit = [], props = {}) {
   const fieldNames = _.reject(keys, (key) => {
     var fullKey = parent ? `${parent}.${key}` : key
     var keySchema = schema.schema(fullKey)
@@ -12,6 +12,6 @@ export default function (keys, parent = '', schema, omit = []) {
   })
   return fieldNames.map((key) => {
     var fullKey = parent ? `${parent}.${key}` : key
-    return <Field fieldName={key} key={fullKey} />
+    return <Field {...props} fieldName={key} key={fullKey} />
   })
 }
