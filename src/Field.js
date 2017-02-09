@@ -1,7 +1,12 @@
 import React from 'react'
-import _ from 'underscore'
 import DotObject from 'dot-object'
 import {propTypes as fieldTypePropTypes} from './FieldType'
+import omit from 'lodash/omit'
+import isEqual from 'lodash/isEqual'
+import has from 'lodash/has'
+import isString from 'lodash/isString'
+import keys from 'lodash/keys'
+import pick from 'lodash/pick'
 
 import {
   getFieldType,
@@ -77,13 +82,13 @@ export default class Field extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!_.isEqual(this.props, nextProps)) {
+    if (!isEqual(this.props, nextProps)) {
       this.unregisterField()
     }
   }
 
   componentDidUpdate (prevProps) {
-    if (!_.isEqual(prevProps, this.props)) {
+    if (!isEqual(prevProps, this.props)) {
       this.registerField()
     }
   }
@@ -124,7 +129,7 @@ export default class Field extends React.Component {
   }
 
   getLabel () {
-    if (_.has(this.props, 'label')) {
+    if (has(this.props, 'label')) {
       return this.props.label
     } else if (this.getSchema()) {
       return this.getSchema().label(this.getFieldName())
@@ -134,7 +139,7 @@ export default class Field extends React.Component {
   }
 
   getComponent () {
-    if (_.isString(this.props.type)) {
+    if (isString(this.props.type)) {
       return getFieldType(this.props.type, this.props.fieldName).component
     } else if (this.props.type) {
       return this.props.type
@@ -165,11 +170,11 @@ export default class Field extends React.Component {
      * This gets the props that are defined in the propTypes of the registered component.
      */
     const fieldComponent = this.getComponent()
-    const propOptions = _.omit(this.props, _.keys(propTypes))
+    const propOptions = omit(this.props, keys(propTypes))
     const schemaOptions = (this.getFieldSchema() && (this.getFieldSchema().srf || this.getFieldSchema().mrf)) || {}
-    const totalOptions = _.extend(schemaOptions, propOptions)
-    const allowedKeys = _.keys({...fieldTypePropTypes, ...fieldComponent.propTypes})
-    const onlyAllowedOptions = _.pick(totalOptions, allowedKeys)
+    const totalOptions = {...schemaOptions, ...propOptions}
+    const allowedKeys = keys({...fieldTypePropTypes, ...fieldComponent.propTypes})
+    const onlyAllowedOptions = pick(totalOptions, allowedKeys)
 
     /**
      * Options that are not registered in the propTypes are passed separatly.
@@ -177,7 +182,7 @@ export default class Field extends React.Component {
      * passed to the main component of it.
      */
     allowedKeys.push('type')
-    const notDefinedOptions = _.omit(totalOptions, allowedKeys)
+    const notDefinedOptions = omit(totalOptions, allowedKeys)
 
     const props = {
       value: this.getValue(),

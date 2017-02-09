@@ -1,7 +1,7 @@
-import _ from 'underscore'
 import cleanFields from './clean-fields'
 import cleanNulls from './clean-nulls'
 import reportNulls from './report-nulls'
+import isEmpty from 'lodash/isEmpty'
 
 export default function (doc, options) {
   var modifier = {}
@@ -18,11 +18,11 @@ export default function (doc, options) {
   flatDoc = cleanNulls(flatDoc, false, !!options.keepEmptyStrings)
   flatDoc = cleanFields(flatDoc, options.fields)
 
-  if (!_.isEmpty(flatDoc)) {
+  if (!isEmpty(flatDoc)) {
     modifier.$set = flatDoc
   }
 
-  if (!_.isEmpty(nulls)) {
+  if (!isEmpty(nulls)) {
     modifier.$unset = nulls
   }
 

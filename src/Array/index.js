@@ -4,11 +4,12 @@
  */
 
 import React from 'react'
-import _ from 'underscore'
 import ArrayContextItem from './ArrayContextItem'
 import {replaceIndexKeys} from '../utility'
 import {propTypes as fieldTypePropTypes} from '../FieldType'
 import generateInputsForKeys from '../utility/generateInputsForKeys'
+import isArray from 'lodash/isArray'
+import without from 'lodash/without'
 
 const propTypes = {
   ...fieldTypePropTypes,
@@ -80,7 +81,7 @@ export default class ArrayComponent extends React.Component {
 
   addItem (itemValue = {}) {
     var newArray = this.props.value
-    if (_.isArray(newArray)) {
+    if (isArray(newArray)) {
       newArray.push(itemValue)
     } else {
       newArray = [itemValue]
@@ -91,7 +92,7 @@ export default class ArrayComponent extends React.Component {
 
   removeItem (index) {
     const value = this.props.value || []
-    var newArray = _.without(value, value[index])
+    var newArray = without(value, value[index])
     this.props.onChange(newArray)
   }
 
@@ -145,7 +146,6 @@ export default class ArrayComponent extends React.Component {
   }
 
   render () {
-    if (!this.props.value) return null
     return (
       <div style={{ marginTop: 20 }}>
         <div><b>{this.props.label}</b></div>

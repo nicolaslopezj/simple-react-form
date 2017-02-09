@@ -2,6 +2,21 @@
 
 ### vNEXT
 
+### v1.8.1
+
+- submit function returns a boolean indicating the result.
+
+### v1.8.0
+
+- Use lodash instead of underscore.
+- Use deepClone instead of clone to clone doc, state, and errorMessages props.
+
+### v1.7.9
+
+- Not render form never in React Native
+- Add ```errorMessages``` prop to ```Form```
+- Pass props not present in propTypes to form element
+
 ### v1.7.7
 
 - Fix onSubmit doc cleaning

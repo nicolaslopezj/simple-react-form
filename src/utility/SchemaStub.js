@@ -1,9 +1,9 @@
-import _ from 'underscore'
+import keys from 'lodash/keys'
 
 export default class SchemaStub {
   constructor (schema) {
     this._schema = schema
-    this._firstLevelSchemaKeys = _.keys(schema)
+    this._firstLevelSchemaKeys = keys(schema)
   }
 
   schema (key) {
