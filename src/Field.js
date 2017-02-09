@@ -110,7 +110,11 @@ export default class Field extends React.Component {
 
   getFieldName () {
     if (this.context.parentFieldName) {
-      return `${this.context.parentFieldName}.${this.props.fieldName}`
+      if (this.props.fieldName) {
+        return `${this.context.parentFieldName}.${this.props.fieldName}`
+      } else {
+        return this.context.parentFieldName
+      }
     } else {
       return this.props.fieldName
     }

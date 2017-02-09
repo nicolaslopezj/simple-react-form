@@ -108,7 +108,8 @@ export default class ArrayComponent extends React.Component {
       return generateInputsForKeys(keys, schemaFieldName, this.props.schema, this.props.omit)
     }
     // Array with primitives, e.g. type: [String]
-    return generateInputsForKeys([String(index)], schemaFieldName, this.props.schema, this.props.omit)
+    // Child field has no own fieldName (used as key for looking up values)
+    return generateInputsForKeys([""], schemaFieldName, this.props.schema, this.props.omit)
   }
 
   renderChildren () {
@@ -139,7 +140,7 @@ export default class ArrayComponent extends React.Component {
 
   renderChildrenItemWithContext ({index, children}) {
     return (
-      <ArrayContextItem fieldName={this.props.fieldName}>
+      <ArrayContextItem index={index} fieldName={this.props.fieldName}>
         {children}
       </ArrayContextItem>
     )
