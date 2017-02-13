@@ -109,7 +109,7 @@ export default class ArrayComponent extends React.Component {
     }
     // Array with primitives, e.g. type: [String]
     // Child field has no own fieldName (used as key for looking up values)
-    return generateInputsForKeys([""], schemaFieldName, this.props.schema, this.props.omit)
+    return generateInputsForKeys([''], schemaFieldName, this.props.schema, this.props.omit)
   }
 
   renderChildren () {
