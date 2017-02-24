@@ -1,6 +1,6 @@
 {
   "name": "simple-react-form",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "license": "MIT",
   "author": "Nicolás López <nicolaslopezj@me.com>",
   "description": "A library to make reusable form components in React and React Native",
@@ -11,8 +11,8 @@
   },
   "scripts": {
     "build": "babel ./src --out-dir ./lib",
-    "prepublish": "npm run build",
-    "test": "npm run lint && jest",
+    "prepublish": "yarn run build",
+    "test": "yarn run build && yarn run lint && jest",
     "watch": "node watch.js",
     "test-watch": "jest --watch",
     "lint": "standard \"src/**/*.js\""
@@ -21,7 +21,9 @@
     "react-component",
     "react-native",
     "ios",
-    "android"
+    "android",
+    "form",
+    "react"
   ],
   "dependencies": {
     "dot-object": "^1.5.1",

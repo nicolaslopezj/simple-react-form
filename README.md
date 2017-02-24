@@ -311,3 +311,10 @@ import Text from '../components/my-fields/text'
 ```
 
 > You should always render your fields inside a View when using react native.
+
+## Contributors
+
+- [@nicolaslopezj](http://github.com/nicolaslopezj)
+- [@fermuch](http://github.com/fermuch)
+- [@joadr](http://github.com/joadr)
+- [@prinzdezibel](http://github.com/prinzdezibel)
