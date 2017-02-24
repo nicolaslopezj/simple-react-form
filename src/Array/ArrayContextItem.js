@@ -12,11 +12,6 @@ const childContextTypes = {
 
 export default class ArrayContextItem extends React.Component {
 
-  constructor (props) {
-    super(props)
-    this.state = {}
-  }
-
   getChildContext () {
     return {
       parentFieldName: `${this.props.fieldName}.${this.props.index}`
@@ -30,7 +25,6 @@ export default class ArrayContextItem extends React.Component {
       </div>
     )
   }
-
 }
 
 ArrayContextItem.propTypes = propTypes

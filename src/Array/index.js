@@ -24,6 +24,11 @@ const propTypes = {
   showAddButton: React.PropTypes.bool,
 
   /**
+   * Show the remove button
+   */
+  showRemoveButton: React.PropTypes.bool,
+
+  /**
    * The remove label
    */
   removeLabel: React.PropTypes.string,
@@ -58,7 +63,8 @@ const defaultProps = {
   showLabel: true,
   errorMessages: {},
   autoAddItem: false,
-  showAddButton: true
+  showAddButton: true,
+  showRemoveButton: true
 }
 
 const childContextTypes = {
@@ -95,8 +101,15 @@ export default class ArrayComponent extends React.Component {
     if (this.props.children) return this.props.children
     if (!this.props.schema) throw new Error(`You must pass children to the array field "${this.props.fieldName}"`)
     const schemaFieldName = replaceIndexKeys(this.props.fieldName)
-    const keys = this.props.schema.objectKeys(`${schemaFieldName}.$`)
-    return generateInputsForKeys(keys, `${schemaFieldName}.$`, this.props.schema, this.props.omit)
+    let keys = this.props.schema.objectKeys(`${schemaFieldName}.$`)
+    if (keys.length) {
+      // Array with objects, e.g. type: [Object]
+      keys = keys.map((element) => (`${index}.${element}`))
+      return generateInputsForKeys(keys, schemaFieldName, this.props.schema, this.props.omit)
+    }
+    // Array with primitives, e.g. type: [String]
+    // Child field has no own fieldName (used as key for looking up values)
+    return generateInputsForKeys([''], schemaFieldName, this.props.schema, this.props.omit)
   }
 
   renderChildren () {
@@ -114,11 +127,13 @@ export default class ArrayComponent extends React.Component {
     return (
       <div style={{ marginTop: 20, marginBottom: 20, padding: 20 }} key={`${this.props.fieldName}.${index}`}>
         {this.renderChildrenItemWithContext({index, children})}
-        <div style={{ marginTop: 10, textAlign: 'right' }}>
-          <button type='button' onClick={() => this.removeItem(index)}>
-            {this.props.removeLabel}
-          </button>
-        </div>
+        {this.props.showRemoveButton
+          ? <div style={{ marginTop: 10, textAlign: 'right' }}>
+            <button type='button' onClick={() => this.removeItem(index)}>
+              {this.props.removeLabel}
+            </button>
+          </div>
+          : null}
       </div>
     )
   }
@@ -137,11 +152,13 @@ export default class ArrayComponent extends React.Component {
         <div><b>{this.props.label}</b></div>
         <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
         {this.renderChildren()}
-        <div style={{ marginTop: 10 }}>
-          <button type='button' onClick={() => this.addItem()}>
-            {this.props.addLabel}
-          </button>
-        </div>
+        {this.props.showAddButton
+          ? <div style={{ marginTop: 10 }}>
+            <button type='button' onClick={() => this.addItem()}>
+              {this.props.addLabel}
+            </button>
+          </div>
+          : null}
       </div>
     )
   }
