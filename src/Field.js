@@ -10,8 +10,7 @@ import pick from 'lodash/pick'
 
 import {
   getFieldType,
-  getFieldComponent,
-  getFieldTypeName
+  getFieldComponent
 } from './types'
 
 const propTypes = {
@@ -161,11 +160,6 @@ export default class Field extends React.Component {
   }
 
   getChildProps () {
-    var typeName = this.props.type
-    if (!typeName) {
-      typeName = getFieldTypeName({ fieldName: this.getFieldName(), fieldSchema: this.getFieldSchema(), schema: this.getSchema() })
-    }
-
     /**
      * This gets the props that are defined in the propTypes of the registered component.
      */
