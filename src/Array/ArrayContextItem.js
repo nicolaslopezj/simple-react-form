@@ -18,7 +18,19 @@ export default class ArrayContextItem extends React.Component {
     }
   }
 
+  isRN () {
+    return navigator.product === 'ReactNative'
+  }
+
   render () {
+    if (this.isRn()) {
+      const {View} = require('react-native');
+      return (
+        <View>
+          {this.props.children}
+        </View>
+      )
+    }
     return (
       <div>
         {this.props.children}
