@@ -374,7 +374,9 @@ export default class Form extends React.Component {
   }
 
   setErrorsWithContext (context) {
-    var invalidKeys = context.invalidKeys()
+    // Simple schema invalidKeys renamed to validationErrors - support either.
+    var invalidKeys = context.invalidKeys ? context.invalidKeys() : context.validationErrors()
+
     var errorMessages = {}
     invalidKeys.map((field) => {
       errorMessages[field.name] = context.keyErrorMessage(field.name)
