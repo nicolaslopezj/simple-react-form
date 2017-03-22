@@ -100,12 +100,13 @@ export default class ArrayComponent extends React.Component {
     if (this.props.renderItem) return this.props.renderItem(item, index)
     if (this.props.children) return this.props.children
     if (!this.props.schema) throw new Error(`You must pass children to the array field "${this.props.fieldName}"`)
-    const schemaFieldName = replaceIndexKeys(this.props.fieldName)
-    let keys = this.props.schema.objectKeys(`${schemaFieldName}.$`)
+    let schemaFieldName = replaceIndexKeys(this.props.fieldName)
+    const keys = this.props.schema.objectKeys(`${schemaFieldName}.$`)
     console.log('keys', keys);
     if (keys.length) {
       // Array with objects, e.g. type: [Object]
-      keys = keys.map((element) => (`${index}.${element}`))
+      // keys = keys.map((element) => (`${index}.${element}`))
+      schemaFieldName = `${schemaFieldName}.${index}`;
       console.log('to be generated', keys, schemaFieldName, 'schema',this.props.omit);
       console.log('inputs for keys', generateInputsForKeys(keys, schemaFieldName, this.props.schema, this.props.omit));
       return generateInputsForKeys(keys, schemaFieldName, this.props.schema, this.props.omit)

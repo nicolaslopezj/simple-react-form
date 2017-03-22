@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d3431871-f356-4ec8-9ed5-af8aedc901ef" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Array/index.js" afterPath="$PROJECT_DIR$/src/Array/index.js" />
     </list>
     <ignored path="simple-react-form.iws" />
@@ -51,8 +50,8 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Array/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="108" column="67" selection-start-line="108" selection-start-column="67" selection-end-line="108" selection-end-column="67" />
+            <state relative-caret-position="164">
+              <caret line="103" column="9" selection-start-line="103" selection-start-column="9" selection-end-line="103" selection-end-column="9" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -63,8 +62,8 @@
       <file leaf-file-name="generateInputsForKeys.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utility/generateInputsForKeys.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="44" selection-start-line="6" selection-start-column="44" selection-end-line="6" selection-end-column="44" />
+            <state relative-caret-position="315">
+              <caret line="21" column="53" selection-start-line="21" selection-start-column="53" selection-end-line="21" selection-end-column="53" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -226,12 +225,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1490210395141</updated>
-      <workItem from="1490210396974" duration="1468000" />
+      <workItem from="1490210396974" duration="2006000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1468000" />
+    <option name="totallyTimeSpent" value="2006000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -288,16 +287,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utility/generateInputsForKeys.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="44" selection-start-line="6" selection-start-column="44" selection-end-line="6" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Field.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
@@ -308,10 +297,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/utility/generateInputsForKeys.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="53" selection-start-line="21" selection-start-column="53" selection-end-line="21" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Array/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="108" column="67" selection-start-line="108" selection-start-column="67" selection-end-line="108" selection-end-column="67" />
+        <state relative-caret-position="164">
+          <caret line="103" column="9" selection-start-line="103" selection-start-column="9" selection-end-line="103" selection-end-column="9" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
