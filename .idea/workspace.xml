@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d3431871-f356-4ec8-9ed5-af8aedc901ef" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Array/index.js" afterPath="$PROJECT_DIR$/src/Array/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Field.js" afterPath="$PROJECT_DIR$/src/Field.js" />
     </list>
     <ignored path="simple-react-form.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,11 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Field.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Field.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Field.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="99" column="59" selection-start-line="99" selection-start-column="50" selection-end-line="99" selection-end-column="59" />
+            <state relative-caret-position="467">
+              <caret line="117" column="33" selection-start-line="117" selection-start-column="33" selection-end-line="117" selection-end-column="33" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -47,11 +48,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Array/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="103" column="9" selection-start-line="103" selection-start-column="9" selection-end-line="103" selection-end-column="9" />
+            <state relative-caret-position="269">
+              <caret line="110" column="43" selection-start-line="110" selection-start-column="43" selection-end-line="110" selection-end-column="43" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -79,9 +80,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/Field.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/Array/index.js" />
+        <option value="$PROJECT_DIR$/src/Field.js" />
       </list>
     </option>
   </component>
@@ -225,12 +226,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1490210395141</updated>
-      <workItem from="1490210396974" duration="2006000" />
+      <workItem from="1490210396974" duration="2389000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2006000" />
+    <option name="totallyTimeSpent" value="2389000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -287,12 +288,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Field.js">
+    <entry file="file://$PROJECT_DIR$/src/Array/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="99" column="59" selection-start-line="99" selection-start-column="50" selection-end-line="99" selection-end-column="59" />
+        <state relative-caret-position="269">
+          <caret line="110" column="43" selection-start-line="110" selection-start-column="43" selection-end-line="110" selection-end-column="43" />
           <folding>
-            <element signature="e#0#25#0" expanded="true" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -307,12 +308,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Array/index.js">
+    <entry file="file://$PROJECT_DIR$/src/Field.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="103" column="9" selection-start-line="103" selection-start-column="9" selection-end-line="103" selection-end-column="9" />
+        <state relative-caret-position="467">
+          <caret line="117" column="33" selection-start-line="117" selection-start-column="33" selection-end-line="117" selection-end-column="33" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>
