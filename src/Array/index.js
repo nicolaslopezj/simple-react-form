@@ -106,7 +106,7 @@ export default class ArrayComponent extends React.Component {
     if (keys.length) {
       // Array with objects, e.g. type: [Object]
       keys = keys.map((element) => (`${index}.${element}`))
-      console.log('new keys', keys);
+      console.log('to be generated', keys, schemaFieldName, 'schema',this.props.omit);
       console.log('inputs for keys', generateInputsForKeys(keys, schemaFieldName, this.props.schema, this.props.omit));
       return generateInputsForKeys(keys, schemaFieldName, this.props.schema, this.props.omit)
     }
