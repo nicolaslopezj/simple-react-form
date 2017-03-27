@@ -102,7 +102,6 @@ export default class ArrayComponent extends React.Component {
     if (!this.props.schema) throw new Error(`You must pass children to the array field "${this.props.fieldName}"`)
     let schemaFieldName = replaceIndexKeys(this.props.fieldName)
     const keys = this.props.schema.objectKeys(`${schemaFieldName}.$`)
-    console.log('keys', keys);
     if (keys.length) {
       // Array with objects, e.g. type: [Object]
       schemaFieldName = `${schemaFieldName}.${index}`;
