@@ -416,7 +416,10 @@ export default class Form extends React.Component {
   }
 
   isRN () {
-    return navigator.product === 'ReactNative'
+    return (
+      typeof navigator !== 'undefined' &&
+      navigator.product === 'ReactNative'
+    )
   }
 
   onValueChange (fieldName, newValue) {
