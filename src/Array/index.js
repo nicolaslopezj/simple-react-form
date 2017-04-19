@@ -104,7 +104,7 @@ export default class ArrayComponent extends React.Component {
     const keys = this.props.schema.objectKeys(`${schemaFieldName}.$`)
     if (keys.length) {
       // Array with objects, e.g. type: [Object]
-      schemaFieldName = `${schemaFieldName}.${index}`;
+      schemaFieldName = `${schemaFieldName}.${index}`
       return generateInputsForKeys(keys, schemaFieldName, this.props.schema, this.props.omit)
     }
     // Array with primitives, e.g. type: [String]
