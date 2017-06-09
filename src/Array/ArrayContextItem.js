@@ -19,7 +19,10 @@ export default class ArrayContextItem extends React.Component {
   }
 
   isRN () {
-    return navigator.product === 'ReactNative'
+    return (
+      typeof navigator !== 'undefined' &&
+      navigator.product === 'ReactNative'
+    )
   }
 
   render () {
