@@ -1,7 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import autobind from 'autobind-decorator'
-import dot from 'dot-object'
+import omit from 'lodash/omit'
+import keys from 'lodash/keys'
+import isFunction from 'lodash/isFunction'
+import getNewValue from './getNewValue'
 
 export default class Form extends React.Component {
   static propTypes = {
@@ -9,13 +12,15 @@ export default class Form extends React.Component {
     state: PropTypes.object,
     doc: PropTypes.object,
     onChange: PropTypes.func,
-    errorMessages: PropTypes.object
+    errorMessages: PropTypes.object,
+    useFormTag: PropTypes.bool,
+    onSubmit: PropTypes.func
   }
 
   static defaultProps = {
     onChange: () => {},
     errorMessages: null,
-    state: {}
+    useFormTag: true
   }
 
   static childContextTypes = {
@@ -36,36 +41,72 @@ export default class Form extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.doc !== this.props.doc) {
+      this.setState({value: null}) // will reset state because doc prop has changed
+    }
+  }
+
   handlesState() {
     return !!this.props.doc
+  }
+
+  isReactNative() {
+    return navigator.product === 'ReactNative'
   }
 
   @autobind
   getValue() {
     if (this.handlesState()) {
-      return this.state.value || this.props.doc
+      return this.state.value || this.props.doc || {}
     } else {
-      return this.props.state
+      return this.props.state || {}
     }
   }
 
   @autobind
-  onChange(fieldName, newValue) {
-    const inDot = dot.dot(this.getValue())
-    inDot[fieldName] = newValue
-    const value = dot.object(inDot)
+  onChange(fieldName, fieldValue) {
+    const value = getNewValue(this.getValue(), fieldName, fieldValue)
     if (this.handlesState()) {
       this.setState({value})
     }
-    console.log('form on change', fieldName, newValue, value)
     this.props.onChange(value)
   }
 
+  @autobind
+  onFormSubmit(event) {
+    event.preventDefault()
+    return this.submit()
+  }
+
+  @autobind
+  submit() {
+    if (!isFunction(this.props.onSubmit)) {
+      throw new Error('You should pass a onSubmit prop')
+    }
+    return this.props.onSubmit(this.getValue())
+  }
+
   render() {
-    return (
-      <div>
-        {this.props.children}
-      </div>
-    )
+    const domProps = omit(this.props, keys(Form.propTypes))
+    if (this.isReactNative()) {
+      return this.props.children
+    }
+    if (this.props.useFormTag) {
+      return (
+        <form {...domProps} onSubmit={this.onFormSubmit}>
+          <pre>
+            {JSON.stringify(this.state.value, null, 2)}
+          </pre>
+          {this.props.children}
+        </form>
+      )
+    } else {
+      return (
+        <div {...domProps}>
+          {this.props.children}
+        </div>
+      )
+    }
   }
 }
