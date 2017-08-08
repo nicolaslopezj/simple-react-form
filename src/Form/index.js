@@ -34,7 +34,7 @@ export default class Form extends React.Component {
   constructor(props) {
     super(props)
     if (props.doc) {
-      throw new Error('Doc prop is deprecated')
+      throw new Error('Doc prop is deprecated, please use state instead')
     }
   }
 

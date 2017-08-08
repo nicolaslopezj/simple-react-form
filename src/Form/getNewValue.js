@@ -7,11 +7,18 @@ const setValue = function(value, keyParts, fieldValue) {
   if (keyParts.length === 0) {
     value[key] = fieldValue
   } else {
-    if (isNil(value[key])) {
-      value[key] = {}
-    }
-    if (!isPlainObject(value[key])) {
-      throw new Error(`Expected plain object for key ${key}`)
+    if (!isNaN(keyParts[0])) {
+      // next key is array
+      if (isNil(value[key])) {
+        value[key] = []
+      }
+    } else {
+      if (isNil(value[key])) {
+        value[key] = {}
+      }
+      if (!isPlainObject(value[key])) {
+        throw new Error(`Expected plain object for key ${key}`)
+      }
     }
     setValue(value[key], keyParts, fieldValue)
   }
@@ -19,6 +26,7 @@ const setValue = function(value, keyParts, fieldValue) {
 
 export default function(val, fieldName, fieldValue) {
   const value = cloneDeep(val)
+  console.log('settings value', fieldName, fieldValue)
 
   const keyParts = fieldName.split('.')
 
