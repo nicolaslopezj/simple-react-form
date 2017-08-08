@@ -2,10 +2,26 @@
 
 ### v2.0.0
 
-- Faster and lighter
+- Faster and lighter.
+- Clearer state management.
+- ```doc``` prop is deprecated.
 - No more simple-schema integration.
 - No more collection integration.
 - No more Meteor integration
+
+#### How to upgrade to v2
+
+Now we have 2 types of forms. Managed by parent component and managed inside.
+
+If you use ```<Form doc={initialValue} />```, the form will be managed inside.
+
+If you use ```<Form state={this.state} onChange={state => this.setState(state)} />```,
+form will be managed by parent component.
+
+Both are good, it depends in the case of use. You can use both types of forms in your project.
+
+Pre v2, forms were both at the same time, and that was a mess. So, to upgrade to v2 you must check
+all your forms and
 
 ### v1.9.0
 

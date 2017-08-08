@@ -10,7 +10,6 @@ export default class Form extends React.Component {
   static propTypes = {
     children: PropTypes.node,
     state: PropTypes.object,
-    doc: PropTypes.object,
     onChange: PropTypes.func,
     errorMessages: PropTypes.object,
     useFormTag: PropTypes.bool,
@@ -32,6 +31,13 @@ export default class Form extends React.Component {
 
   state = {}
 
+  constructor(props) {
+    super(props)
+    if (props.doc) {
+      throw new Error('Doc prop is deprecated')
+    }
+  }
+
   getChildContext() {
     return {
       doc: this.getValue(),
@@ -42,13 +48,9 @@ export default class Form extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.doc !== this.props.doc) {
+    if (nextProps.state !== this.props.state) {
       this.setState({value: null}) // will reset state because doc prop has changed
     }
-  }
-
-  handlesState() {
-    return !!this.props.doc
   }
 
   isReactNative() {
@@ -57,19 +59,13 @@ export default class Form extends React.Component {
 
   @autobind
   getValue() {
-    if (this.handlesState()) {
-      return this.state.value || this.props.doc || {}
-    } else {
-      return this.props.state || {}
-    }
+    return this.state.value || this.props.state || {}
   }
 
   @autobind
   onChange(fieldName, fieldValue) {
     const value = getNewValue(this.getValue(), fieldName, fieldValue)
-    if (this.handlesState()) {
-      this.setState({value})
-    }
+    this.setState({value})
     this.props.onChange(value)
   }
 
@@ -95,9 +91,6 @@ export default class Form extends React.Component {
     if (this.props.useFormTag) {
       return (
         <form {...domProps} onSubmit={this.onFormSubmit}>
-          <pre>
-            {JSON.stringify(this.state.value, null, 2)}
-          </pre>
           {this.props.children}
         </form>
       )
