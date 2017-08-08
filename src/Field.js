@@ -8,10 +8,7 @@ import isString from 'lodash/isString'
 import keys from 'lodash/keys'
 import pick from 'lodash/pick'
 
-import {
-  getFieldType,
-  getFieldComponent
-} from './types'
+import {getFieldType, getFieldComponent} from './types'
 
 const propTypes = {
   /**
@@ -66,8 +63,7 @@ const contextTypes = {
 }
 
 export default class Field extends React.Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props)
     /* if (!this.context.schema && !props.type) {
       throw new Error(`You must set the type for the field "${props.fieldName}" or pass a schema to the form`)
@@ -76,38 +72,7 @@ export default class Field extends React.Component {
     this.onChange = this.onChange.bind(this)
   }
 
-  componentDidMount () {
-    this.registerField()
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (!isEqual(this.props, nextProps)) {
-      this.unregisterField()
-    }
-  }
-
-  componentDidUpdate (prevProps) {
-    if (!isEqual(prevProps, this.props)) {
-      this.registerField()
-    }
-  }
-
-  componentWillUnmount () {
-    this.unregisterField()
-  }
-
-  unregisterField () {
-    this.context.form.unregisterComponent(this.getFieldName())
-  }
-
-  registerField () {
-    this.context.form.registerComponent({
-      field: this.getFieldName(),
-      component: this.element
-    })
-  }
-
-  getFieldName () {
+  getFieldName() {
     if (this.context.parentFieldName) {
       if (this.props.fieldName) {
         return `${this.context.parentFieldName}.${this.props.fieldName}`
@@ -119,19 +84,19 @@ export default class Field extends React.Component {
     }
   }
 
-  onChange (value) {
+  onChange(value) {
     this.context.onChange(this.getFieldName(), value)
   }
 
-  getSchema () {
+  getSchema() {
     return this.context.schema
   }
 
-  getFieldSchema () {
+  getFieldSchema() {
     return this.getSchema() ? this.getSchema().schema(this.getFieldName()) : null
   }
 
-  getLabel () {
+  getLabel() {
     if (has(this.props, 'label')) {
       return this.props.label
     } else if (this.getSchema()) {
@@ -141,7 +106,7 @@ export default class Field extends React.Component {
     }
   }
 
-  getComponent () {
+  getComponent() {
     if (isString(this.props.type)) {
       return getFieldType(this.props.type, this.props.fieldName).component
     } else if (this.props.type) {
@@ -154,22 +119,23 @@ export default class Field extends React.Component {
     }
   }
 
-  getValue () {
+  getValue() {
     return this.context.doc ? DotObject.pick(this.getFieldName(), this.context.doc) : undefined
   }
 
-  getErrorMessage () {
+  getErrorMessage() {
     const errorMessages = this.context.errorMessages || {}
     return this.props.errorMessage || errorMessages[this.getFieldName()]
   }
 
-  getChildProps () {
+  getChildProps() {
     /**
      * This gets the props that are defined in the propTypes of the registered component.
      */
     const fieldComponent = this.getComponent()
     const propOptions = omit(this.props, keys(propTypes))
-    const schemaOptions = (this.getFieldSchema() && (this.getFieldSchema().srf || this.getFieldSchema().mrf)) || {}
+    const schemaOptions =
+      (this.getFieldSchema() && (this.getFieldSchema().srf || this.getFieldSchema().mrf)) || {}
     const totalOptions = {...schemaOptions, ...propOptions}
     const allowedKeys = keys({...fieldTypePropTypes, ...fieldComponent.propTypes})
     const onlyAllowedOptions = pick(totalOptions, allowedKeys)
@@ -201,7 +167,7 @@ export default class Field extends React.Component {
     return props
   }
 
-  render () {
+  render() {
     const component = this.getComponent()
     this.element = React.createElement(component, this.getChildProps())
     return this.element
