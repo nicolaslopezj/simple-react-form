@@ -1,14 +1,15 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import {shallow, mount} from 'enzyme'
 import Form from './index'
 import Field from '../Field'
 
 class DummyInput extends React.Component {
-  render () {
+  render() {
     return (
       <input
         value={this.props.value || ''}
-        onChange={(e) => this.props.onChange(e.target.value)} />
+        onChange={event => this.props.onChange(event.target.value)}
+      />
     )
   }
 }
@@ -36,19 +37,15 @@ test('onChange should dispatch on changes', () => {
   const mockFn = jest.fn()
   const component = mount(
     <Form onChange={mockFn}>
-      <Field fieldName='foo' type={DummyInput} />
+      <Field fieldName="foo" type={DummyInput} />
     </Form>
   )
 
-  component
-    .find('input')
-    .simulate('change', {target: {value: 'foobar'}})
+  component.find('input').simulate('change', {target: {value: 'foobar'}})
   calls = mockFn.mock.calls[0]
   expect(mockFn.mock.calls[0][0]).toEqual({foo: 'foobar'})
 
-  component
-    .find('input')
-    .simulate('change', {target: {value: 'barfoo'}})
+  component.find('input').simulate('change', {target: {value: 'barfoo'}})
   calls = mockFn.mock.calls[0]
   expect(calls[calls.length - 1]).toEqual({foo: 'barfoo'})
 
@@ -60,7 +57,7 @@ test('onChange should dispatch on changes', () => {
 test('should render the form correctly', () => {
   const component = mount(
     <Form>
-      <Field fieldName='foo' type={DummyInput} />
+      <Field fieldName="foo" type={DummyInput} />
     </Form>
   )
 

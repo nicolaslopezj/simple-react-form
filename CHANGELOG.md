@@ -1,6 +1,11 @@
 # Changelog
 
-### vNEXT
+### v2.0.0
+
+- Faster and lighter
+- No more simple-schema integration.
+- No more collection integration.
+- No more Meteor integration
 
 ### v1.9.0
 

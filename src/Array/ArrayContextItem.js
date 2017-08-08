@@ -11,23 +11,19 @@ const childContextTypes = {
 }
 
 export default class ArrayContextItem extends React.Component {
-
-  getChildContext () {
+  getChildContext() {
     return {
       parentFieldName: `${this.props.fieldName}.${this.props.index}`
     }
   }
 
-  isRN () {
-    return (
-      typeof navigator !== 'undefined' &&
-      navigator.product === 'ReactNative'
-    )
+  isRN() {
+    return typeof navigator !== 'undefined' && navigator.product === 'ReactNative'
   }
 
-  render () {
+  render() {
     if (this.isRN()) {
-      const {View} = require('react-native')
+      // const {View} = require('react-native')
       return (
         <View>
           {this.props.children}
