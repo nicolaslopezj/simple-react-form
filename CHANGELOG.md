@@ -1,6 +1,14 @@
 # Changelog
 
-### vNEXT
+### v2.0.0
+
+- Complete rewrite.
+- Faster and lighter.
+- Better state management.
+- ```doc``` prop is deprecated.
+- No more simple-schema integration.
+- No more collection integration.
+- No more Meteor integration
 
 ### v1.9.0
 

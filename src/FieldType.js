@@ -1,69 +1,68 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export const propTypes = {
   /**
    * The current value of the field
    */
-  value: React.PropTypes.any,
+  value: PropTypes.any,
 
   /**
    * Field label
    */
-  label: React.PropTypes.any,
+  label: PropTypes.any,
 
   /**
    * The error message if there is a error
    */
-  errorMessage: React.PropTypes.string,
+  errorMessage: PropTypes.string,
 
   /**
    * Call this function when the value changes
    */
-  onChange: React.PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 
   /**
    * If the input is disabled
    */
-  disabled: React.PropTypes.bool,
+  disabled: PropTypes.bool,
 
   /**
    * The schema for the field
    */
-  fieldSchema: React.PropTypes.object,
+  fieldSchema: PropTypes.object,
 
   /**
    * The schema for the object
    */
-  schema: React.PropTypes.object,
+  schema: PropTypes.object,
 
   /**
    * Use hint instead of label
    */
-  useHint: React.PropTypes.bool,
+  useHint: PropTypes.bool,
 
   /**
    * Form
    */
-  form: React.PropTypes.object.isRequired,
+  form: PropTypes.object.isRequired,
 
   /**
    * The name of the field
    */
-  fieldName: React.PropTypes.string.isRequired,
+  fieldName: PropTypes.string.isRequired,
 
   /**
    * The props that must be passed to the child component
    */
-  passProps: React.PropTypes.object
+  passProps: PropTypes.object
 }
 
 export default class FieldType extends React.Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props)
-    console.warn('Now you don\'t have to extend FieldType to create components')
+    console.warn("Now you don't have to extend FieldType to create components")
   }
-
 }
 
 FieldType.propTypes = propTypes

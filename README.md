@@ -2,17 +2,11 @@
 
 [![travis-ci](https://travis-ci.org/nicolaslopezj/simple-react-form.svg?branch=master)](https://travis-ci.org/nicolaslopezj/simple-react-form)
 [![npm version](https://badge.fury.io/js/simple-react-form.svg)](https://badge.fury.io/js/simple-react-form)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
-Simple React Form is a library to make reusable form components in **React** and [React Native](#react-native) and works
-great with **Meteor**
 
-This is just a framework, you must [create the form components](#custom-input-types) that you will use.
+Simple React Form is a library to make reusable form components in **React** and [React Native](#react-native).
 
-If you use material-ui you are lucky, because I published a material-ui set of components.
-[simple-react-form-material-ui](https://github.com/nicolaslopezj/simple-react-form-material-ui).
-
-Made for Meteor, but works without Meteor too. This package was inspired by aldeed's autoform.
+This is just a framework, you must [create the form components](#field-types) or [install a package with fields](#contributions) that you will use.
 
 To use with react native [check here](#react-native)
 
@@ -24,37 +18,24 @@ Install the base package
 npm install --save simple-react-form
 ```
 
-If you use material-ui install that package too
-
-```sh
-npm install --save simple-react-form-material-ui
-```
-
-If you don't use material-ui check the [contributions](#contributions) if there is a package for you.
-
-Browse the [examples](https://github.com/nicolaslopezj/simple-react-form-examples).
-
 ### Example
 
 ```js
 import React from 'react'
 import {Form, Field} from 'simple-react-form'
-import DatePicker from 'simple-react-form-material-ui/lib/date-picker'
-import Text from 'simple-react-form-material-ui/lib/text'
+import DatePicker from './myFields/DatePicker'
+import Text from './myFields/Text'
 
 class PostsCreate extends React.Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
+  state = {}
 
   render() {
     return (
       <div>
-        <Form state={this.state} onChange={changes => this.setState(changes)}>
-          <Field fieldName='name' label='Name' type={Text}/>
-          <Field fieldName='date' label='A Date' type={DatePicker}/>
+        <Form state={this.state} onChange={state => this.setState(state)}>
+          <Field fieldName='name' label='Name' type={Text} />
+          <Field fieldName='date' label='A Date' type={DatePicker} />
         </Form>
         <p>
           My name is {this.state.name}
@@ -64,8 +45,6 @@ class PostsCreate extends React.Component {
   }
 }
 ```
-
-You can find more examples [here](https://github.com/nicolaslopezj/simple-react-form-examples).
 
 ## Contributions
 
@@ -81,22 +60,19 @@ In this example, the current value of the form will be stored in ```this.state``
 ```js
 import React from 'react'
 import {Form, Field} from 'simple-react-form'
-import DatePicker from 'simple-react-form-material-ui/lib/date-picker'
-import Text from 'simple-react-form-material-ui/lib/text'
+import DatePicker from './myFields/DatePicker'
+import Text from './myFields/Text'
 
 class PostsCreate extends React.Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
+  state = {}
 
   render() {
     return (
       <div>
-        <Form state={this.state} onChange={changes => this.setState(changes)}>
-          <Field fieldName='name' label='Name' type={Text}/>
-          <Field fieldName='date' label='A Date' type={DatePicker}/>
+        <Form state={this.state} onChange={state => this.setState(state)}>
+          <Field fieldName='name' label='Name' type={Text} />
+          <Field fieldName='date' label='A Date' type={DatePicker} />
         </Form>
         <p>
           My name is {this.state.name}
@@ -107,129 +83,46 @@ class PostsCreate extends React.Component {
 }
 ```
 
-## Use with Meteor Simple Schema
 
-Automatic forms creation with [aldeed/meteor-simple-schema](https://github.com/aldeed/meteor-simple-schema) and React.
+## Using without state
 
-##### Allow ```srf``` field for schemas
-
-With simple-schema you must define the object attributes that are not the basics.
-
-Just add this code once in your app.
+In this example, the current value of the form will be stored inside the Form component and passed in the onSubmit function. The difference on this is that the ```state``` prop does not change over time.
 
 ```js
-SimpleSchema.extendOptions({
-  srf: Match.Optional(Object)
-})
-```
-
-### Basic Example
-
-Schema
-
-```js
-import {Meteor} from 'meteor/meteor'
-import Textarea from 'simple-react-form-material-ui/lib/textarea'
-import Text from 'simple-react-form-material-ui/lib/text'
-
-const Posts = new Meteor.Collection('posts')
-
-Posts.attachSchema({
-  title: {
-    type: String,
-    srf: {
-      type: Text
-    }
-  },
-  body: {
-    type: String,
-    label: 'Content',
-    srf: {
-      type: Textarea
-    }
-  }
-})
-
-export default Posts
-```
-
-An insert form.
-
-```jsx
-import React from 'react'
-import {Form} from 'simple-react-form'
-import Posts from '../../collections/posts'
-
-class PostsCreate extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>Create a post</h1>
-        <Form
-        collection={Posts}
-        type='insert'
-        ref='form'
-        onSuccess={(docId) => FlowRouter.go('posts.update', { postId: docId })}/>
-        <RaisedButton label='Create' onTouchTap={() => this.refs.form.submit()}/>
-      </div>
-    )
-  },
-}
-```
-
-An update form.
-
-```jsx
 import React from 'react'
 import {Form, Field} from 'simple-react-form'
-import Posts from '../../collections/posts'
+import DatePicker from './myFields/DatePicker'
+import Text from './myFields/Text'
 
-class PostsUpdate extends React.Component {
+class PostsCreate extends React.Component {
+
+  state = {}
+
+  onSubmit ({name, date}) {
+
+  }
+
   render() {
     return (
       <div>
-        <h1>Post update</h1>
-        <Form
-        collection={Posts}
-        type='update'
-        ref='form'
-        doc={this.props.post}>
-          <Field fieldName='title'/>
-          <Field fieldName='body'/>
+        <Form ref='form' state={this.props.initialDoc} onSubmit={this.onSubmit}>
+          <Field fieldName='name' label='Name' type={Text} />
+          <Field fieldName='date' label='A Date' type={DatePicker} />
         </Form>
-        <RaisedButton primary={true} label='Save' onTouchTap={() => this.refs.form.submit()}/>
+        <button onClick={() => this.refs.form.submit()}>Submit</button>
       </div>
     )
   }
 }
 ```
 
-## Custom Input Types
+## Field Types
 
 React Simple Form is built from the idea that you can create custom components easily.
 
 Basically this consist in a component that have the prop ```value``` and the prop ```onChange```.
 You must render the ```value``` and call ```onChange``` passing the new value
 when the value has changed.
-
-You can also pass props to this components setting them in the srf parameter of
-the simple-schema object:
-
-```
-import UploadImage from '../components/my-fields/upload'
-
-Post.attachSchema({
-  picture: {
-    type: String,
-    srf: {
-      type: UploadImage,
-      squareOnly: true
-    }
-  }
-})
-```
-
-Or simply in the field while rendering:
 
 ```js
 import UploadImage from '../components/my-fields/upload'
@@ -252,7 +145,9 @@ export default class UploadImage extends React.Component {
         <p>
           {this.props.label}
         </p>
-        <img src={this.props.value} />
+        <div>
+          <img src={this.props.value} />
+        </div>
         <TextField
         value={this.props.value}
         hintText='Image Url'
@@ -266,17 +161,15 @@ export default class UploadImage extends React.Component {
 }
 ```
 
-You can view the full list of props [here](https://github.com/nicolaslopezj/simple-react-form/blob/master/src/field.jsx#L11).
+You can view the full list of props [here](https://github.com/nicolaslopezj/simple-react-form/blob/master/src/FieldType.js#L4).
 
 *Props that are not define in propTypes will be stored in ```this.passProps``` and deleted from propTypes.*
 
 ## React Native
 
-With React Native the api is the same, but you must pass the option ```useFormTag={false}``` to the form.
+With React Native the api is the same, but you must enclose the inner content of the form with a ```View``` component.
 
 Example:
-
-You must create all your field types (Maybe someone makes a package in the future!)
 
 ```js
 import React from 'react'
@@ -302,7 +195,7 @@ Render the form in the component you want
 ```js
 import Text from '../components/my-fields/text'
 
-<Form state={this.state} onChange={changes => this.setState(changes)} useFormTag={false}>
+<Form state={this.state} onChange={changes => this.setState(changes)}>
   <View>
     <Field fieldName='email' type={Text}/>
     <Field fieldName='password' type={Text}/>

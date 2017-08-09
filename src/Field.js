@@ -1,113 +1,39 @@
 import React from 'react'
-import DotObject from 'dot-object'
 import {propTypes as fieldTypePropTypes} from './FieldType'
 import omit from 'lodash/omit'
-import isEqual from 'lodash/isEqual'
-import has from 'lodash/has'
-import isString from 'lodash/isString'
 import keys from 'lodash/keys'
 import pick from 'lodash/pick'
-
-import {
-  getFieldType,
-  getFieldComponent
-} from './types'
-
-const propTypes = {
-  /**
-   * The label of the field.
-   */
-  label: React.PropTypes.any,
-
-  /**
-   * The name of the field in the object.
-   */
-  fieldName: React.PropTypes.string.isRequired,
-
-  /**
-   * Should show label
-   */
-  showLabel: React.PropTypes.bool,
-
-  /**
-   * Use hint instead of label.
-   */
-  useHint: React.PropTypes.bool,
-
-  /**
-   * The field should be read only mode.
-   */
-  disabled: React.PropTypes.bool,
-
-  /**
-   * The type of the input. It can be a component
-   */
-  type: React.PropTypes.any,
-
-  /**
-   * Pass a error message
-   */
-  errorMessage: React.PropTypes.string
-}
-
-const defaultProps = {
-  showLabel: true,
-  useHint: false,
-  disabled: false
-}
-
-const contextTypes = {
-  schema: React.PropTypes.object,
-  doc: React.PropTypes.object,
-  onChange: React.PropTypes.func.isRequired,
-  errorMessages: React.PropTypes.object,
-  form: React.PropTypes.any.isRequired,
-  parentFieldName: React.PropTypes.string
-}
+import get from 'lodash/get'
+import autobind from 'autobind-decorator'
+import PropTypes from 'prop-types'
 
 export default class Field extends React.Component {
+  static propTypes = {
+    /**
+     * The name of the field in the object.
+     */
+    fieldName: PropTypes.string.isRequired,
 
-  constructor (props) {
-    super(props)
-    /* if (!this.context.schema && !props.type) {
-      throw new Error(`You must set the type for the field "${props.fieldName}" or pass a schema to the form`)
-    } */
+    /**
+     * The type of the input. It can be a component
+     */
+    type: PropTypes.any,
 
-    this.onChange = this.onChange.bind(this)
+    /**
+     * Pass a error message
+     */
+    errorMessage: PropTypes.string
   }
 
-  componentDidMount () {
-    this.registerField()
+  static contextTypes = {
+    doc: PropTypes.object,
+    onChange: PropTypes.func.isRequired,
+    errorMessages: PropTypes.object,
+    form: PropTypes.any.isRequired,
+    parentFieldName: PropTypes.string
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (!isEqual(this.props, nextProps)) {
-      this.unregisterField()
-    }
-  }
-
-  componentDidUpdate (prevProps) {
-    if (!isEqual(prevProps, this.props)) {
-      this.registerField()
-    }
-  }
-
-  componentWillUnmount () {
-    this.unregisterField()
-  }
-
-  unregisterField () {
-    this.context.form.unregisterComponent(this.getFieldName())
-  }
-
-  registerField () {
-    this.context.form.registerComponent({
-      field: this.getFieldName(),
-      component: this.element
-    })
-  }
-
-  getFieldName () {
+  getFieldName() {
     if (this.context.parentFieldName) {
       if (this.props.fieldName) {
         return `${this.context.parentFieldName}.${this.props.fieldName}`
@@ -119,60 +45,37 @@ export default class Field extends React.Component {
     }
   }
 
-  onChange (value) {
+  @autobind
+  onChange(value) {
     this.context.onChange(this.getFieldName(), value)
   }
 
-  getSchema () {
-    return this.context.schema
+  getComponent() {
+    return this.props.type
   }
 
-  getFieldSchema () {
-    return this.getSchema() ? this.getSchema().schema(this.getFieldName()) : null
+  getValue() {
+    const doc = this.context.doc || {}
+    return get(doc, this.getFieldName())
   }
 
-  getLabel () {
-    if (has(this.props, 'label')) {
-      return this.props.label
-    } else if (this.getSchema()) {
-      return this.getSchema().label(this.getFieldName())
-    } else {
-      return ''
-    }
-  }
-
-  getComponent () {
-    if (isString(this.props.type)) {
-      return getFieldType(this.props.type, this.props.fieldName).component
-    } else if (this.props.type) {
-      return this.props.type
-    } else {
-      return getFieldComponent({
-        fieldName: this.getFieldName(),
-        schema: this.getSchema()
-      })
-    }
-  }
-
-  getValue () {
-    return this.context.doc ? DotObject.pick(this.getFieldName(), this.context.doc) : undefined
-  }
-
-  getErrorMessage () {
+  getErrorMessage() {
     const errorMessages = this.context.errorMessages || {}
-    return this.props.errorMessage || errorMessages[this.getFieldName()]
+    return (
+      this.props.errorMessage ||
+      errorMessages[this.getFieldName()] ||
+      get(errorMessages, this.getFieldName())
+    )
   }
 
-  getChildProps () {
+  getChildProps() {
     /**
      * This gets the props that are defined in the propTypes of the registered component.
      */
     const fieldComponent = this.getComponent()
-    const propOptions = omit(this.props, keys(propTypes))
-    const schemaOptions = (this.getFieldSchema() && (this.getFieldSchema().srf || this.getFieldSchema().mrf)) || {}
-    const totalOptions = {...schemaOptions, ...propOptions}
+    const propOptions = omit(this.props, keys(Field.propTypes))
     const allowedKeys = keys({...fieldTypePropTypes, ...fieldComponent.propTypes})
-    const onlyAllowedOptions = pick(totalOptions, allowedKeys)
+    const onlyAllowedOptions = pick(propOptions, allowedKeys)
 
     /**
      * Options that are not registered in the propTypes are passed separatly.
@@ -180,19 +83,14 @@ export default class Field extends React.Component {
      * passed to the main component of it.
      */
     allowedKeys.push('type')
-    const notDefinedOptions = omit(totalOptions, allowedKeys)
+    const notDefinedOptions = omit(propOptions, allowedKeys)
 
     const props = {
       value: this.getValue(),
-      label: this.props.showLabel ? this.getLabel() : null,
-      useHint: this.props.useHint,
       onChange: this.onChange,
       errorMessage: this.getErrorMessage(),
-      fieldSchema: this.getFieldSchema(),
       fieldName: this.getFieldName(),
-      schema: this.getSchema(),
       form: this.context.form,
-      disabled: this.props.disabled,
       passProps: notDefinedOptions,
       ref: 'input',
       ...onlyAllowedOptions
@@ -201,13 +99,9 @@ export default class Field extends React.Component {
     return props
   }
 
-  render () {
+  render() {
     const component = this.getComponent()
     this.element = React.createElement(component, this.getChildProps())
     return this.element
   }
 }
-
-Field.propTypes = propTypes
-Field.defaultProps = defaultProps
-Field.contextTypes = contextTypes

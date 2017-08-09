@@ -1,38 +1,27 @@
 import React from 'react'
+import isReactNative from '../utility/isReactNative'
+import PropTypes from 'prop-types'
 
 const propTypes = {
-  children: React.PropTypes.any,
-  index: React.PropTypes.number.isRequired,
-  fieldName: React.PropTypes.string.isRequired
+  children: PropTypes.any,
+  index: PropTypes.number.isRequired,
+  fieldName: PropTypes.string.isRequired
 }
 
 const childContextTypes = {
-  parentFieldName: React.PropTypes.string
+  parentFieldName: PropTypes.string
 }
 
 export default class ArrayContextItem extends React.Component {
-
-  getChildContext () {
+  getChildContext() {
     return {
       parentFieldName: `${this.props.fieldName}.${this.props.index}`
     }
   }
 
-  isRN () {
-    return (
-      typeof navigator !== 'undefined' &&
-      navigator.product === 'ReactNative'
-    )
-  }
-
-  render () {
-    if (this.isRN()) {
-      const {View} = require('react-native')
-      return (
-        <View>
-          {this.props.children}
-        </View>
-      )
+  render() {
+    if (isReactNative()) {
+      throw new Error('You must create a custom ArrayContextItem for React Native')
     }
     return (
       <div>

@@ -5,48 +5,47 @@
 
 import React from 'react'
 import ArrayContextItem from './ArrayContextItem'
-import {replaceIndexKeys} from '../utility'
 import {propTypes as fieldTypePropTypes} from '../FieldType'
-import generateInputsForKeys from '../utility/generateInputsForKeys'
 import isArray from 'lodash/isArray'
 import without from 'lodash/without'
+import PropTypes from 'prop-types'
 
 const propTypes = {
   ...fieldTypePropTypes,
   /**
    * The add button label
    */
-  addLabel: React.PropTypes.string,
+  addLabel: PropTypes.string,
 
   /**
    * Show the add button
    */
-  showAddButton: React.PropTypes.bool,
+  showAddButton: PropTypes.bool,
 
   /**
    * Show the remove button
    */
-  showRemoveButton: React.PropTypes.bool,
+  showRemoveButton: PropTypes.bool,
 
   /**
    * The remove label
    */
-  removeLabel: React.PropTypes.string,
+  removeLabel: PropTypes.string,
 
   /**
    *
    */
-  autoAddItem: React.PropTypes.bool,
+  autoAddItem: PropTypes.bool,
 
   /**
    * The label for the field
    */
-  label: React.PropTypes.string,
+  label: PropTypes.string,
 
   /**
    * Each item component
    */
-  children: React.PropTypes.any,
+  children: PropTypes.any,
 
   /**
    * Pass a function that returns the children components for the current item.
@@ -54,7 +53,7 @@ const propTypes = {
    * This is useful when you want to change the view of a item in the array depending
    * on the current value.
    */
-  renderItem: React.PropTypes.func
+  renderItem: PropTypes.func
 }
 
 const defaultProps = {
@@ -68,18 +67,17 @@ const defaultProps = {
 }
 
 const childContextTypes = {
-  parentFieldName: React.PropTypes.string
+  parentFieldName: PropTypes.string
 }
 
 export default class ArrayComponent extends React.Component {
-
-  getChildContext () {
+  getChildContext() {
     return {
       parentFieldName: this.props.fieldName
     }
   }
 
-  addItem (itemValue = {}) {
+  addItem(itemValue = {}) {
     var newArray = this.props.value
     if (isArray(newArray)) {
       newArray.push(itemValue)
@@ -90,55 +88,43 @@ export default class ArrayComponent extends React.Component {
     this.props.onChange(newArray)
   }
 
-  removeItem (index) {
+  removeItem(index) {
     const value = this.props.value || []
     var newArray = without(value, value[index])
     this.props.onChange(newArray)
   }
 
-  getChildrenComponents (item, index) {
+  getChildrenComponents(item, index) {
     if (this.props.renderItem) return this.props.renderItem(item, index)
     if (this.props.children) return this.props.children
-    if (!this.props.schema) throw new Error(`You must pass children to the array field "${this.props.fieldName}"`)
-    let schemaFieldName = replaceIndexKeys(this.props.fieldName)
-    const keys = this.props.schema.objectKeys(`${schemaFieldName}.$`)
-    if (keys.length) {
-      // Array with objects, e.g. type: [Object]
-      schemaFieldName = `${schemaFieldName}.${index}`
-      return generateInputsForKeys(keys, schemaFieldName, this.props.schema, this.props.omit)
-    }
-    // Array with primitives, e.g. type: [String]
-    // Child field has no own fieldName (used as key for looking up values)
-    return generateInputsForKeys([''], schemaFieldName, this.props.schema, this.props.omit)
   }
 
-  renderChildren () {
+  renderChildren() {
     const value = this.props.value || []
     if (this.props.autoAddItem && !this.props.disabled && value.length === 0) {
       value.push({})
     }
     return value.map((item, index) => {
       const children = this.getChildrenComponents(item, index)
-      return this.renderChildrenItem({ index, children })
+      return this.renderChildrenItem({index, children})
     })
   }
 
-  renderChildrenItem ({ index, children }) {
+  renderChildrenItem({index, children}) {
     return (
-      <div style={{ marginTop: 20, marginBottom: 20, padding: 20 }} key={`${this.props.fieldName}.${index}`}>
+      <div
+        style={{marginTop: 20, marginBottom: 20, padding: 20}}
+        key={`${this.props.fieldName}.${index}`}
+      >
         {this.renderChildrenItemWithContext({index, children})}
         {this.props.showRemoveButton
-          ? <div style={{ marginTop: 10, textAlign: 'right' }}>
-            <button type='button' onClick={() => this.removeItem(index)}>
-              {this.props.removeLabel}
-            </button>
-          </div>
+          ? this.renderButton(() => this.removeItem(index), this.props.removeLabel)
           : null}
       </div>
     )
   }
 
-  renderChildrenItemWithContext ({index, children}) {
+  renderChildrenItemWithContext({index, children}) {
     return (
       <ArrayContextItem index={index} fieldName={this.props.fieldName}>
         {children}
@@ -146,23 +132,34 @@ export default class ArrayComponent extends React.Component {
     )
   }
 
-  render () {
+  renderButton(onClick, label) {
     return (
-      <div style={{ marginTop: 20 }}>
-        <div><b>{this.props.label}</b></div>
-        <div style={{ color: 'red' }}>{this.props.errorMessage}</div>
-        {this.renderChildren()}
-        {this.props.showAddButton
-          ? <div style={{ marginTop: 10 }}>
-            <button type='button' onClick={() => this.addItem()}>
-              {this.props.addLabel}
-            </button>
-          </div>
-          : null}
+      <div style={{marginTop: 10}}>
+        <button type="button" onClick={onClick}>
+          {label}
+        </button>
       </div>
     )
   }
 
+  render() {
+    return (
+      <div style={{marginTop: 20}}>
+        <div>
+          <b>
+            {this.props.label}
+          </b>
+        </div>
+        <div style={{color: 'red'}}>
+          {this.props.errorMessage}
+        </div>
+        {this.renderChildren()}
+        {this.props.showAddButton
+          ? this.renderButton(() => this.addItem(), this.props.addLabel)
+          : null}
+      </div>
+    )
+  }
 }
 
 ArrayComponent.propTypes = propTypes

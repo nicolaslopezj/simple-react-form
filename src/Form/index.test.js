@@ -1,14 +1,20 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import {shallow, mount} from 'enzyme'
 import Form from './index'
 import Field from '../Field'
+import PropTypes from 'prop-types'
 
 class DummyInput extends React.Component {
-  render () {
+  static propTypes = {
+    value: PropTypes.string,
+    onChange: PropTypes.func
+  }
+  render() {
     return (
       <input
         value={this.props.value || ''}
-        onChange={(e) => this.props.onChange(e.target.value)} />
+        onChange={event => this.props.onChange(event.target.value)}
+      />
     )
   }
 }
@@ -32,35 +38,27 @@ test('Should not render a <form> if useFormTag is false', () => {
 })
 
 test('onChange should dispatch on changes', () => {
-  let calls
   const mockFn = jest.fn()
   const component = mount(
     <Form onChange={mockFn}>
-      <Field fieldName='foo' type={DummyInput} />
+      <Field fieldName="foo" type={DummyInput} />
     </Form>
   )
 
-  component
-    .find('input')
-    .simulate('change', {target: {value: 'foobar'}})
-  calls = mockFn.mock.calls[0]
+  component.find('input').simulate('change', {target: {value: 'foobar'}})
   expect(mockFn.mock.calls[0][0]).toEqual({foo: 'foobar'})
 
-  component
-    .find('input')
-    .simulate('change', {target: {value: 'barfoo'}})
-  calls = mockFn.mock.calls[0]
-  expect(calls[calls.length - 1]).toEqual({foo: 'barfoo'})
+  component.find('input').simulate('change', {target: {value: 'barfoo'}})
+  expect(mockFn.mock.calls[1][0]).toEqual({foo: 'barfoo'})
 
-  component.find('Form').get(0).onValueChange('bar', 'test')
-  calls = mockFn.mock.calls[0]
-  expect(calls[calls.length - 1]).toEqual({bar: 'test', foo: 'barfoo'})
+  component.find('Form').get(0).onChange('bar', 'test')
+  expect(mockFn.mock.calls[2][0]).toEqual({bar: 'test', foo: 'barfoo'})
 })
 
 test('should render the form correctly', () => {
   const component = mount(
     <Form>
-      <Field fieldName='foo' type={DummyInput} />
+      <Field fieldName="foo" type={DummyInput} />
     </Form>
   )
 
