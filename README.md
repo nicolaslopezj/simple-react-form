@@ -112,7 +112,9 @@ export default class UploadImage extends React.Component {
         <p>
           {this.props.label}
         </p>
-        <img src={this.props.value} />
+        <div>
+          <img src={this.props.value} />
+        </div>
         <TextField
         value={this.props.value}
         hintText='Image Url'
