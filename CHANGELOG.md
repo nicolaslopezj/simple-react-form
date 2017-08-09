@@ -2,8 +2,9 @@
 
 ### v2.0.0
 
+- Complete rewrite.
 - Faster and lighter.
-- Clearer state management.
+- Better state management.
 - ```doc``` prop is deprecated.
 - No more simple-schema integration.
 - No more collection integration.
