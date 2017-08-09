@@ -1,5 +1,5 @@
 import React from 'react'
-import {propTypes as fieldTypePropTypes} from './FieldType'
+import {propTypes as fieldTypePropTypes} from '../FieldType'
 import PropTypes from 'prop-types'
 
 /**

@@ -1,14 +1,14 @@
 import React from 'react'
-import { mount } from 'enzyme'
-import Form from './Form'
-import Field from './Field'
-import {default as ObjectField} from './Object'
+import {mount} from 'enzyme'
+import Form from '../Form'
+import Field from '../Field'
+import {default as ObjectField} from './index'
 
 it('should render correctly', () => {
   const component = mount(
     <Form>
-      <Field fieldName='object' type={ObjectField}>
-        <div className='children' />
+      <Field fieldName="object" type={ObjectField}>
+        <div className="children" />
       </Field>
     </Form>
   )
@@ -18,8 +18,8 @@ it('should render correctly', () => {
 it('should show an error if it has one', () => {
   const component = mount(
     <Form>
-      <Field fieldName='object' type={ObjectField} errorMessage='I AM AN ERROR'>
-        <div className='children' />
+      <Field fieldName="object" type={ObjectField} errorMessage="I AM AN ERROR">
+        <div className="children" />
       </Field>
     </Form>
   )
@@ -30,8 +30,8 @@ it('should show an error if it has one', () => {
 it('should render the label', () => {
   const component = mount(
     <Form>
-      <Field fieldName='object' type={ObjectField} label='I AM A LABEL!'>
-        <div className='children' />
+      <Field fieldName="object" type={ObjectField} label="I AM A LABEL!">
+        <div className="children" />
       </Field>
     </Form>
   )
