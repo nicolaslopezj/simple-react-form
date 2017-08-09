@@ -83,6 +83,39 @@ class PostsCreate extends React.Component {
 }
 ```
 
+
+## Using without state
+
+In this example, the current value of the form will be stored inside the Form component and passed in the onSubmit function. The difference on this is that the ```state``` prop does not change over time.
+
+```js
+import React from 'react'
+import {Form, Field} from 'simple-react-form'
+import DatePicker from './myFields/DatePicker'
+import Text from './myFields/Text'
+
+class PostsCreate extends React.Component {
+
+  state = {}
+
+  onSubmit ({name, date}) {
+
+  }
+
+  render() {
+    return (
+      <div>
+        <Form ref='form' state={this.props.initialDoc} onSubmit={this.onSubmit}>
+          <Field fieldName='name' label='Name' type={Text} />
+          <Field fieldName='date' label='A Date' type={DatePicker} />
+        </Form>
+        <button onClick={() => this.refs.form.submit()}>Submit</button>
+      </div>
+    )
+  }
+}
+```
+
 ## Field Types
 
 React Simple Form is built from the idea that you can create custom components easily.
