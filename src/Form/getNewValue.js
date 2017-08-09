@@ -26,8 +26,6 @@ const setValue = function(value, keyParts, fieldValue) {
 
 export default function(val, fieldName, fieldValue) {
   const value = cloneDeep(val)
-  console.log('settings value', fieldName, fieldValue)
-
   const keyParts = fieldName.split('.')
 
   setValue(value, keyParts, fieldValue)
