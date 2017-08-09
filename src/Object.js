@@ -1,6 +1,5 @@
 import React from 'react'
 import {propTypes as fieldTypePropTypes} from './FieldType'
-import {replaceIndexKeys} from './utility'
 
 /**
  * You can use this field as array field but the main purporse is to extend it
