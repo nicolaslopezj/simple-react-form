@@ -44,7 +44,7 @@ export default class Form extends React.Component {
 
   static childContextTypes = {
     doc: PropTypes.object,
-    onChange: React.PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
     errorMessages: PropTypes.object,
     form: PropTypes.any
   }

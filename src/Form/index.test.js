@@ -2,8 +2,13 @@ import React from 'react'
 import {shallow, mount} from 'enzyme'
 import Form from './index'
 import Field from '../Field'
+import PropTypes from 'prop-types'
 
 class DummyInput extends React.Component {
+  static propTypes = {
+    value: PropTypes.string,
+    onChange: PropTypes.func
+  }
   render() {
     return (
       <input

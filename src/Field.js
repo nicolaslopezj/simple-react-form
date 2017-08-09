@@ -5,31 +5,32 @@ import keys from 'lodash/keys'
 import pick from 'lodash/pick'
 import get from 'lodash/get'
 import autobind from 'autobind-decorator'
+import PropTypes from 'prop-types'
 
 export default class Field extends React.Component {
   static propTypes = {
     /**
      * The name of the field in the object.
      */
-    fieldName: React.PropTypes.string.isRequired,
+    fieldName: PropTypes.string.isRequired,
 
     /**
      * The type of the input. It can be a component
      */
-    type: React.PropTypes.any,
+    type: PropTypes.any,
 
     /**
      * Pass a error message
      */
-    errorMessage: React.PropTypes.string
+    errorMessage: PropTypes.string
   }
 
   static contextTypes = {
-    doc: React.PropTypes.object,
-    onChange: React.PropTypes.func.isRequired,
-    errorMessages: React.PropTypes.object,
-    form: React.PropTypes.any.isRequired,
-    parentFieldName: React.PropTypes.string
+    doc: PropTypes.object,
+    onChange: PropTypes.func.isRequired,
+    errorMessages: PropTypes.object,
+    form: PropTypes.any.isRequired,
+    parentFieldName: PropTypes.string
   }
 
   getFieldName() {

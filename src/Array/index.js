@@ -8,43 +8,44 @@ import ArrayContextItem from './ArrayContextItem'
 import {propTypes as fieldTypePropTypes} from '../FieldType'
 import isArray from 'lodash/isArray'
 import without from 'lodash/without'
+import PropTypes from 'prop-types'
 
 const propTypes = {
   ...fieldTypePropTypes,
   /**
    * The add button label
    */
-  addLabel: React.PropTypes.string,
+  addLabel: PropTypes.string,
 
   /**
    * Show the add button
    */
-  showAddButton: React.PropTypes.bool,
+  showAddButton: PropTypes.bool,
 
   /**
    * Show the remove button
    */
-  showRemoveButton: React.PropTypes.bool,
+  showRemoveButton: PropTypes.bool,
 
   /**
    * The remove label
    */
-  removeLabel: React.PropTypes.string,
+  removeLabel: PropTypes.string,
 
   /**
    *
    */
-  autoAddItem: React.PropTypes.bool,
+  autoAddItem: PropTypes.bool,
 
   /**
    * The label for the field
    */
-  label: React.PropTypes.string,
+  label: PropTypes.string,
 
   /**
    * Each item component
    */
-  children: React.PropTypes.any,
+  children: PropTypes.any,
 
   /**
    * Pass a function that returns the children components for the current item.
@@ -52,7 +53,7 @@ const propTypes = {
    * This is useful when you want to change the view of a item in the array depending
    * on the current value.
    */
-  renderItem: React.PropTypes.func
+  renderItem: PropTypes.func
 }
 
 const defaultProps = {
@@ -66,7 +67,7 @@ const defaultProps = {
 }
 
 const childContextTypes = {
-  parentFieldName: React.PropTypes.string
+  parentFieldName: PropTypes.string
 }
 
 export default class ArrayComponent extends React.Component {
@@ -117,11 +118,7 @@ export default class ArrayComponent extends React.Component {
       >
         {this.renderChildrenItemWithContext({index, children})}
         {this.props.showRemoveButton
-          ? <div style={{marginTop: 10, textAlign: 'right'}}>
-              <button type="button" onClick={() => this.removeItem(index)}>
-                {this.props.removeLabel}
-              </button>
-            </div>
+          ? this.renderButton(() => this.removeItem(index), this.props.removeLabel)
           : null}
       </div>
     )
@@ -132,6 +129,16 @@ export default class ArrayComponent extends React.Component {
       <ArrayContextItem index={index} fieldName={this.props.fieldName}>
         {children}
       </ArrayContextItem>
+    )
+  }
+
+  renderButton(onClick, label) {
+    return (
+      <div style={{marginTop: 10}}>
+        <button type="button" onClick={onClick}>
+          {label}
+        </button>
+      </div>
     )
   }
 
@@ -148,11 +155,7 @@ export default class ArrayComponent extends React.Component {
         </div>
         {this.renderChildren()}
         {this.props.showAddButton
-          ? <div style={{marginTop: 10}}>
-              <button type="button" onClick={() => this.addItem()}>
-                {this.props.addLabel}
-              </button>
-            </div>
+          ? this.renderButton(() => this.addItem(), this.props.addLabel)
           : null}
       </div>
     )

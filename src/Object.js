@@ -1,5 +1,6 @@
 import React from 'react'
 import {propTypes as fieldTypePropTypes} from './FieldType'
+import PropTypes from 'prop-types'
 
 /**
  * You can use this field as array field but the main purporse is to extend it
@@ -11,11 +12,11 @@ const propTypes = {
   /**
   * Each item component
   */
-  children: React.PropTypes.any
+  children: PropTypes.any
 }
 
 const childContextTypes = {
-  parentFieldName: React.PropTypes.string
+  parentFieldName: PropTypes.string
 }
 
 export default class ObjectComponent extends React.Component {
