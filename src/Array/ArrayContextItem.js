@@ -1,4 +1,5 @@
 import React from 'react'
+import isReactNative from '../utility/isReactNative'
 
 const propTypes = {
   children: React.PropTypes.any,
@@ -17,18 +18,9 @@ export default class ArrayContextItem extends React.Component {
     }
   }
 
-  isRN() {
-    return typeof navigator !== 'undefined' && navigator.product === 'ReactNative'
-  }
-
   render() {
-    if (this.isRN()) {
-      // const {View} = require('react-native')
-      return (
-        <View>
-          {this.props.children}
-        </View>
-      )
+    if (isReactNative()) {
+      throw new Error('You must create a custom ArrayContextItem for React Native')
     }
     return (
       <div>

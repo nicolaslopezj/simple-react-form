@@ -5,14 +5,34 @@ import omit from 'lodash/omit'
 import keys from 'lodash/keys'
 import isFunction from 'lodash/isFunction'
 import getNewValue from './getNewValue'
+import isReactNative from '../utility/isReactNative'
 
 export default class Form extends React.Component {
   static propTypes = {
+    /**
+     * The fields of the form
+     */
     children: PropTypes.node,
+    /**
+     * The object that has the values of the form.
+     */
     state: PropTypes.object,
+    /**
+     * A callback that fires when the form value changes.
+     * The argument will be the state with the updated field value.
+     */
     onChange: PropTypes.func,
+    /**
+     * Pass error messages in a object
+     */
     errorMessages: PropTypes.object,
+    /**
+     * Use form tag as a container
+     */
     useFormTag: PropTypes.bool,
+    /**
+     * A function that is called when the form is submitted.
+     */
     onSubmit: PropTypes.func
   }
 
@@ -53,10 +73,6 @@ export default class Form extends React.Component {
     }
   }
 
-  isReactNative() {
-    return navigator.product === 'ReactNative'
-  }
-
   @autobind
   getValue() {
     return this.state.value || this.props.state || {}
@@ -85,7 +101,7 @@ export default class Form extends React.Component {
 
   render() {
     const domProps = omit(this.props, keys(Form.propTypes))
-    if (this.isReactNative()) {
+    if (isReactNative()) {
       return this.props.children
     }
     if (this.props.useFormTag) {
