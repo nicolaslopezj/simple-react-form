@@ -46,6 +46,14 @@ export default class Field extends React.Component {
   }
 
   @autobind
+  focus() {
+    if (!this.refs.input.focus) {
+      throw new Error("Field doesn't has a focus method")
+    }
+    this.refs.input.focus()
+  }
+
+  @autobind
   onChange(value) {
     this.context.onChange(this.getFieldName(), value)
   }

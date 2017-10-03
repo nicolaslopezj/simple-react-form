@@ -1,6 +1,6 @@
 {
   "name": "simple-react-form",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "license": "MIT",
   "author": "Nicolás López <nicolaslopezj@me.com>",
   "description": "A library to make reusable form components in React and React Native",
@@ -17,14 +17,7 @@
     "test-watch": "jest --watch",
     "lint": "eslint \"src/**/*.js\""
   },
-  "keywords": [
-    "react-component",
-    "react-native",
-    "ios",
-    "android",
-    "form",
-    "react"
-  ],
+  "keywords": ["react-component", "react-native", "ios", "android", "form", "react"],
   "dependencies": {
     "autobind-decorator": "^2.1.0",
     "lodash": "^4.17.4"
@@ -55,19 +48,9 @@
     "react": ">=15.0.0"
   },
   "jest": {
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/lib"
-    ]
+    "testPathIgnorePatterns": ["/node_modules/", "/lib"]
   },
   "standard": {
-    "globals": [
-      "it",
-      "xit",
-      "expect",
-      "test",
-      "jest",
-      "MongoObject"
-    ]
+    "globals": ["it", "xit", "expect", "test", "jest", "MongoObject"]
   }
 }

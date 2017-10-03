@@ -1,5 +1,9 @@
 # Changelog
 
+### v2.0.1
+
+- Add focus method to Field.
+
 ### v2.0.0
 
 - Complete rewrite.
