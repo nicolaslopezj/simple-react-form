@@ -45,16 +45,9 @@ export default class Form extends React.Component {
 
   state = {}
 
-  constructor(props) {
-    super(props)
-    if (props.doc) {
-      throw new Error('Doc prop is deprecated, please use state instead')
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.state !== this.props.state) {
-      this.setState({value: null}) // will reset state because doc prop has changed
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.state !== this.props.state) {
+      this.setState({value: null}) // will reset state because state prop has changed
     }
   }
 
