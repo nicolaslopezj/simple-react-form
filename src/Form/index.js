@@ -88,7 +88,7 @@ export default class Form extends React.Component {
     }
     if (this.props.useFormTag) {
       return (
-        <form {...domProps} onSubmit={this.onFormSubmit}>
+        <form {...domProps} ref="form" onSubmit={this.onFormSubmit}>
           {this.props.children}
         </form>
       )

@@ -6,7 +6,8 @@
 - Use the new Context API.
 - New `WithValue` HOC.
 - Better testing (without enzyme).
-- Backwards compatible.
+- Almost 100% backwards compatible.
+- Field input ref is now in `.input` instead of `.refs.input`.
 
 ### v2.0.1
 

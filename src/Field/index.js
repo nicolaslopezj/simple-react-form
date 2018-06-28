@@ -45,10 +45,10 @@ export default class Field extends React.Component {
 
   @autobind
   focus() {
-    if (!this.refs.input.focus) {
+    if (!this.input.focus) {
       throw new Error("Field doesn't has a focus method")
     }
-    this.refs.input.focus()
+    this.input.focus()
   }
 
   getComponent() {
@@ -97,7 +97,7 @@ export default class Field extends React.Component {
     const props = this.getChildProps(info)
     return (
       <ValueContext.Provider value={props.value}>
-        <Component {...props} />
+        <Component ref={input => (this.input = input)} {...props} />
       </ValueContext.Provider>
     )
   }
