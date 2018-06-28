@@ -2,8 +2,9 @@ import React from 'react'
 import ReactTestUtils from 'react-dom/test-utils'
 import Form from '../Form'
 import Field from '../Field'
-import {default as ArrayField} from './index'
+import ArrayField from './index'
 import '../setupTest'
+import ObjectField from '../Object'
 import PropTypes from 'prop-types'
 
 class DummyInput extends React.Component {
@@ -125,4 +126,30 @@ test('onChange should make changes correctly', () => {
   const input = ReactTestUtils.findRenderedDOMComponentWithTag(tree, 'input')
   ReactTestUtils.Simulate.change(input, {target: {value: 'Joaquín'}})
   expect(state).toEqual({persons: [{name: 'Joaquín'}]})
+})
+
+test('onChange should make changes correctly on double array', () => {
+  let state = {
+    person: {
+      friends: [{name: 'Nicolás'}]
+    }
+  }
+
+  const tree = ReactTestUtils.renderIntoDocument(
+    <Form state={state} onChange={changes => (state = changes)}>
+      <Field fieldName="person" type={ObjectField}>
+        <Field fieldName="friends" type={ArrayField}>
+          <Field fieldName="name" type={DummyInput} />
+        </Field>
+      </Field>
+    </Form>
+  )
+
+  const input = ReactTestUtils.findRenderedDOMComponentWithTag(tree, 'input')
+  ReactTestUtils.Simulate.change(input, {target: {value: 'Joaquín'}})
+  expect(state).toEqual({
+    person: {
+      friends: [{name: 'Joaquín'}]
+    }
+  })
 })
