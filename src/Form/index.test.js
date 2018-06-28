@@ -1,76 +1,81 @@
 import React from 'react'
-import {shallow, mount} from 'enzyme'
 import Form from './index'
 import Field from '../Field'
 import PropTypes from 'prop-types'
+import ReactTestUtils from 'react-dom/test-utils'
+import '../setupTest'
 
 class DummyInput extends React.Component {
   static propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func
   }
+
   render() {
     return (
       <input
         value={this.props.value || ''}
-        onChange={event => this.props.onChange(event.target.value)}
+        onChange={event => {
+          this.props.onChange(event.target.value)
+        }}
       />
     )
   }
 }
 
 test('Should render by default a <form>', () => {
-  const component = shallow(
+  const tree = ReactTestUtils.renderIntoDocument(
     <Form>
       <div>dummy</div>
     </Form>
   )
-  expect(component.find('form').length).toBe(1)
+  ReactTestUtils.findRenderedDOMComponentWithTag(tree, 'form')
 })
 
 test('Should not render a <form> if useFormTag is false', () => {
-  const component = shallow(
+  const tree = ReactTestUtils.renderIntoDocument(
     <Form useFormTag={false}>
       <div>dummy</div>
     </Form>
   )
-  expect(component.find('form').length).toBe(0)
+  expect.assertions(1)
+  try {
+    ReactTestUtils.findRenderedDOMComponentWithTag(tree, 'form')
+  } catch (error) {
+    expect(error.message).toContain('Did not find exactly one match (found: 0) for tag:form')
+  }
 })
 
 test('onChange should dispatch on changes', () => {
   const mockFn = jest.fn()
-  const component = mount(
+
+  const tree = ReactTestUtils.renderIntoDocument(
     <Form onChange={mockFn}>
       <Field fieldName="foo" type={DummyInput} />
     </Form>
   )
 
-  component.find('input').simulate('change', {target: {value: 'foobar'}})
+  const input = ReactTestUtils.findRenderedDOMComponentWithTag(tree, 'input')
+  ReactTestUtils.Simulate.change(input, {target: {value: 'foobar'}})
   expect(mockFn.mock.calls[0][0]).toEqual({foo: 'foobar'})
 
-  component.find('input').simulate('change', {target: {value: 'barfoo'}})
+  ReactTestUtils.Simulate.change(input, {target: {value: 'barfoo'}})
   expect(mockFn.mock.calls[1][0]).toEqual({foo: 'barfoo'})
 
-  component.find('Form').get(0).onChange('bar', 'test')
+  ReactTestUtils.findRenderedComponentWithType(tree, Form).onChange('bar', 'test')
   expect(mockFn.mock.calls[2][0]).toEqual({bar: 'test', foo: 'barfoo'})
 })
 
-test('should render the form correctly', () => {
-  const component = mount(
+it('should render the form correctly', () => {
+  const tree = ReactTestUtils.renderIntoDocument(
     <Form>
       <Field fieldName="foo" type={DummyInput} />
     </Form>
   )
 
-  it('should render a <form>', () => {
-    expect(component.find('form').length).toBe(1)
-  })
+  ReactTestUtils.findRenderedDOMComponentWithTag(tree, 'form')
 
-  it('should render the <Field>', () => {
-    expect(component.find('Field').length).toBe(1)
-  })
+  ReactTestUtils.findRenderedComponentWithType(tree, Field)
 
-  it('should render the <DummyInput>', () => {
-    expect(component.find('DummyInput').length).toBe(1)
-  })
+  ReactTestUtils.findRenderedComponentWithType(tree, DummyInput)
 })

@@ -1,11 +1,17 @@
 import React from 'react'
-import {propTypes as fieldTypePropTypes} from './FieldType'
+import {propTypes as fieldTypePropTypes} from '../FieldType'
 import omit from 'lodash/omit'
 import keys from 'lodash/keys'
 import pick from 'lodash/pick'
 import get from 'lodash/get'
 import autobind from 'autobind-decorator'
 import PropTypes from 'prop-types'
+import {
+  ValueContext,
+  ErrorMessagesContext,
+  OnChangeContext,
+  ParentFieldNameContext
+} from '../Contexts'
 
 export default class Field extends React.Component {
   static propTypes = {
@@ -25,20 +31,12 @@ export default class Field extends React.Component {
     errorMessage: PropTypes.string
   }
 
-  static contextTypes = {
-    doc: PropTypes.object,
-    onChange: PropTypes.func.isRequired,
-    errorMessages: PropTypes.object,
-    form: PropTypes.any.isRequired,
-    parentFieldName: PropTypes.string
-  }
-
-  getFieldName() {
-    if (this.context.parentFieldName) {
+  getFieldName(parentFieldName) {
+    if (parentFieldName) {
       if (this.props.fieldName) {
-        return `${this.context.parentFieldName}.${this.props.fieldName}`
+        return `${parentFieldName}.${this.props.fieldName}`
       } else {
-        return this.context.parentFieldName
+        return parentFieldName
       }
     } else {
       return this.props.fieldName
@@ -53,22 +51,11 @@ export default class Field extends React.Component {
     this.refs.input.focus()
   }
 
-  @autobind
-  onChange(value) {
-    this.context.onChange(this.getFieldName(), value)
-  }
-
   getComponent() {
     return this.props.type
   }
 
-  getValue() {
-    const doc = this.context.doc || {}
-    return get(doc, this.getFieldName())
-  }
-
-  getErrorMessage() {
-    const errorMessages = this.context.errorMessages || {}
+  getErrorMessage(errorMessages) {
     return (
       this.props.errorMessage ||
       errorMessages[this.getFieldName()] ||
@@ -76,7 +63,7 @@ export default class Field extends React.Component {
     )
   }
 
-  getChildProps() {
+  getChildProps({value, parentFieldName, onChange, errorMessages}) {
     /**
      * This gets the props that are defined in the propTypes of the registered component.
      */
@@ -94,22 +81,51 @@ export default class Field extends React.Component {
     const notDefinedOptions = omit(propOptions, allowedKeys)
 
     const props = {
-      value: this.getValue(),
-      onChange: this.onChange,
-      errorMessage: this.getErrorMessage(),
-      fieldName: this.getFieldName(),
-      form: this.context.form,
+      value: get(value || {}, this.props.fieldName),
+      onChange: newValue => onChange(this.getFieldName(parentFieldName), newValue),
+      errorMessage: this.getErrorMessage(errorMessages || {}),
+      fieldName: this.getFieldName(parentFieldName),
       passProps: notDefinedOptions,
-      ref: 'input',
       ...onlyAllowedOptions
     }
 
     return props
   }
 
+  renderComponent(info) {
+    const Component = this.getComponent()
+    const props = this.getChildProps(info)
+    return (
+      <ValueContext.Provider value={props.value}>
+        <Component {...props} />
+      </ValueContext.Provider>
+    )
+  }
+
   render() {
-    const component = this.getComponent()
-    this.element = React.createElement(component, this.getChildProps())
-    return this.element
+    return (
+      <ValueContext.Consumer>
+        {value => (
+          <ErrorMessagesContext.Consumer>
+            {errorMessages => (
+              <OnChangeContext.Consumer>
+                {onChange => (
+                  <ParentFieldNameContext.Consumer>
+                    {parentFieldName =>
+                      this.renderComponent({
+                        value,
+                        parentFieldName,
+                        onChange,
+                        errorMessages
+                      })
+                    }
+                  </ParentFieldNameContext.Consumer>
+                )}
+              </OnChangeContext.Consumer>
+            )}
+          </ErrorMessagesContext.Consumer>
+        )}
+      </ValueContext.Consumer>
+    )
   }
 }

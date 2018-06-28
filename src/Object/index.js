@@ -1,6 +1,7 @@
 import React from 'react'
 import {propTypes as fieldTypePropTypes} from '../FieldType'
 import PropTypes from 'prop-types'
+import {ParentFieldNameContext} from '../Contexts'
 
 /**
  * You can use this field as array field but the main purporse is to extend it
@@ -10,37 +11,40 @@ import PropTypes from 'prop-types'
 const propTypes = {
   ...fieldTypePropTypes,
   /**
-  * Each item component
-  */
+   * Each item component
+   */
   children: PropTypes.any
 }
 
-const childContextTypes = {
-  parentFieldName: PropTypes.string
-}
-
 export default class ObjectComponent extends React.Component {
-  getChildContext() {
-    return {
-      parentFieldName: this.props.fieldName
-    }
+  getChildrenComponents() {
+    return this.renderChildrenComponent()
   }
 
-  getChildrenComponents() {
-    return this.props.children
+  renderChildrenComponent() {
+    return (
+      <ParentFieldNameContext.Provider value={this.props.fieldName}>
+        {this.props.children}
+      </ParentFieldNameContext.Provider>
+    )
+  }
+
+  renderErrorMessage() {
+    if (!this.props.errorMessage) return
+    return (
+      <div style={{color: 'red'}} className="srf_errorMessage">
+        {this.props.errorMessage}
+      </div>
+    )
   }
 
   render() {
     return (
       <div style={{marginTop: 20, marginBottom: 20, padding: 20}}>
         <div>
-          <b>
-            {this.props.label}
-          </b>
+          <b>{this.props.label}</b>
         </div>
-        <div style={{color: 'red'}}>
-          {this.props.errorMessage}
-        </div>
+        {this.renderErrorMessage()}
         {this.getChildrenComponents()}
       </div>
     )
@@ -48,4 +52,3 @@ export default class ObjectComponent extends React.Component {
 }
 
 ObjectComponent.propTypes = propTypes
-ObjectComponent.childContextTypes = childContextTypes

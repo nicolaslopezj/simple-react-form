@@ -4,11 +4,13 @@
  */
 
 import React from 'react'
-import ArrayContextItem from './ArrayContextItem'
 import {propTypes as fieldTypePropTypes} from '../FieldType'
 import isArray from 'lodash/isArray'
 import without from 'lodash/without'
 import PropTypes from 'prop-types'
+import ObjectField from '../Object'
+import Field from '../Field'
+import {ParentFieldNameContext} from '../Contexts'
 
 const propTypes = {
   ...fieldTypePropTypes,
@@ -66,17 +68,7 @@ const defaultProps = {
   showRemoveButton: true
 }
 
-const childContextTypes = {
-  parentFieldName: PropTypes.string
-}
-
 export default class ArrayComponent extends React.Component {
-  getChildContext() {
-    return {
-      parentFieldName: this.props.fieldName
-    }
-  }
-
   addItem(itemValue = {}) {
     var newArray = this.props.value
     if (isArray(newArray)) {
@@ -111,33 +103,44 @@ export default class ArrayComponent extends React.Component {
   }
 
   renderChildrenItem({index, children}) {
+    const button = this.props.showRemoveButton
+      ? this.renderButton(() => this.removeItem(index), this.props.removeLabel, 'srf_removeButton')
+      : null
     return (
       <div
         style={{marginTop: 20, marginBottom: 20, padding: 20}}
-        key={`${this.props.fieldName}.${index}`}
-      >
+        key={`${this.props.fieldName}.${index}`}>
         {this.renderChildrenItemWithContext({index, children})}
-        {this.props.showRemoveButton
-          ? this.renderButton(() => this.removeItem(index), this.props.removeLabel)
-          : null}
+        {button}
       </div>
     )
   }
 
   renderChildrenItemWithContext({index, children}) {
     return (
-      <ArrayContextItem index={index} fieldName={this.props.fieldName}>
-        {children}
-      </ArrayContextItem>
+      <ParentFieldNameContext.Provider key={index} value={this.props.fieldName}>
+        <Field fieldName={`${index}`} type={ObjectField}>
+          {children}
+        </Field>
+      </ParentFieldNameContext.Provider>
     )
   }
 
-  renderButton(onClick, label) {
+  renderButton(onClick, label, className) {
     return (
       <div style={{marginTop: 10}}>
-        <button type="button" onClick={onClick}>
+        <button type="button" className={className} onClick={onClick}>
           {label}
         </button>
+      </div>
+    )
+  }
+
+  renderErrorMessage() {
+    if (!this.props.errorMessage) return
+    return (
+      <div style={{color: 'red'}} className="srf_errorMessage">
+        {this.props.errorMessage}
       </div>
     )
   }
@@ -146,16 +149,12 @@ export default class ArrayComponent extends React.Component {
     return (
       <div style={{marginTop: 20}}>
         <div>
-          <b>
-            {this.props.label}
-          </b>
+          <b>{this.props.label}</b>
         </div>
-        <div style={{color: 'red'}}>
-          {this.props.errorMessage}
-        </div>
+        {this.renderErrorMessage()}
         {this.renderChildren()}
         {this.props.showAddButton
-          ? this.renderButton(() => this.addItem(), this.props.addLabel)
+          ? this.renderButton(() => this.addItem(), this.props.addLabel, 'srf_addButton')
           : null}
       </div>
     )
@@ -164,4 +163,3 @@ export default class ArrayComponent extends React.Component {
 
 ArrayComponent.propTypes = propTypes
 ArrayComponent.defaultProps = defaultProps
-ArrayComponent.childContextTypes = childContextTypes

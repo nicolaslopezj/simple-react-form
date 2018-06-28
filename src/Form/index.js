@@ -6,6 +6,7 @@ import keys from 'lodash/keys'
 import isFunction from 'lodash/isFunction'
 import getNewValue from './getNewValue'
 import isReactNative from '../utility/isReactNative'
+import {ValueContext, ErrorMessagesContext, OnChangeContext} from '../Contexts'
 
 export default class Form extends React.Component {
   static propTypes = {
@@ -42,28 +43,12 @@ export default class Form extends React.Component {
     useFormTag: true
   }
 
-  static childContextTypes = {
-    doc: PropTypes.object,
-    onChange: PropTypes.func.isRequired,
-    errorMessages: PropTypes.object,
-    form: PropTypes.any
-  }
-
   state = {}
 
   constructor(props) {
     super(props)
     if (props.doc) {
       throw new Error('Doc prop is deprecated, please use state instead')
-    }
-  }
-
-  getChildContext() {
-    return {
-      doc: this.getValue(),
-      onChange: this.onChange,
-      errorMessages: this.props.errorMessages,
-      form: this
     }
   }
 
@@ -99,7 +84,7 @@ export default class Form extends React.Component {
     return this.props.onSubmit(this.getValue())
   }
 
-  render() {
+  renderChild() {
     const domProps = omit(this.props, keys(Form.propTypes))
     if (isReactNative()) {
       return this.props.children
@@ -111,11 +96,19 @@ export default class Form extends React.Component {
         </form>
       )
     } else {
-      return (
-        <div {...domProps}>
-          {this.props.children}
-        </div>
-      )
+      return <div {...domProps}>{this.props.children}</div>
     }
+  }
+
+  render() {
+    return (
+      <ErrorMessagesContext.Provider value={this.props.errorMessages}>
+        <OnChangeContext.Provider value={this.onChange}>
+          <ValueContext.Provider value={this.getValue()}>
+            {this.renderChild()}
+          </ValueContext.Provider>
+        </OnChangeContext.Provider>
+      </ErrorMessagesContext.Provider>
+    )
   }
 }

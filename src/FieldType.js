@@ -43,11 +43,6 @@ export const propTypes = {
   useHint: PropTypes.bool,
 
   /**
-   * Form
-   */
-  form: PropTypes.object.isRequired,
-
-  /**
    * The name of the field
    */
   fieldName: PropTypes.string.isRequired,

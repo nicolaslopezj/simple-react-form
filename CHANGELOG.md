@@ -1,5 +1,13 @@
 # Changelog
 
+### v2.1.0 (Mayor rewrite)
+
+- Upgrade to React 16.
+- Use the new Context API.
+- New `WithValue` HOC.
+- Better testing (without enzyme).
+- Backwards compatible.
+
 ### v2.0.1
 
 - Add focus method to Field.
@@ -9,7 +17,7 @@
 - Complete rewrite.
 - Faster and lighter.
 - Better state management.
-- ```doc``` prop is deprecated.
+- `doc` prop is deprecated.
 - No more simple-schema integration.
 - No more collection integration.
 - No more Meteor integration
@@ -30,7 +38,7 @@
 ### v1.7.9
 
 - Not render form never in React Native
-- Add ```errorMessages``` prop to ```Form```
+- Add `errorMessages` prop to `Form`
 - Pass props not present in propTypes to form element
 
 ### v1.7.7
@@ -43,7 +51,7 @@
 
 ### v1.7.4
 
-- Pass only present fields in ```onSubmit``` callback.
+- Pass only present fields in `onSubmit` callback.
 
 ### v1.7.3
 
@@ -51,13 +59,13 @@
 
 ### v1.7.2
 
-- Fix a bug with ```unregisterField```.
+- Fix a bug with `unregisterField`.
 
 ### v1.7.1
 
-- Separate ```generateInputsForKeys``` from ```Form.js```.
-- Fix a bug with ```getPresentFields``` with deep keys.
-- Add tests for ```generateInputsForKeys``` and ```getPresentFields```.
+- Separate `generateInputsForKeys` from `Form.js`.
+- Fix a bug with `getPresentFields` with deep keys.
+- Add tests for `generateInputsForKeys` and `getPresentFields`.
 
 ### v1.7.0
 
@@ -101,7 +109,7 @@
 ### v1.6.8
 
 - Improve the algorithm that was implemented in 1.6.6. This fixes when fields that
-are object are removed from the update object.
+  are object are removed from the update object.
 
 ### v1.6.6
 
@@ -109,8 +117,8 @@ are object are removed from the update object.
 
 ### v1.6.5
 
-- ```keepArrays``` is now ```true``` by default.
-- ```commitOnlyChanges``` is now ```false``` by default.
+- `keepArrays` is now `true` by default.
+- `commitOnlyChanges` is now `false` by default.
 - When updating a document, only fields that are present in the form (registered
   in the main form component) will be passed to the modifiers.
 
@@ -124,12 +132,11 @@ are object are removed from the update object.
 
 ### v1.6.1
 
-- ```keepArrays``` prop is now default ```false```.
+- `keepArrays` prop is now default `false`.
 
 ### v1.6
 
 - Array and object components are fields now.
-
 
 ### v1.5
 

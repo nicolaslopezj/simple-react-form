@@ -1,60 +1,128 @@
 import React from 'react'
-import { mount } from 'enzyme'
+import ReactTestUtils from 'react-dom/test-utils'
 import Form from '../Form'
 import Field from '../Field'
 import {default as ArrayField} from './index'
+import '../setupTest'
+import PropTypes from 'prop-types'
+
+class DummyInput extends React.Component {
+  static propTypes = {
+    value: PropTypes.string,
+    onChange: PropTypes.func
+  }
+
+  render() {
+    return (
+      <input
+        value={this.props.value || ''}
+        onChange={event => {
+          this.props.onChange(event.target.value)
+        }}
+      />
+    )
+  }
+}
 
 it('should render correctly', () => {
-  const component = mount(
+  const tree = ReactTestUtils.renderIntoDocument(
     <Form>
-      <Field fieldName='array' type={ArrayField} />
+      <Field fieldName="array" type={ArrayField} />
     </Form>
   )
 
-  expect(component.find('ArrayComponent').length).toBe(1)
+  ReactTestUtils.findRenderedComponentWithType(tree, ArrayField)
 })
 
 it('addItem should add an item', () => {
-  const component = mount(
+  const tree = ReactTestUtils.renderIntoDocument(
     <Form>
-      <Field fieldName='array' type={ArrayField}>
-        <div className='children' />
+      <Field fieldName="array" type={ArrayField}>
+        <div className="children" />
       </Field>
     </Form>
   )
 
-  const beforePress = component.find('.children').length
-  expect(beforePress).toBe(0)
-  component.find('button').simulate('click')
-  const afterPress = component.find('.children').length
+  expect.assertions(1)
+  try {
+    ReactTestUtils.findRenderedDOMComponentWithClass(tree, 'children')
+  } catch (error) {
+    expect(error.message).toContain('Did not find exactly one match (found: 0) for class:children')
+  }
 
-  expect(afterPress).toBe(beforePress + 1)
+  const button = ReactTestUtils.findRenderedDOMComponentWithTag(tree, 'button')
+  ReactTestUtils.Simulate.click(button)
+
+  ReactTestUtils.findRenderedDOMComponentWithClass(tree, 'children')
 })
 
 it('removeItem should remove the item', () => {
-  const component = mount(
+  const tree = ReactTestUtils.renderIntoDocument(
     <Form>
-      <Field fieldName='array' type={ArrayField}>
-        <div className='children' />
+      <Field fieldName="array" type={ArrayField}>
+        <div className="children" />
       </Field>
     </Form>
   )
   // add the first component
-  component.find('button').simulate('click')
-  const beforePress = component.find('.children').length
-  expect(beforePress).toBe(1)
-  // press the remove button
-  component.find('ArrayContextItem').parent().find('button').simulate('click')
-  const afterPress = component.find('.children').length
+  const addButton = ReactTestUtils.findRenderedDOMComponentWithClass(tree, 'srf_addButton')
+  ReactTestUtils.Simulate.click(addButton)
+  ReactTestUtils.findRenderedDOMComponentWithClass(tree, 'children')
 
-  expect(afterPress).toBe(beforePress - 1)
+  // press the remove button
+  const removeButton = ReactTestUtils.findRenderedDOMComponentWithClass(tree, 'srf_removeButton')
+  ReactTestUtils.Simulate.click(removeButton)
+  expect.assertions(1)
+  try {
+    ReactTestUtils.findRenderedDOMComponentWithClass(tree, 'children')
+  } catch (error) {
+    expect(error.message).toContain('Did not find exactly one match (found: 0) for class:children')
+  }
 })
 
 it('should render an error if there is one', () => {
-  const component = mount(
+  const tree = ReactTestUtils.renderIntoDocument(
     <Form>
-      <Field fieldName='array' type={ArrayField} errorMessage='I AM AN ERROR' />
+      <Field fieldName="array" type={ArrayField} errorMessage="I AM AN ERROR" />
     </Form>
   )
-  expect(component.find('div').first().childAt(1).text()).toBe('I AM AN ERROR')
+
+  ReactTestUtils.findRenderedDOMComponentWithClass(tree, 'srf_errorMessage')
+})
+
+it('should pass the value to the child fields', () => {
+  const item = {name: 'hello', text: 'bye'}
+  const tree = ReactTestUtils.renderIntoDocument(
+    <Form state={{items: [item]}}>
+      <Field fieldName="items" type={ArrayField}>
+        <Field fieldName="name" type={DummyInput} />
+        <Field fieldName="text" type={DummyInput} />
+      </Field>
+    </Form>
+  )
+  const objectInput = ReactTestUtils.findRenderedComponentWithType(tree, ArrayField)
+  expect(objectInput.props.value).toEqual([item])
+  const inputs = ReactTestUtils.scryRenderedComponentsWithType(tree, DummyInput)
+  for (const input of inputs) {
+    const expectedValue = item[input.props.fieldName.replace('items.0.', '')]
+    expect(input.props.value).toBe(expectedValue)
+  }
+
+  expect.assertions(inputs.length + 1)
+})
+
+test('onChange should make changes correctly', () => {
+  let state = {persons: [{name: 'Nicolás'}]}
+
+  const tree = ReactTestUtils.renderIntoDocument(
+    <Form state={state} onChange={changes => (state = changes)}>
+      <Field fieldName="persons" type={ArrayField}>
+        <Field fieldName="name" type={DummyInput} />
+      </Field>
+    </Form>
+  )
+
+  const input = ReactTestUtils.findRenderedDOMComponentWithTag(tree, 'input')
+  ReactTestUtils.Simulate.change(input, {target: {value: 'Joaquín'}})
+  expect(state).toEqual({persons: [{name: 'Joaquín'}]})
 })
