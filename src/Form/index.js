@@ -47,8 +47,12 @@ export default class Form extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.state !== this.props.state) {
-      this.setState({value: null}) // will reset state because state prop has changed
+      this.resetState()
     }
+  }
+
+  resetState() {
+    this.setState({value: null}) // will reset state because state prop has changed
   }
 
   @autobind
