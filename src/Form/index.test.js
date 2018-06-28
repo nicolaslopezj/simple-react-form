@@ -4,21 +4,26 @@ import Field from '../Field'
 import PropTypes from 'prop-types'
 import ReactTestUtils from 'react-dom/test-utils'
 import '../setupTest'
+import ObjectField from '../Object'
 
 class DummyInput extends React.Component {
   static propTypes = {
     value: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    errorMessage: PropTypes.string
   }
 
   render() {
     return (
-      <input
-        value={this.props.value || ''}
-        onChange={event => {
-          this.props.onChange(event.target.value)
-        }}
-      />
+      <div>
+        <div className="errorMessage">{this.props.errorMessage}</div>
+        <input
+          value={this.props.value || ''}
+          onChange={event => {
+            this.props.onChange(event.target.value)
+          }}
+        />
+      </div>
     )
   }
 }
@@ -78,4 +83,21 @@ it('should render the form correctly', () => {
   ReactTestUtils.findRenderedComponentWithType(tree, Field)
 
   ReactTestUtils.findRenderedComponentWithType(tree, DummyInput)
+})
+
+test('passes the errorMessage correctly', () => {
+  const errorMessages = {
+    'person.name': 'Error'
+  }
+
+  const tree = ReactTestUtils.renderIntoDocument(
+    <Form errorMessages={errorMessages}>
+      <Field fieldName="person" type={ObjectField}>
+        <Field fieldName="name" type={DummyInput} />
+      </Field>
+    </Form>
+  )
+
+  const content = ReactTestUtils.findRenderedDOMComponentWithClass(tree, 'errorMessage')
+  expect(content.innerHTML).toBe(errorMessages['person.name'])
 })

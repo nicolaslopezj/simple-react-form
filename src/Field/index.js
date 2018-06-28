@@ -55,11 +55,11 @@ export default class Field extends React.Component {
     return this.props.type
   }
 
-  getErrorMessage(errorMessages) {
+  getErrorMessage(errorMessages, parentFieldName) {
     return (
       this.props.errorMessage ||
-      errorMessages[this.getFieldName()] ||
-      get(errorMessages, this.getFieldName())
+      errorMessages[this.getFieldName(parentFieldName)] ||
+      get(errorMessages, this.getFieldName(parentFieldName))
     )
   }
 
@@ -83,7 +83,7 @@ export default class Field extends React.Component {
     const props = {
       value: get(value || {}, this.props.fieldName),
       onChange: newValue => onChange(this.getFieldName(parentFieldName), newValue),
-      errorMessage: this.getErrorMessage(errorMessages || {}),
+      errorMessage: this.getErrorMessage(errorMessages || {}, parentFieldName),
       fieldName: this.getFieldName(parentFieldName),
       passProps: notDefinedOptions,
       ...onlyAllowedOptions
