@@ -7,6 +7,7 @@ import isFunction from 'lodash/isFunction'
 import getNewValue from './getNewValue'
 import isReactNative from '../utility/isReactNative'
 import {ValueContext, ErrorMessagesContext, OnChangeContext, ParentFieldNameContext} from '../Contexts'
+import isEqual from 'lodash/isEqual'
 import cloneDeep from 'lodash/cloneDeep'
 
 export default class Form extends React.Component {
@@ -50,7 +51,7 @@ export default class Form extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.state !== this.props.state) {
+    if (!isEqual(prevProps.state, this.props.state)) {
       this.resetState()
     }
   }
