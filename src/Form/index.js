@@ -7,6 +7,7 @@ import isFunction from 'lodash/isFunction'
 import getNewValue from './getNewValue'
 import isReactNative from '../utility/isReactNative'
 import {ValueContext, ErrorMessagesContext, OnChangeContext, ParentFieldNameContext} from '../Contexts'
+import cloneDeep from 'lodash/cloneDeep'
 
 export default class Form extends React.Component {
   static propTypes = {
@@ -43,7 +44,10 @@ export default class Form extends React.Component {
     useFormTag: true
   }
 
-  state = {}
+  constructor (props) {
+    super(props)
+    this.state = {value: cloneDeep(props.state)}
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.state !== this.props.state) {
@@ -52,12 +56,12 @@ export default class Form extends React.Component {
   }
 
   resetState() {
-    this.setState({value: null}) // will reset state because state prop has changed
+    this.setState({value: cloneDeep(this.props.state)}) // will reset state because state prop has changed
   }
 
   @autobind
   getValue() {
-    return this.state.value || this.props.state || {}
+    return this.state.value || {}
   }
 
   @autobind
