@@ -2,7 +2,6 @@ import React from 'react'
 import {propTypes as fieldTypePropTypes} from '../FieldType'
 import omit from 'lodash/omit'
 import keys from 'lodash/keys'
-import pick from 'lodash/pick'
 import get from 'lodash/get'
 import autobind from 'autobind-decorator'
 import PropTypes from 'prop-types'
@@ -70,12 +69,10 @@ export default class Field extends React.Component {
     const fieldComponent = this.getComponent()
     const propOptions = omit(this.props, keys(Field.propTypes))
     const allowedKeys = keys({...fieldTypePropTypes, ...fieldComponent.propTypes})
-    const onlyAllowedOptions = pick(propOptions, allowedKeys)
 
     /**
-     * Options that are not registered in the propTypes are passed separatly.
-     * This options are in the variable this.passProps of the component, they should be
-     * passed to the main component of it.
+     * Options that are not registered in the propTypes are passed also
+     * in the passProps object
      */
     allowedKeys.push('type')
     const notDefinedOptions = omit(propOptions, allowedKeys)
@@ -86,7 +83,7 @@ export default class Field extends React.Component {
       errorMessage: this.getErrorMessage(errorMessages || {}, parentFieldName),
       fieldName: this.getFieldName(parentFieldName),
       passProps: notDefinedOptions,
-      ...onlyAllowedOptions
+      ...propOptions
     }
 
     return props
