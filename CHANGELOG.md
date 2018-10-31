@@ -1,5 +1,11 @@
 # Changelog
 
+### v2.2.0
+
+- Clones the state prop.
+- Check state changes using deep equal comparison.
+- Props not specified in propTypes are passed to fields too.
+
 ### v2.1.0 (Mayor rewrite)
 
 - Upgrade to React 16.
