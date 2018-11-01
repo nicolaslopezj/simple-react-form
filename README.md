@@ -3,7 +3,7 @@
 [![travis-ci](https://travis-ci.org/nicolaslopezj/simple-react-form.svg?branch=master)](https://travis-ci.org/nicolaslopezj/simple-react-form)
 [![npm version](https://badge.fury.io/js/simple-react-form.svg)](https://badge.fury.io/js/simple-react-form)
 
-Simple React Form is a library to make reusable form components in **React** and [React Native](#react-native).
+Simple React Form is the simplest way to handle forms in React. It helps you make reusable form components in **React** and [React Native](#react-native).
 
 This is just a framework, you must [create the form components](#field-types) or [install a package with fields](#contributions) that you will use.
 
@@ -122,7 +122,6 @@ import UploadImage from '../components/my-fields/upload'
 ### Creating the field type
 
 You must create a React component.
-Check the props that are passed by default [here](https://github.com/nicolaslopezj/simple-react-form/blob/master/src/FieldType.js)
 
 ```js
 import React from 'react'
@@ -148,8 +147,6 @@ export default class UploadImage extends React.Component {
 ```
 
 You can view the full list of props [here](https://github.com/nicolaslopezj/simple-react-form/blob/master/src/FieldType.js#L4).
-
-_Props that are not define in propTypes will be stored in `this.passProps` and deleted from propTypes._
 
 ## React Native
 
