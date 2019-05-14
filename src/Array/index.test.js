@@ -37,7 +37,7 @@ it('should render correctly', () => {
 
 it('addItem should add an item', () => {
   const tree = ReactTestUtils.renderIntoDocument(
-    <Form>
+    <Form addSubmitButton={false}>
       <Field fieldName="array" type={ArrayField}>
         <div className="children" />
       </Field>

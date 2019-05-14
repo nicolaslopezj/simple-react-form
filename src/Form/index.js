@@ -1,12 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import autobind from 'autobind-decorator'
 import omit from 'lodash/omit'
 import keys from 'lodash/keys'
 import isFunction from 'lodash/isFunction'
 import getNewValue from './getNewValue'
 import isReactNative from '../utility/isReactNative'
-import {ValueContext, ErrorMessagesContext, OnChangeContext, ParentFieldNameContext} from '../Contexts'
+import {
+  ValueContext,
+  ErrorMessagesContext,
+  OnChangeContext,
+  ParentFieldNameContext
+} from '../Contexts'
 import isEqual from 'lodash/isEqual'
 import cloneDeep from 'lodash/cloneDeep'
 
@@ -34,6 +38,10 @@ export default class Form extends React.Component {
      */
     useFormTag: PropTypes.bool,
     /**
+     * Adds a button for automatic submitting
+     */
+    addSubmitButton: PropTypes.bool,
+    /**
      * A function that is called when the form is submitted.
      */
     onSubmit: PropTypes.func
@@ -42,10 +50,11 @@ export default class Form extends React.Component {
   static defaultProps = {
     onChange: () => {},
     errorMessages: null,
-    useFormTag: true
+    useFormTag: true,
+    addSubmitButton: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {value: cloneDeep(props.state)}
   }
@@ -60,26 +69,22 @@ export default class Form extends React.Component {
     this.setState({value: cloneDeep(this.props.state)}) // will reset state because state prop has changed
   }
 
-  @autobind
-  getValue() {
+  getValue = () => {
     return this.state.value || {}
   }
 
-  @autobind
-  onChange(fieldName, fieldValue) {
+  onChange = (fieldName, fieldValue) => {
     const value = getNewValue(this.getValue(), fieldName, fieldValue)
     this.setState({value})
     this.props.onChange(value)
   }
 
-  @autobind
-  onFormSubmit(event) {
+  onFormSubmit = event => {
     event.preventDefault()
     return this.submit()
   }
 
-  @autobind
-  submit() {
+  submit = () => {
     if (!isFunction(this.props.onSubmit)) {
       throw new Error('You should pass a onSubmit prop')
     }
@@ -95,6 +100,7 @@ export default class Form extends React.Component {
       return (
         <form {...domProps} ref="form" onSubmit={this.onFormSubmit}>
           {this.props.children}
+          {this.props.addSubmitButton ? <button type="submit" style={{display: 'none'}} /> : null}
         </form>
       )
     } else {

@@ -3,7 +3,6 @@ import {propTypes as fieldTypePropTypes} from '../FieldType'
 import omit from 'lodash/omit'
 import keys from 'lodash/keys'
 import get from 'lodash/get'
-import autobind from 'autobind-decorator'
 import PropTypes from 'prop-types'
 import {
   ValueContext,
@@ -42,8 +41,7 @@ export default class Field extends React.Component {
     }
   }
 
-  @autobind
-  focus() {
+  focus = () => {
     if (!this.input.focus) {
       throw new Error("Field doesn't has a focus method")
     }

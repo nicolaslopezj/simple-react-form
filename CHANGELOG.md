@@ -1,5 +1,10 @@
 # Changelog
 
+### v2.3.0
+
+- Stops using autobind-decorator.
+- Adds `<input type="submit" />` to forms to enable submitting on enter.
+
 ### v2.2.0
 
 - Clones the state prop.
