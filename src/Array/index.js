@@ -80,6 +80,10 @@ export default class ArrayComponent extends React.Component {
     this.props.onChange(newArray)
   }
 
+  getObjectField() {
+    return ObjectField
+  }
+
   removeItem(index) {
     const value = this.props.value || []
     var newArray = without(value, value[index])
@@ -119,7 +123,7 @@ export default class ArrayComponent extends React.Component {
   renderChildrenItemWithContext({index, children}) {
     return (
       <ParentFieldNameContext.Provider key={index} value={this.props.fieldName}>
-        <Field fieldName={`${index}`} type={ObjectField}>
+        <Field fieldName={`${index}`} type={this.getObjectField()}>
           {children}
         </Field>
       </ParentFieldNameContext.Provider>
