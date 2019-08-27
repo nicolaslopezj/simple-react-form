@@ -86,7 +86,8 @@ export default class Form extends React.Component {
 
   submit = () => {
     if (!isFunction(this.props.onSubmit)) {
-      throw new Error('You should pass a onSubmit prop')
+      console.warn('You should pass a onSubmit prop to this form')
+      return
     }
     return this.props.onSubmit(this.getValue())
   }
