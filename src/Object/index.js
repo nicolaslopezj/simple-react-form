@@ -24,6 +24,7 @@ export default class ObjectComponent extends React.Component {
   renderChildrenComponent() {
     return (
       <ParentFieldNameContext.Provider value={this.props.fieldName}>
+        {this.props.fieldName}
         {this.props.children}
       </ParentFieldNameContext.Provider>
     )
