@@ -4,6 +4,7 @@ export {default as FieldType} from './FieldType'
 export {default as ArrayComponent} from './Array'
 export {default as ObjectComponent} from './Object'
 export {default as WithValue} from './WithValue'
+export {default as useValue} from './useValue'
 export {
   ValueContext,
   FormContext,
