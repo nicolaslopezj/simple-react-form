@@ -1,14 +1,29 @@
-export {default as Form} from './Form/index'
-export {default as Field} from './Field'
-export {default as FieldType} from './FieldType'
-export {default as ArrayComponent} from './Array'
-export {default as ObjectComponent} from './Object'
-export {default as WithValue} from './WithValue'
-export {default as useValue} from './useValue'
-export {
+import Form from './Form'
+import Field from './Field'
+import FieldType from './FieldType'
+import Array from './Array'
+import Object from './Object'
+import WithValue from './WithValue'
+import useValue from './useValue'
+import {
   ValueContext,
   FormContext,
   ErrorMessagesContext,
   OnChangeContext,
   ParentFieldNameContext
 } from './Contexts'
+
+export {
+  Form,
+  Field,
+  FieldType,
+  Array,
+  Object,
+  WithValue,
+  useValue,
+  ValueContext,
+  FormContext,
+  ErrorMessagesContext,
+  OnChangeContext,
+  ParentFieldNameContext
+}
