@@ -55,7 +55,13 @@ const propTypes = {
    * This is useful when you want to change the view of a item in the array depending
    * on the current value.
    */
-  renderItem: PropTypes.func
+  renderItem: PropTypes.func,
+
+  /**
+   * Render children as render props giving the index to the child component.
+   * This allows this component to be used in a controlled manner.
+   */
+  renderProps: PropTypes.bool,
 }
 
 const defaultProps = {
@@ -65,7 +71,8 @@ const defaultProps = {
   errorMessages: {},
   autoAddItem: false,
   showAddButton: true,
-  showRemoveButton: true
+  showRemoveButton: true,
+  renderProps: false,
 }
 
 export default class ArrayComponent extends React.Component {
@@ -124,7 +131,7 @@ export default class ArrayComponent extends React.Component {
     return (
       <ParentFieldNameContext.Provider key={index} value={this.props.fieldName}>
         <Field fieldName={`${index}`} type={this.getObjectField()}>
-          {children}
+          {this.props.renderChildren ? children(index) : children}
         </Field>
       </ParentFieldNameContext.Provider>
     )
