@@ -131,7 +131,7 @@ export default class ArrayComponent extends React.Component {
     return (
       <ParentFieldNameContext.Provider key={index} value={this.props.fieldName}>
         <Field fieldName={`${index}`} type={this.getObjectField()}>
-          {this.props.renderChildren ? children(index) : children}
+          {this.props.renderProps ? children(index) : children}
         </Field>
       </ParentFieldNameContext.Provider>
     )
