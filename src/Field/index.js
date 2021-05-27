@@ -77,6 +77,7 @@ export default class Field extends React.Component {
 
     const props = {
       value: get(value || {}, this.props.fieldName),
+      parentValue: value || {},
       onChange: newValue => onChange(this.getFieldName(parentFieldName), newValue),
       errorMessage: this.getErrorMessage(errorMessages || {}, parentFieldName),
       fieldName: this.getFieldName(parentFieldName),

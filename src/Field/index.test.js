@@ -26,3 +26,16 @@ test('should call focus on child', () => {
   field.focus()
   expect(didCall).toBe(true)
 })
+
+test('should pass parent value', () => {
+  function DummyInput(props) {
+    expect(props.parentValue).toEqual({hello: 'world'})
+    return null
+  }
+
+  ReactTestUtils.renderIntoDocument(
+    <Form state={{hello: 'world'}}>
+      <Field fieldName="name" type={DummyInput} />
+    </Form>
+  )
+})
