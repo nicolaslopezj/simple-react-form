@@ -4,7 +4,6 @@
  */
 
 import React from 'react'
-import {propTypes as fieldTypePropTypes} from '../FieldType'
 import isArray from 'lodash/isArray'
 import without from 'lodash/without'
 import PropTypes from 'prop-types'
@@ -13,7 +12,6 @@ import Field from '../Field'
 import {ParentFieldNameContext} from '../Contexts'
 
 const propTypes = {
-  ...fieldTypePropTypes,
   /**
    * The add button label
    */
@@ -61,7 +59,7 @@ const propTypes = {
    * Render children as render props giving the index to the child component.
    * This allows this component to be used in a controlled manner.
    */
-  renderProps: PropTypes.bool,
+  renderProps: PropTypes.bool
 }
 
 const defaultProps = {
@@ -72,10 +70,10 @@ const defaultProps = {
   autoAddItem: false,
   showAddButton: true,
   showRemoveButton: true,
-  renderProps: false,
+  renderProps: false
 }
 
-export default class ArrayComponent extends React.Component {
+export default class ArrayComponent extends React.Component<any> {
   addItem(itemValue = {}) {
     var newArray = this.props.value
     if (isArray(newArray)) {
@@ -171,6 +169,3 @@ export default class ArrayComponent extends React.Component {
     )
   }
 }
-
-ArrayComponent.propTypes = propTypes
-ArrayComponent.defaultProps = defaultProps

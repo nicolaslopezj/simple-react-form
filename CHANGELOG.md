@@ -1,5 +1,9 @@
 # Changelog
 
+### v3.0.0
+
+- Typescript support
+
 ### v2.3.0
 
 - Stops using autobind-decorator.

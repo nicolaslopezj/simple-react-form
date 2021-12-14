@@ -1,33 +1,18 @@
 import React from 'react'
-import {propTypes as fieldTypePropTypes} from '../FieldType'
 import omit from 'lodash/omit'
 import keys from 'lodash/keys'
 import get from 'lodash/get'
-import PropTypes from 'prop-types'
 import {
   ValueContext,
   ErrorMessagesContext,
   OnChangeContext,
   ParentFieldNameContext
 } from '../Contexts'
+import {FieldProps, fieldPropsKeys} from '../types'
+import {union} from 'lodash'
 
-export default class Field extends React.Component {
-  static propTypes = {
-    /**
-     * The name of the field in the object.
-     */
-    fieldName: PropTypes.string.isRequired,
-
-    /**
-     * The type of the input. It can be a component
-     */
-    type: PropTypes.any,
-
-    /**
-     * Pass a error message
-     */
-    errorMessage: PropTypes.string
-  }
+export default class Field extends React.Component<FieldProps> {
+  input: any
 
   getFieldName(parentFieldName) {
     if (parentFieldName) {
@@ -65,8 +50,8 @@ export default class Field extends React.Component {
      * This gets the props that are defined in the propTypes of the registered component.
      */
     const fieldComponent = this.getComponent()
-    const propOptions = omit(this.props, keys(Field.propTypes))
-    const allowedKeys = keys({...fieldTypePropTypes, ...fieldComponent.propTypes})
+    const propOptions = omit(this.props, keys(fieldPropsKeys))
+    const allowedKeys = union(keys({...fieldComponent.propTypes}), fieldPropsKeys)
 
     /**
      * Options that are not registered in the propTypes are passed also

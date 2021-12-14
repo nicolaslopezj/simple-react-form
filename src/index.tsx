@@ -7,7 +7,6 @@ import WithValue from './WithValue'
 import useValue from './useValue'
 import {
   ValueContext,
-  FormContext,
   ErrorMessagesContext,
   OnChangeContext,
   ParentFieldNameContext
@@ -22,7 +21,6 @@ export {
   WithValue,
   useValue,
   ValueContext,
-  FormContext,
   ErrorMessagesContext,
   OnChangeContext,
   ParentFieldNameContext
