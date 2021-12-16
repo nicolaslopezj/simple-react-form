@@ -11,7 +11,7 @@ import {
 import {FieldProps, fieldPropsKeys} from '../types'
 import {union} from 'lodash'
 
-export default class Field extends React.Component<FieldProps> {
+export default class Field extends React.Component<FieldProps & any> {
   input: any
 
   getFieldName(parentFieldName) {

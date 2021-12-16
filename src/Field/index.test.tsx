@@ -43,3 +43,18 @@ test('should pass parent value', () => {
 
   expect.assertions(1)
 })
+
+test('should be able to add any prop to the field', () => {
+  function DummyInput(props) {
+    expect(props.parentValue).toEqual({hello: 'world'})
+    return null
+  }
+
+  render(
+    <Form state={{hello: 'world'}}>
+      <Field fieldName="name" type={DummyInput} passingProp={100} />
+    </Form>
+  )
+
+  expect.assertions(1)
+})
