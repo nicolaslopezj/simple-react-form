@@ -50,6 +50,11 @@ export interface FieldProps {
    * The props that must be passed to the child component
    */
   passProps?: object
+
+  /**
+   * Any other prop defined in the field
+   **/
+  [key: string]: any
 }
 
 export const fieldPropsKeys = [
