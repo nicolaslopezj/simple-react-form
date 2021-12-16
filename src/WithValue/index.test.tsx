@@ -1,13 +1,14 @@
 import React from 'react'
-import ReactTestUtils from 'react-dom/test-utils'
 import Form from '../Form'
 import Field from '../Field'
 import WithValue from './index'
-import '../setupTest'
 import PropTypes from 'prop-types'
 import ObjectField from '../Object'
+import {FieldProps} from '../types'
+import {render, screen} from '@testing-library/react'
+import '@testing-library/jest-dom'
 
-class DummyInput extends React.Component {
+class DummyInput extends React.Component<FieldProps> {
   static propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func
@@ -26,7 +27,7 @@ class DummyInput extends React.Component {
 }
 
 it('should pass the value of the form', () => {
-  const tree = ReactTestUtils.renderIntoDocument(
+  render(
     <Form state={{name: 'Nicolás'}}>
       <WithValue>
         {value => (
@@ -39,13 +40,14 @@ it('should pass the value of the form', () => {
     </Form>
   )
 
-  const content = ReactTestUtils.findRenderedDOMComponentWithClass(tree, 'theValue')
+  const content = screen.getByText('Nicolás')
   expect(content.innerHTML).toBe('Nicolás')
 })
 
 it('should pass the value of the form on sub object data', () => {
   const doc = {person: {name: 'Nicolás'}}
-  const tree = ReactTestUtils.renderIntoDocument(
+
+  render(
     <Form state={doc}>
       <Field fieldName="person" type={ObjectField}>
         <WithValue>
@@ -60,6 +62,6 @@ it('should pass the value of the form on sub object data', () => {
     </Form>
   )
 
-  const content = ReactTestUtils.findRenderedDOMComponentWithClass(tree, 'theValue')
+  const content = screen.getByText('Nicolás')
   expect(content.innerHTML).toBe('Nicolás')
 })

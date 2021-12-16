@@ -2,7 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {ValueContext} from '../Contexts'
 
-export default class WithValue extends React.Component {
+interface WithValueProps {
+  children: (value: any) => React.ReactNode
+}
+
+export default class WithValue extends React.Component<WithValueProps> {
   static propTypes = {
     children: PropTypes.func
   }

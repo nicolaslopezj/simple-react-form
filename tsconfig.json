@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "strict": false,
+    "noUnusedParameters": false,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "target": "es2020",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "outDir": "./lib",
+    "lib": ["es2020", "dom"],
+    "jsx": "react"
+  }
+}

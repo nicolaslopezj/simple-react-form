@@ -4,50 +4,55 @@
  */
 
 import React from 'react'
-import {propTypes as fieldTypePropTypes} from '../FieldType'
 import isArray from 'lodash/isArray'
 import without from 'lodash/without'
-import PropTypes from 'prop-types'
 import ObjectField from '../Object'
 import Field from '../Field'
 import {ParentFieldNameContext} from '../Contexts'
+import {FieldProps} from '../types'
 
-const propTypes = {
-  ...fieldTypePropTypes,
+export type propTypes = FieldProps & {
+  /**
+   * The error messages for the children fields. Used for object and array
+   */
+  errorMessages?: {
+    [key: string]: string
+  }
+
   /**
    * The add button label
    */
-  addLabel: PropTypes.string,
+  addLabel?: string
 
   /**
    * Show the add button
    */
-  showAddButton: PropTypes.bool,
+  showAddButton?: boolean
 
   /**
    * Show the remove button
    */
-  showRemoveButton: PropTypes.bool,
+  showRemoveButton?: boolean
 
   /**
    * The remove label
    */
-  removeLabel: PropTypes.string,
+  removeLabel?: React.ReactNode
 
   /**
    *
    */
-  autoAddItem: PropTypes.bool,
+  autoAddItem?: boolean
 
   /**
    * The label for the field
    */
-  label: PropTypes.string,
+  label?: React.ReactNode
 
   /**
    * Each item component
    */
-  children: PropTypes.any,
+  children?: any
 
   /**
    * Pass a function that returns the children components for the current item.
@@ -55,27 +60,28 @@ const propTypes = {
    * This is useful when you want to change the view of a item in the array depending
    * on the current value.
    */
-  renderItem: PropTypes.func,
+  renderItem?: Function
 
   /**
    * Render children as render props giving the index to the child component.
    * This allows this component to be used in a controlled manner.
    */
-  renderProps: PropTypes.bool,
+  renderProps?: boolean
 }
 
-const defaultProps = {
+const defaultProps: Partial<propTypes> = {
   addLabel: 'Add',
   removeLabel: 'Remove',
-  showLabel: true,
   errorMessages: {},
   autoAddItem: false,
   showAddButton: true,
   showRemoveButton: true,
-  renderProps: false,
+  renderProps: false
 }
 
-export default class ArrayComponent extends React.Component {
+export default class ArrayComponent extends React.Component<propTypes> {
+  static defaultProps = defaultProps
+
   addItem(itemValue = {}) {
     var newArray = this.props.value
     if (isArray(newArray)) {
@@ -158,7 +164,7 @@ export default class ArrayComponent extends React.Component {
 
   render() {
     return (
-      <div style={{marginTop: 20}}>
+      <div className="srf-array-container" style={{marginTop: 20}}>
         <div>
           <b>{this.props.label}</b>
         </div>
@@ -171,6 +177,3 @@ export default class ArrayComponent extends React.Component {
     )
   }
 }
-
-ArrayComponent.propTypes = propTypes
-ArrayComponent.defaultProps = defaultProps

@@ -1,11 +1,12 @@
 import React from 'react'
-import ReactTestUtils from 'react-dom/test-utils'
 import Form from '../Form'
 import Field from '../Field'
-import '../setupTest'
+import {render} from '@testing-library/react'
+import '@testing-library/jest-dom'
 
 test('should call focus on child', () => {
   let didCall = false
+  let field = null
 
   class DummyInput extends React.Component {
     focus() {
@@ -13,16 +14,17 @@ test('should call focus on child', () => {
     }
 
     render() {
-      return null
+      return <input className="input" type="text" />
     }
   }
 
-  const tree = ReactTestUtils.renderIntoDocument(
+  render(
     <Form>
-      <Field fieldName="name" type={DummyInput} />
+      <Field ref={handle => (field = handle)} fieldName="name" type={DummyInput} />
     </Form>
   )
-  const field = ReactTestUtils.findRenderedComponentWithType(tree, Field)
+
+  // focus the input
   field.focus()
   expect(didCall).toBe(true)
 })
@@ -33,9 +35,11 @@ test('should pass parent value', () => {
     return null
   }
 
-  ReactTestUtils.renderIntoDocument(
+  render(
     <Form state={{hello: 'world'}}>
       <Field fieldName="name" type={DummyInput} />
     </Form>
   )
+
+  expect.assertions(1)
 })

@@ -1,6 +1,4 @@
 import React from 'react'
-import {propTypes as fieldTypePropTypes} from '../FieldType'
-import PropTypes from 'prop-types'
 import {ParentFieldNameContext} from '../Contexts'
 
 /**
@@ -8,15 +6,7 @@ import {ParentFieldNameContext} from '../Contexts'
  * and create your own (like the material-ui fields do)
  */
 
-const propTypes = {
-  ...fieldTypePropTypes,
-  /**
-   * Each item component
-   */
-  children: PropTypes.any
-}
-
-export default class ObjectComponent extends React.Component {
+export default class ObjectComponent extends React.Component<any> {
   getChildrenComponents() {
     return this.renderChildrenComponent()
   }
@@ -50,5 +40,3 @@ export default class ObjectComponent extends React.Component {
     )
   }
 }
-
-ObjectComponent.propTypes = propTypes

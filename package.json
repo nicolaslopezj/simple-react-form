@@ -10,12 +10,11 @@
     "url": "https://github.com/nicolaslopezj/simple-react-form"
   },
   "scripts": {
-    "build": "babel ./src --out-dir ./lib",
-    "prepublish": "yarn run build",
-    "test": "yarn run build && yarn run lint && jest",
-    "watch": "node watch.js",
-    "test-watch": "jest --watch",
-    "lint": "eslint \"src/**/*.js\""
+    "test": "jest",
+    "prepare": "yarn run build",
+    "clean": "rm -rf ./lib",
+    "build": "yarn run clean && tsc",
+    "watch": "tsc -w"
   },
   "keywords": [
     "react-component",
@@ -26,48 +25,31 @@
     "react"
   ],
   "dependencies": {
-    "lodash": "^4.17.11"
+    "lodash": "4.17.21"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
-    "babel-plugin-transform-decorators-legacy": "^1.3.5",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "colors": "^1.3.2",
-    "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.6.0",
-    "eslint": "^5.8.0",
-    "eslint-config-orionsoft": "^1.2.8",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node": "^8.0.0",
-    "eslint-plugin-react": "^7.11.1",
-    "jest-cli": "^23.6.0",
-    "react": "^16.6.0",
-    "react-addons-test-utils": "^15.6.2",
-    "react-dom": "^16.6.0",
-    "react-test-renderer": "^16.6.0"
+    "@testing-library/jest-dom": "5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@types/jest": "27.0.3",
+    "@types/lodash": "^4.14.178",
+    "@types/prop-types": "15.7.4",
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^17.0.11",
+    "@types/testing-library__jest-dom": "^5.14.2",
+    "eslint": "^8.4.1",
+    "eslint-config-orionsoft": "^2.2.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-react": "^7.27.1",
+    "jest": "27.4.5",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-test-renderer": "^17.0.2",
+    "ts-jest": "27.1.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.4"
   },
   "peerDependencies": {
-    "react": ">=16.0.0"
-  },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/lib"
-    ]
-  },
-  "standard": {
-    "globals": [
-      "it",
-      "xit",
-      "expect",
-      "test",
-      "jest",
-      "MongoObject"
-    ]
+    "react": ">=17.0.0"
   }
 }
