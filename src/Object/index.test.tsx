@@ -66,7 +66,7 @@ test('onChange should make changes correctly', () => {
   let state = {person: {name: 'Nicolás'}}
 
   const {container} = render(
-    <Form state={state} onChange={changes => (state = changes)}>
+    <Form state={state} onChange={(changes: typeof state) => (state = changes)}>
       <Field fieldName="person" type={ObjectField}>
         <Field fieldName="name" type={DummyInput} />
       </Field>

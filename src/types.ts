@@ -64,7 +64,7 @@ export const fieldPropsKeys = [
   'schema',
   'passProps'
 ]
-export type FormProps = React.HTMLProps<HTMLFormElement> & {
+export type FormProps = Omit<React.HTMLProps<HTMLFormElement>, 'onChange'> & {
   /**
    * The fields of the form
    */
@@ -77,7 +77,7 @@ export type FormProps = React.HTMLProps<HTMLFormElement> & {
    * A callback that fires when the form value changes.
    * The argument will be the state with the updated field value.
    */
-  onChange?: (newValue: object) => any
+  onChange?: Function
   /**
    * Pass error messages in a object
    */
