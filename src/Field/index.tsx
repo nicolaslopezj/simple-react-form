@@ -50,7 +50,7 @@ export default class Field extends React.Component<FieldProps> {
      * This gets the props that are defined in the propTypes of the registered component.
      */
     const fieldComponent = this.getComponent()
-    const propOptions = omit(this.props, keys(fieldPropsKeys))
+    const propOptions = omit(this.props, ['fieldName', 'type', 'errorMessage'])
     const allowedKeys = union(keys({...fieldComponent.propTypes}), fieldPropsKeys)
 
     /**

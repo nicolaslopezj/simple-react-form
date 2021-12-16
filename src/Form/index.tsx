@@ -12,36 +12,9 @@ import {
 import isEqual from 'lodash/isEqual'
 import cloneDeep from 'lodash/cloneDeep'
 import {isNil} from 'lodash'
+import {FormProps, FormRef} from '../types'
 
-interface FormProps {
-  /**
-   * The fields of the form
-   */
-  children: React.ReactNode
-  /**
-   * The object that has the values of the form.
-   */
-  state?: object
-  /**
-   * A callback that fires when the form value changes.
-   * The argument will be the state with the updated field value.
-   */
-  onChange?: (newValue: object) => any
-  /**
-   * Pass error messages in a object
-   */
-  errorMessages?: object
-  /**
-   * Use form tag as a container
-   */
-  useFormTag?: boolean
-  /**
-   * A function that is called when the form is submitted.
-   */
-  onSubmit?: (value: object) => any
-}
-
-function Form(props: FormProps, ref) {
+function Form(props: FormProps, ref: React.Ref<FormRef>) {
   const [state, setState] = useState(cloneDeep(props.state) || {})
 
   const resetState = () => {

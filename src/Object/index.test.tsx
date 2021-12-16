@@ -1,78 +1,79 @@
-// import React from 'react'
-// import ReactTestUtils from 'react-dom/test-utils'
-// import Form from '../Form'
-// import Field from '../Field'
-// import {default as ObjectField} from './index'
-// import '../setupTest'
-// import PropTypes from 'prop-types'
+import React from 'react'
+import Form from '../Form'
+import Field from '../Field'
+import {default as ObjectField} from './index'
+import PropTypes from 'prop-types'
+import {FieldProps} from '../types'
+import {render, fireEvent} from '@testing-library/react'
+import '@testing-library/jest-dom'
 
-// class DummyInput extends React.Component {
-//   static propTypes = {
-//     value: PropTypes.string,
-//     onChange: PropTypes.func
-//   }
+class DummyInput extends React.Component<FieldProps> {
+  static propTypes = {
+    value: PropTypes.string,
+    onChange: PropTypes.func
+  }
 
-//   render() {
-//     return (
-//       <input
-//         value={this.props.value || ''}
-//         onChange={event => {
-//           this.props.onChange(event.target.value)
-//         }}
-//       />
-//     )
-//   }
-// }
+  render() {
+    return (
+      <input
+        value={this.props.value || ''}
+        onChange={event => {
+          this.props.onChange(event.target.value)
+        }}
+      />
+    )
+  }
+}
 
-// it('should render correctly', () => {
-//   const tree = ReactTestUtils.renderIntoDocument(
-//     <Form>
-//       <Field fieldName="object" type={ObjectField}>
-//         <div className="children" />
-//       </Field>
-//     </Form>
-//   )
-//   ReactTestUtils.findRenderedComponentWithType(tree, ObjectField)
-// })
+it('should render correctly', () => {
+  const {container} = render(
+    <Form>
+      <Field fieldName="object" type={ObjectField}>
+        <div className="children" />
+      </Field>
+    </Form>
+  )
 
-// it('should show an error if it has one', () => {
-//   const tree = ReactTestUtils.renderIntoDocument(
-//     <Form>
-//       <Field fieldName="object" type={ObjectField} errorMessage="I AM AN ERROR">
-//         <div className="children" />
-//       </Field>
-//     </Form>
-//   )
+  expect(container.querySelector('.children')).toBeInTheDocument()
+})
 
-//   ReactTestUtils.findRenderedDOMComponentWithClass(tree, 'srf_errorMessage')
-// })
+it('should show an error if it has one', () => {
+  const {container} = render(
+    <Form errorMessages={{item: 'I AM AN ERROR'}}>
+      <Field fieldName="item" type={ObjectField}>
+        <div className="children" />
+      </Field>
+    </Form>
+  )
 
-// it('should pass the value to the child field', () => {
-//   const tree = ReactTestUtils.renderIntoDocument(
-//     <Form state={{object: {field: 'hello'}}}>
-//       <Field fieldName="object" type={ObjectField}>
-//         <Field fieldName="field" type={DummyInput} />
-//       </Field>
-//     </Form>
-//   )
-//   const objectInput = ReactTestUtils.findRenderedComponentWithType(tree, ObjectField)
-//   expect(objectInput.props.value).toEqual({field: 'hello'})
-//   const input = ReactTestUtils.findRenderedComponentWithType(tree, DummyInput)
-//   expect(input.props.value).toBe('hello')
-// })
+  expect(container.querySelector('.srf_errorMessage')).toHaveTextContent('I AM AN ERROR')
+})
 
-// test('onChange should make changes correctly', () => {
-//   let state = {person: {name: 'Nicolás'}}
+it('should pass the value to the child field', () => {
+  const {container} = render(
+    <Form state={{object: {field: 'hello'}}}>
+      <Field fieldName="object" type={ObjectField}>
+        <Field fieldName="field" type={DummyInput} />
+      </Field>
+    </Form>
+  )
 
-//   const tree = ReactTestUtils.renderIntoDocument(
-//     <Form state={state} onChange={changes => (state = changes)}>
-//       <Field fieldName="person" type={ObjectField}>
-//         <Field fieldName="name" type={DummyInput} />
-//       </Field>
-//     </Form>
-//   )
+  // expect input value to be hello
+  expect(container.querySelector('input')).toHaveValue('hello')
+})
 
-//   const input = ReactTestUtils.findRenderedDOMComponentWithTag(tree, 'input')
-//   ReactTestUtils.Simulate.change(input, {target: {value: 'Joaquín'}})
-//   expect(state).toEqual({person: {name: 'Joaquín'}})
-// })
+test('onChange should make changes correctly', () => {
+  let state = {person: {name: 'Nicolás'}}
+
+  const {container} = render(
+    <Form state={state} onChange={changes => (state = changes)}>
+      <Field fieldName="person" type={ObjectField}>
+        <Field fieldName="name" type={DummyInput} />
+      </Field>
+    </Form>
+  )
+
+  // changes the input value
+  fireEvent.change(container.querySelector('input'), {target: {value: 'Joaquín'}})
+  expect(state).toEqual({person: {name: 'Joaquín'}})
+})

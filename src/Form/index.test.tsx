@@ -1,6 +1,6 @@
 import React from 'react'
 import ObjectField from '../Object'
-import {FieldProps} from '../types'
+import {FieldProps, FormRef} from '../types'
 import Form from './index'
 import {render, screen, fireEvent} from '@testing-library/react'
 import Field from '../Field'
@@ -83,7 +83,7 @@ test('passes the errorMessage correctly', () => {
 })
 
 test('allows calling on submit using ref', () => {
-  let form = null
+  let form: FormRef = null
   const mockFn = jest.fn()
 
   const {container} = render(
@@ -96,14 +96,18 @@ test('allows calling on submit using ref', () => {
 
   fireEvent.submit(container.querySelector('form'))
 
-  console.log(mockFn.mock.calls)
-
   fireEvent.change(container.querySelector('input'), {target: {value: 'Nico'}})
 
   form.submit()
 
-  console.log(mockFn.mock.calls)
-
   expect(mockFn.mock.calls[0][0]).toEqual({name: 'Nicolás'})
   expect(mockFn.mock.calls[1][0]).toEqual({name: 'Nico'})
+})
+
+test('test form html props', () => {
+  render(
+    <Form target="/hello">
+      <Field fieldName="name" type={DummyInput} />
+    </Form>
+  )
 })
