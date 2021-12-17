@@ -4,7 +4,11 @@
   "license": "MIT",
   "author": "Nicolás López <nicolaslopezj@me.com>",
   "description": "A library to make reusable form components in React and React Native",
-  "main": "./lib",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "/lib"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/nicolaslopezj/simple-react-form"
