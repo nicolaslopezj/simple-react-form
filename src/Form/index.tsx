@@ -49,7 +49,8 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
   }
 
   useImperativeHandle(ref, () => ({
-    submit
+    submit,
+    getValue: () => state
   }))
 
   const renderChild = () => {

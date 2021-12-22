@@ -99,4 +99,5 @@ export type FormProps = Omit<React.HTMLProps<HTMLFormElement>, 'onChange'> & {
 
 export interface FormRef {
   submit: () => any
+  getValue: () => object
 }
