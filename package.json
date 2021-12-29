@@ -29,7 +29,8 @@
     "react"
   ],
   "dependencies": {
-    "lodash": "4.17.21"
+    "lodash": "4.17.21",
+    "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "5.16.1",

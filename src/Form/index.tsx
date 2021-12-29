@@ -9,10 +9,10 @@ import {
   OnChangeContext,
   ParentFieldNameContext
 } from '../Contexts'
-import isEqual from 'lodash/isEqual'
 import cloneDeep from 'lodash/cloneDeep'
 import {isNil} from 'lodash'
 import {FormProps, FormRef} from '../types'
+import useDeepCompareEffect from 'use-deep-compare-effect'
 
 function Form(props: FormProps, ref: React.Ref<FormRef>) {
   const [state, setState] = useState(cloneDeep(props.state) || {})
@@ -21,11 +21,11 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
     setState(cloneDeep(props.state))
   }
 
-  useEffect(() => {
-    if (!isNil(props.state) && !isEqual(state, props.state)) {
+  useDeepCompareEffect(() => {
+    if (!isNil(props.state)) {
       resetState()
     }
-  })
+  }, [props.state])
 
   const onChange = (fieldName: string, fieldValue: any) => {
     const value = getNewValue(state, fieldName, fieldValue)
