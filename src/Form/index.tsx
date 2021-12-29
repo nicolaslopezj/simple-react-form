@@ -1,4 +1,4 @@
-import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react'
+import React, {forwardRef, useImperativeHandle, useState} from 'react'
 import omit from 'lodash/omit'
 import isFunction from 'lodash/isFunction'
 import getNewValue from './getNewValue'
