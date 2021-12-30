@@ -25,7 +25,7 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
     if (!isNil(props.state)) {
       resetState()
     }
-  }, [props.state])
+  }, [props.state || {}])
 
   const onChange = (fieldName: string, fieldValue: any) => {
     const value = getNewValue(state, fieldName, fieldValue)
