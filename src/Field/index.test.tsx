@@ -3,6 +3,7 @@ import Form from '../Form'
 import Field from '../Field'
 import {render} from '@testing-library/react'
 import '@testing-library/jest-dom'
+import {FieldProps} from '../types'
 
 test('should call focus on child', () => {
   let didCall = false
@@ -30,9 +31,11 @@ test('should call focus on child', () => {
 })
 
 test('should pass parent value', () => {
-  function DummyInput(props) {
+  let checked = false
+  function DummyInput(props: FieldProps) {
+    checked = true
     expect(props.parentValue).toEqual({hello: 'world'})
-    return null
+    return <div></div>
   }
 
   render(
@@ -41,11 +44,13 @@ test('should pass parent value', () => {
     </Form>
   )
 
-  expect.assertions(1)
+  expect(checked).toBe(true)
 })
 
 test('should be able to add any prop to the field', () => {
-  function DummyInput(props) {
+  let checked = false
+  function DummyInput(props: FieldProps) {
+    checked = true
     expect(props.parentValue).toEqual({hello: 'world'})
     return null
   }
@@ -56,5 +61,5 @@ test('should be able to add any prop to the field', () => {
     </Form>
   )
 
-  expect.assertions(1)
+  expect(checked).toBe(true)
 })

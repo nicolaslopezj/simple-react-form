@@ -10,7 +10,6 @@ export interface FieldProps {
    * The type of the input. It can be a component
    */
   type: any
-
   /**
    * The current value of the field
    */
@@ -29,7 +28,7 @@ export interface FieldProps {
   /**
    * Call this function when the value changes
    */
-  onChange?: (newValue: any) => {}
+  onChange?: (newValue: any) => any
 
   /**
    * If the input is disabled
@@ -56,6 +55,10 @@ export interface FieldProps {
    **/
   [key: string]: any
 }
+
+type WithRequired<T, K extends keyof T> = T & {[P in K]-?: T[P]}
+
+export type FormFieldProps = WithRequired<FieldProps, 'fieldName' | 'type'>
 
 export const fieldPropsKeys = [
   'fieldName',

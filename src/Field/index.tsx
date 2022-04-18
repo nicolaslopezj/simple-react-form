@@ -8,10 +8,10 @@ import {
   OnChangeContext,
   ParentFieldNameContext
 } from '../Contexts'
-import {FieldProps, fieldPropsKeys} from '../types'
+import {fieldPropsKeys, FormFieldProps} from '../types'
 import {union} from 'lodash'
 
-export default class Field extends React.Component<FieldProps> {
+export default class Field extends React.Component<FormFieldProps> {
   input: any
 
   getFieldName(parentFieldName) {
