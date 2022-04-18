@@ -4,12 +4,12 @@ export interface FieldProps {
   /**
    * The name of the field in the object.
    */
-  fieldName: string
+  fieldName?: string
 
   /**
    * The type of the input. It can be a component
    */
-  type: any
+  type?: any
   /**
    * The current value of the field
    */
