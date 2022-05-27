@@ -10,7 +10,7 @@ import {
   ParentFieldNameContext
 } from '../Contexts'
 import cloneDeep from 'lodash/cloneDeep'
-import {isNil} from 'lodash'
+import isNil from 'lodash/isNil'
 import {FormProps, FormRef} from '../types'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 

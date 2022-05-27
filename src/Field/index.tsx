@@ -9,7 +9,7 @@ import {
   ParentFieldNameContext
 } from '../Contexts'
 import {fieldPropsKeys, FormFieldProps} from '../types'
-import {union} from 'lodash'
+import union from 'lodash/union'
 
 export default class Field extends React.Component<FormFieldProps> {
   input: any
