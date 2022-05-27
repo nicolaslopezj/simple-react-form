@@ -1,6 +1,6 @@
 import React from 'react'
 
-export interface FieldProps {
+export interface FieldProps<TValue = any> {
   /**
    * The name of the field in the object.
    */
@@ -13,7 +13,7 @@ export interface FieldProps {
   /**
    * The current value of the field
    */
-  value?: any
+  value?: TValue
 
   /**
    * Field label
@@ -28,7 +28,7 @@ export interface FieldProps {
   /**
    * Call this function when the value changes
    */
-  onChange?: (newValue: any) => any
+  onChange?: (newValue: TValue) => any
 
   /**
    * If the input is disabled
