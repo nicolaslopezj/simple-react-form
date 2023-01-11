@@ -1,8 +1,8 @@
 import React, {useContext} from 'react'
 
-const ValueContext = React.createContext({})
+const ValueContext = React.createContext<any>({})
 const ParentFieldNameContext = React.createContext<string>(null)
-const ErrorMessagesContext = React.createContext({})
+const ErrorMessagesContext = React.createContext<any>({})
 const OnChangeContext = React.createContext((fieldName: string, fieldValue: any) => {})
 
 export function useFormValueContext() {
