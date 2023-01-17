@@ -1,6 +1,5 @@
-import React from 'react'
+import React, {forwardRef, JSXElementConstructor, useContext, useMemo} from 'react'
 import omit from 'lodash/omit'
-import keys from 'lodash/keys'
 import get from 'lodash/get'
 import {
   ValueContext,
@@ -9,105 +8,70 @@ import {
   ParentFieldNameContext
 } from '../Contexts'
 import {fieldPropsKeys, FormFieldProps} from '../types'
-import union from 'lodash/union'
 
-export default class Field extends React.Component<FormFieldProps> {
-  input: any
+// Redecalare forwardRef
+declare module 'react' {
+  function forwardRef<T, P = {}>(
+    render: (props: P, ref: React.Ref<T>) => React.ReactElement | null
+  ): (props: P & React.RefAttributes<T>) => React.ReactElement | null
+}
 
-  getFieldName(parentFieldName) {
+function FieldInner<TFieldType extends JSXElementConstructor<any>>(
+  props: FormFieldProps<TFieldType>,
+  ref: any
+) {
+  const parentValue = useContext(ValueContext)
+  const errorMessages = useContext(ErrorMessagesContext) || {}
+  const onChange = useContext(OnChangeContext)
+  const parentFieldName = useContext(ParentFieldNameContext)
+
+  const fieldName = useMemo(() => {
     if (parentFieldName) {
-      if (this.props.fieldName) {
-        return `${parentFieldName}.${this.props.fieldName}`
+      if (props.fieldName) {
+        return `${parentFieldName}.${props.fieldName}`
       } else {
         return parentFieldName
       }
     } else {
-      return this.props.fieldName
+      return props.fieldName
     }
-  }
+  }, [parentFieldName, props.fieldName])
 
-  focus = () => {
-    if (!this.input.focus) {
-      throw new Error("Field doesn't has a focus method")
+  const errorMessage = useMemo(() => {
+    return props.errorMessage || errorMessages[fieldName] || get(errorMessages, fieldName)
+  }, [fieldName, props.errorMessage, errorMessages])
+
+  const childProps = useMemo(() => {
+    const propOptions = omit(props, ['fieldName', 'type', 'errorMessage']) as any
+    const allowedKeys = [...fieldPropsKeys, 'type']
+    const passProps = omit(propOptions, allowedKeys)
+
+    return {
+      ...propOptions,
+      value: get(parentValue || {}, props.fieldName),
+      parentValue: parentValue || {},
+      onChange: newValue => {
+        return onChange(fieldName, newValue)
+      },
+      errorMessage,
+      fieldName,
+      passProps
     }
-    this.input.focus()
-  }
+  }, [props, parentValue, fieldName, errorMessage])
 
-  getComponent() {
-    return this.props.type
-  }
+  const Component = props.type
 
-  getErrorMessage(errorMessages, parentFieldName) {
-    return (
-      this.props.errorMessage ||
-      errorMessages[this.getFieldName(parentFieldName)] ||
-      get(errorMessages, this.getFieldName(parentFieldName))
-    )
-  }
+  const componentRef = Component.prototype.render ? ref : null
 
-  getChildProps({value, parentFieldName, onChange, errorMessages}) {
-    /**
-     * This gets the props that are defined in the propTypes of the registered component.
-     */
-    const fieldComponent = this.getComponent()
-    const propOptions = omit(this.props, ['fieldName', 'type', 'errorMessage'])
-    const allowedKeys = union(keys({...fieldComponent.propTypes}), fieldPropsKeys)
-
-    /**
-     * Options that are not registered in the propTypes are passed also
-     * in the passProps object
-     */
-    allowedKeys.push('type')
-    const notDefinedOptions = omit(propOptions, allowedKeys)
-
-    const props = {
-      value: get(value || {}, this.props.fieldName),
-      parentValue: value || {},
-      onChange: newValue => onChange(this.getFieldName(parentFieldName), newValue),
-      errorMessage: this.getErrorMessage(errorMessages || {}, parentFieldName),
-      fieldName: this.getFieldName(parentFieldName),
-      passProps: notDefinedOptions,
-      ...propOptions
-    }
-
-    return props
-  }
-
-  renderComponent(info) {
-    const Component = this.getComponent()
-    const props = this.getChildProps(info)
-    const ref = Component.prototype.render ? {ref: input => (this.input = input)} : {}
-    return (
-      <ValueContext.Provider value={props.value}>
-        <Component {...ref} {...props} />
-      </ValueContext.Provider>
-    )
-  }
-
-  render() {
-    return (
-      <ValueContext.Consumer>
-        {value => (
-          <ErrorMessagesContext.Consumer>
-            {errorMessages => (
-              <OnChangeContext.Consumer>
-                {onChange => (
-                  <ParentFieldNameContext.Consumer>
-                    {parentFieldName =>
-                      this.renderComponent({
-                        value,
-                        parentFieldName,
-                        onChange,
-                        errorMessages
-                      })
-                    }
-                  </ParentFieldNameContext.Consumer>
-                )}
-              </OnChangeContext.Consumer>
-            )}
-          </ErrorMessagesContext.Consumer>
-        )}
-      </ValueContext.Consumer>
-    )
-  }
+  return (
+    <ValueContext.Provider value={childProps.value}>
+      <ParentFieldNameContext.Provider value={childProps.fieldName}>
+        <Component {...childProps} ref={componentRef} />
+      </ParentFieldNameContext.Provider>
+    </ValueContext.Provider>
+  )
 }
+
+const Field = forwardRef(FieldInner)
+
+export default Field

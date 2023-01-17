@@ -1,22 +1,18 @@
 import React from 'react'
-import {ParentFieldNameContext} from '../Contexts'
+import {FieldProps} from '../types'
 
 /**
  * You can use this field as array field but the main purporse is to extend it
  * and create your own (like the material-ui fields do)
  */
 
-export default class ObjectComponent extends React.Component<any> {
+export default class ObjectComponent extends React.Component<FieldProps<any, {}>> {
   getChildrenComponents() {
     return this.renderChildrenComponent()
   }
 
   renderChildrenComponent() {
-    return (
-      <ParentFieldNameContext.Provider value={this.props.fieldName}>
-        {this.props.children}
-      </ParentFieldNameContext.Provider>
-    )
+    return <>{this.props.children}</>
   }
 
   renderErrorMessage() {
@@ -30,7 +26,7 @@ export default class ObjectComponent extends React.Component<any> {
 
   render() {
     return (
-      <div style={{marginTop: 20, marginBottom: 20, padding: 20}}>
+      <div>
         <div>
           <b>{this.props.label}</b>
         </div>

@@ -1,8 +1,10 @@
 import cloneDeep from 'lodash/cloneDeep'
 import isPlainObject from 'lodash/isPlainObject'
 import isNil from 'lodash/isNil'
+import isFunction from 'lodash/isFunction'
+import get from 'lodash/get'
 
-const setValue = function(value, keyParts, fieldValue) {
+const setValue = function (value, keyParts, fieldValue) {
   const key = keyParts.shift()
   if (keyParts.length === 0) {
     value[key] = fieldValue
@@ -24,11 +26,17 @@ const setValue = function(value, keyParts, fieldValue) {
   }
 }
 
-export default function(val, fieldName, fieldValue) {
+export default function (val, fieldName, fieldValue) {
   const value = cloneDeep(val)
   const keyParts = fieldName.split('.')
 
-  setValue(value, keyParts, fieldValue)
+  if (isFunction(fieldValue)) {
+    const oldValue = get(value, fieldName)
+    const newValue = fieldValue(oldValue)
+    setValue(value, keyParts, newValue)
+  } else {
+    setValue(value, keyParts, fieldValue)
+  }
 
   return value
 }

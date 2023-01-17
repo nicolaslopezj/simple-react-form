@@ -1,19 +1,25 @@
-import React from 'react'
+import React, {ComponentProps, ElementType} from 'react'
 
-export interface FieldProps<TValue = any> {
+export type FieldProps<TValue = any, TTypeExtraProps = {}> = {
   /**
    * The name of the field in the object.
    */
   fieldName?: string
 
   /**
-   * The type of the input. It can be a component
+   * The type of the input. It should be a component
    */
-  type?: any
+  type?: ElementType<any>
+
   /**
    * The current value of the field
    */
   value?: TValue
+
+  /**
+   * The value of the parent object
+   */
+  parentValue?: any
 
   /**
    * Field label
@@ -31,11 +37,6 @@ export interface FieldProps<TValue = any> {
   onChange?: (newValue: TValue) => any
 
   /**
-   * If the input is disabled
-   */
-  disabled?: boolean
-
-  /**
    * The schema for the field
    */
   fieldSchema?: object
@@ -46,32 +47,35 @@ export interface FieldProps<TValue = any> {
   schema?: object
 
   /**
-   * The props that must be passed to the child component
+   * All the props that are not from simple-react-form
    */
   passProps?: object
 
   /**
-   * Any other prop defined in the field
-   **/
-  [key: string]: any
-}
+   * Some fields can have children
+   */
+  children?: React.ReactNode
+} & TTypeExtraProps
 
-type WithRequired<T, K extends keyof T> = T & {[P in K]-?: T[P]}
-
-export type FormFieldProps = WithRequired<FieldProps, 'fieldName' | 'type'>
+export type FormFieldProps<TFieldType extends React.ElementType<any>> = {
+  type: TFieldType
+  fieldName: string
+  errorMessage?: string
+} & ComponentProps<TFieldType>
 
 export const fieldPropsKeys = [
   'fieldName',
   'type',
   'value',
+  'parentValue',
   'label',
   'errorMessage',
   'onChange',
-  'disabled',
   'fieldSchema',
   'schema',
   'passProps'
 ]
+
 export type FormProps = Omit<React.HTMLProps<HTMLFormElement>, 'onChange'> & {
   /**
    * The fields of the form

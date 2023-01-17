@@ -1,4 +1,4 @@
-import React, {forwardRef, useImperativeHandle, useState} from 'react'
+import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react'
 import omit from 'lodash/omit'
 import isFunction from 'lodash/isFunction'
 import getNewValue from './getNewValue'
@@ -16,6 +16,7 @@ import useDeepCompareEffect from 'use-deep-compare-effect'
 
 function Form(props: FormProps, ref: React.Ref<FormRef>) {
   const [state, setState] = useState(cloneDeep(props.state) || {})
+  const omitOnChangeEvent = useRef(true)
 
   const resetState = () => {
     setState(cloneDeep(props.state))
@@ -27,19 +28,22 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
     }
   }, [props.state || {}])
 
-  const onChange = (fieldName: string, fieldValue: any) => {
-    const value = getNewValue(state, fieldName, fieldValue)
-    setState(value)
-    if (props.onChange) {
-      props.onChange(value)
+  useDeepCompareEffect(() => {
+    if (omitOnChangeEvent.current) {
+      omitOnChangeEvent.current = false
+      return
     }
+    if (isFunction(props.onChange)) {
+      props.onChange(state)
+    }
+  }, [state])
+
+  const onChange = (fieldName: string, fieldValue: any) => {
+    setState(oldValue => getNewValue(oldValue, fieldName, fieldValue))
   }
 
   const submit = () => {
-    if (!isFunction(props.onSubmit)) {
-      console.warn('You should pass a onSubmit prop to this form')
-      return
-    }
+    if (!isFunction(props.onSubmit)) return
     return props.onSubmit(state)
   }
 

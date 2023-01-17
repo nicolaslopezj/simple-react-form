@@ -11,7 +11,7 @@ import Field from '../Field'
 import {ParentFieldNameContext} from '../Contexts'
 import {FieldProps} from '../types'
 
-export type propTypes = FieldProps & {
+export type ArrayComponentProps = {
   /**
    * The error messages for the children fields. Used for object and array
    */
@@ -23,6 +23,11 @@ export type propTypes = FieldProps & {
    * The add button label
    */
   addLabel?: string
+
+  /**
+   * disable the add button
+   */
+  disabled?: boolean
 
   /**
    * Show the add button
@@ -69,7 +74,7 @@ export type propTypes = FieldProps & {
   renderProps?: boolean
 }
 
-const defaultProps: Partial<propTypes> = {
+const defaultProps: Partial<ArrayComponentProps> = {
   addLabel: 'Add',
   removeLabel: 'Remove',
   errorMessages: {},
@@ -79,7 +84,9 @@ const defaultProps: Partial<propTypes> = {
   renderProps: false
 }
 
-export default class ArrayComponent extends React.Component<propTypes> {
+export default class ArrayComponent extends React.Component<
+  FieldProps<any[], ArrayComponentProps>
+> {
   static defaultProps = defaultProps
 
   addItem(itemValue = {}) {
@@ -133,10 +140,10 @@ export default class ArrayComponent extends React.Component<propTypes> {
     )
   }
 
-  renderChildrenItemWithContext({index, children}) {
+  renderChildrenItemWithContext({index, children}: {index: number; children: any}) {
     return (
       <ParentFieldNameContext.Provider key={index} value={this.props.fieldName}>
-        <Field fieldName={`${index}`} type={this.getObjectField()}>
+        <Field fieldName={String(index)} type={this.getObjectField()}>
           {this.props.renderProps ? children(index) : children}
         </Field>
       </ParentFieldNameContext.Provider>

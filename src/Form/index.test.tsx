@@ -5,6 +5,7 @@ import Form from './index'
 import {render, screen, fireEvent} from '@testing-library/react'
 import Field from '../Field'
 import '@testing-library/jest-dom'
+import {act} from 'react-dom/test-utils'
 
 function DummyInput(props: FieldProps) {
   return (
@@ -39,7 +40,7 @@ test('Should not render a <form> if useFormTag is false', () => {
   expect(container.querySelector('form')).not.toBeInTheDocument()
 })
 
-test('onChange should dispatch on changes', () => {
+test('onChange should dispatch on changes', async () => {
   const mockFn = jest.fn()
 
   const {container} = render(
@@ -48,10 +49,15 @@ test('onChange should dispatch on changes', () => {
     </Form>
   )
 
-  fireEvent.change(container.querySelector('input'), {target: {value: 'foobar'}})
+  await act(async () => {
+    fireEvent.change(container.querySelector('input'), {target: {value: 'foobar'}})
+  })
+
   expect(mockFn.mock.calls[0][0]).toEqual({foo: 'foobar'})
 
-  fireEvent.change(container.querySelector('input'), {target: {value: 'barfoo'}})
+  await act(async () => {
+    fireEvent.change(container.querySelector('input'), {target: {value: 'barfoo'}})
+  })
   expect(mockFn.mock.calls[1][0]).toEqual({foo: 'barfoo'})
 })
 
