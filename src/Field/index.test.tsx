@@ -83,13 +83,13 @@ test('should allow using nested field with onChange', async () => {
   function HelloInput(props: FieldProps) {
     return (
       <>
-        <button
-          onClick={() => {
-            props.onChange('no')
-          }}>
-          setno
-        </button>
-        {props.fieldName}: {props.value}
+        <input
+          value={props.value}
+          onChange={event => props.onChange(event.target.value)}
+          placeholder="hello"
+          className="input"
+          type="text"
+        />
       </>
     )
   }
@@ -130,7 +130,7 @@ test('should allow using nested field with onChange', async () => {
   })
 
   await act(async () => {
-    fireEvent.click(screen.getByText('setno'))
+    fireEvent.change(screen.getByPlaceholderText('hello'), {target: {value: 'no'}})
   })
 
   await act(async () => {
@@ -140,4 +140,48 @@ test('should allow using nested field with onChange', async () => {
   })
 
   expect(testValue).toEqual({items: [{hello: 'no'}, {hello: 1}, {hello: 2}, {hello: 3}]})
+})
+
+test('should allow using nested array field', async () => {
+  function HelloInput(props: FieldProps) {
+    return (
+      <>
+        <input
+          value={props.value || ''}
+          onChange={event => props.onChange(event.target.value)}
+          placeholder={props.fieldName}
+          className="input"
+          type="text"
+        />
+      </>
+    )
+  }
+
+  function InterInput(props: FieldProps) {
+    return <Field fieldName="hello" type={HelloInput} />
+  }
+
+  let testValue = null
+  function Test() {
+    const [state, setState] = useState({})
+    testValue = state
+
+    return (
+      <Form state={state} onChange={setState}>
+        <Field fieldName="items.0" type={InterInput} />
+        <Field fieldName="items.1" type={InterInput} />
+      </Form>
+    )
+  }
+
+  render(<Test />)
+
+  await act(async () => {
+    fireEvent.change(screen.getByPlaceholderText('items.0.hello'), {target: {value: 'no0'}})
+  })
+  await act(async () => {
+    fireEvent.change(screen.getByPlaceholderText('items.1.hello'), {target: {value: 'no1'}})
+  })
+
+  expect(testValue).toEqual({items: ['no0', 'no1']})
 })
