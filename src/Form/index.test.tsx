@@ -117,3 +117,31 @@ test('test form html props', () => {
     </Form>
   )
 })
+
+test('should allow to reset state', () => {
+  let form: FormRef = null
+  let state = {}
+  const setState = newState => (state = newState)
+
+  const {container} = render(
+    <Form ref={handle => (form = handle)} state={state} onChange={setState}>
+      <Field fieldName="name" type={DummyInput} />
+    </Form>
+  )
+
+  act(() => {
+    fireEvent.change(container.querySelector('input'), {target: {value: 'Nicolás'}})
+  })
+
+  expect(form.getValue()).toEqual({name: 'Nicolás'})
+
+  act(() => {
+    form.reset()
+  })
+
+  act(() => {
+    fireEvent.change(container.querySelector('input'), {target: {value: 'Nico'}})
+  })
+
+  expect(form.getValue()).toEqual({name: 'Nico'})
+})

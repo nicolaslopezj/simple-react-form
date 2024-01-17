@@ -183,5 +183,5 @@ test('should allow using nested array field', async () => {
     fireEvent.change(screen.getByPlaceholderText('items.1.hello'), {target: {value: 'no1'}})
   })
 
-  expect(testValue).toEqual({items: ['no0', 'no1']})
+  expect(testValue).toEqual({items: [{hello: 'no0'}, {hello: 'no1'}]})
 })
