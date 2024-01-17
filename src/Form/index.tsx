@@ -15,18 +15,19 @@ import {FormProps, FormRef} from '../types'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 
 function Form(props: FormProps, ref: React.Ref<FormRef>) {
-  const [state, setState] = useState(cloneDeep(props.state) || {})
+  const propsState = cloneDeep(props.state) || {}
+  const [state, setState] = useState(propsState)
   const omitOnChangeEvent = useRef(true)
 
   const resetState = () => {
-    setState(cloneDeep(props.state))
+    setState(propsState)
   }
 
   useDeepCompareEffect(() => {
     if (!isNil(props.state)) {
       resetState()
     }
-  }, [props.state || {}])
+  }, [propsState])
 
   useDeepCompareEffect(() => {
     if (omitOnChangeEvent.current) {
