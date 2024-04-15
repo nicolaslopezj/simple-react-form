@@ -27,7 +27,7 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
     if (!isNil(props.state)) {
       resetState()
     }
-  }, [propsState])
+  }, [props.state || {}])
 
   useDeepCompareEffect(() => {
     if (omitOnChangeEvent.current) {
