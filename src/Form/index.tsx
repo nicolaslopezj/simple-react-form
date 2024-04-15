@@ -10,7 +10,7 @@ import {
   ParentFieldNameContext
 } from '../Contexts'
 import cloneDeep from 'lodash/cloneDeep'
-import isNil from 'lodash/isNil'
+import isEmpty from 'lodash/isEmpty'
 import {FormProps, FormRef} from '../types'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 
@@ -24,7 +24,7 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
   }
 
   useDeepCompareEffect(() => {
-    if (!isNil(props.state)) {
+    if (!isEmpty(props.state)) {
       resetState()
     }
   }, [propsState])
