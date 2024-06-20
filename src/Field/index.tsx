@@ -1,24 +1,24 @@
-import React, {forwardRef, JSXElementConstructor, useContext, useMemo} from 'react'
-import omit from 'lodash/omit'
 import get from 'lodash/get'
+import omit from 'lodash/omit'
+import React, {forwardRef, JSXElementConstructor, useContext, useMemo} from 'react'
 import {
-  ValueContext,
   ErrorMessagesContext,
   OnChangeContext,
-  ParentFieldNameContext
+  ParentFieldNameContext,
+  ValueContext,
 } from '../Contexts'
-import {fieldPropsKeys, FormFieldProps} from '../types'
+import {FormFieldProps, fieldPropsKeys} from '../types'
 
 // Redecalare forwardRef
 declare module 'react' {
   function forwardRef<T, P = {}>(
-    render: (props: P, ref: React.Ref<T>) => React.ReactElement | null
+    render: (props: P, ref: React.Ref<T>) => React.ReactElement | null,
   ): (props: P & React.RefAttributes<T>) => React.ReactElement | null
 }
 
 function FieldInner<TFieldType extends JSXElementConstructor<any>>(
   props: FormFieldProps<TFieldType>,
-  ref: any
+  ref: any,
 ) {
   const parentValue = useContext(ValueContext)
   const errorMessages = useContext(ErrorMessagesContext) || {}
@@ -29,12 +29,10 @@ function FieldInner<TFieldType extends JSXElementConstructor<any>>(
     if (parentFieldName) {
       if (props.fieldName) {
         return `${parentFieldName}.${props.fieldName}`
-      } else {
-        return parentFieldName
       }
-    } else {
-      return props.fieldName
+      return parentFieldName
     }
+    return props.fieldName
   }, [parentFieldName, props.fieldName])
 
   const errorMessage = useMemo(() => {
@@ -55,7 +53,7 @@ function FieldInner<TFieldType extends JSXElementConstructor<any>>(
       },
       errorMessage,
       fieldName,
-      passProps
+      passProps,
     }
   }, [props, parentValue, fieldName, errorMessage])
 

@@ -6,9 +6,7 @@
   "description": "A library to make reusable form components in React and React Native",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "files": [
-    "/lib"
-  ],
+  "files": ["/lib"],
   "repository": {
     "type": "git",
     "url": "https://github.com/nicolaslopezj/simple-react-form"
@@ -20,19 +18,13 @@
     "build": "yarn run clean && tsc",
     "watch": "tsc -w"
   },
-  "keywords": [
-    "react-component",
-    "react-native",
-    "ios",
-    "android",
-    "form",
-    "react"
-  ],
+  "keywords": ["react-component", "react-native", "ios", "android", "form", "react"],
   "dependencies": {
     "lodash": "4.17.21",
     "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.8.1",
     "@testing-library/jest-dom": "5.16.1",
     "@testing-library/react": "^12.1.2",
     "@types/jest": "27.0.3",
@@ -41,10 +33,6 @@
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "@types/testing-library__jest-dom": "^5.14.2",
-    "eslint": "^8.31.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-react": "^7.32.0",
-    "eslint-plugin-unused-imports": "^2.0.0",
     "jest": "27.4.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

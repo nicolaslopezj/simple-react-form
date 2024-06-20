@@ -1,9 +1,8 @@
-import React from 'react'
+import {fireEvent, render, screen} from '@testing-library/react'
+import Field from '../Field'
 import ObjectField from '../Object'
 import {FieldProps, FormRef} from '../types'
 import Form from './index'
-import {render, screen, fireEvent} from '@testing-library/react'
-import Field from '../Field'
 import '@testing-library/jest-dom'
 import {act} from 'react-dom/test-utils'
 
@@ -25,7 +24,7 @@ test('Should render by default a <form>', () => {
   const {container} = render(
     <Form>
       <div>dummy</div>
-    </Form>
+    </Form>,
   )
   expect(container.querySelector('form')).toBeInTheDocument()
 })
@@ -34,7 +33,7 @@ test('Should not render a <form> if useFormTag is false', () => {
   const {container} = render(
     <Form useFormTag={false}>
       <div>dummy</div>
-    </Form>
+    </Form>,
   )
 
   expect(container.querySelector('form')).not.toBeInTheDocument()
@@ -46,7 +45,7 @@ test('onChange should dispatch on changes', async () => {
   const {container} = render(
     <Form onChange={mockFn}>
       <Field fieldName="foo" type={DummyInput} />
-    </Form>
+    </Form>,
   )
 
   await act(async () => {
@@ -65,7 +64,7 @@ it('should render the form correctly', () => {
   const {container} = render(
     <Form>
       <Field fieldName="foo" type={DummyInput} />
-    </Form>
+    </Form>,
   )
 
   expect(container.querySelector('form')).toBeInTheDocument()
@@ -74,7 +73,7 @@ it('should render the form correctly', () => {
 
 test('passes the errorMessage correctly', () => {
   const errorMessages = {
-    'person.name': 'Error'
+    'person.name': 'Error',
   }
 
   render(
@@ -82,7 +81,7 @@ test('passes the errorMessage correctly', () => {
       <Field fieldName="person" type={ObjectField}>
         <Field fieldName="name" type={DummyInput} />
       </Field>
-    </Form>
+    </Form>,
   )
 
   expect(screen.getByText(errorMessages['person.name'])).toBeInTheDocument()
@@ -93,9 +92,14 @@ test('allows calling on submit using ref', () => {
   const mockFn = jest.fn()
 
   const {container} = render(
-    <Form ref={handle => (form = handle)} onSubmit={mockFn}>
+    <Form
+      ref={handle => {
+        form = handle
+      }}
+      onSubmit={mockFn}
+    >
       <Field fieldName="name" type={DummyInput} />
-    </Form>
+    </Form>,
   )
 
   fireEvent.change(container.querySelector('input'), {target: {value: 'Nicolás'}})
@@ -114,19 +118,27 @@ test('test form html props', () => {
   render(
     <Form target="/hello">
       <Field fieldName="name" type={DummyInput} />
-    </Form>
+    </Form>,
   )
 })
 
 test('should allow to reset state', () => {
   let form: FormRef = null
   let state = {}
-  const setState = newState => (state = newState)
+  const setState = newState => {
+    state = newState
+  }
 
   const {container} = render(
-    <Form ref={handle => (form = handle)} state={state} onChange={setState}>
+    <Form
+      ref={handle => {
+        form = handle
+      }}
+      state={state}
+      onChange={setState}
+    >
       <Field fieldName="name" type={DummyInput} />
-    </Form>
+    </Form>,
   )
 
   act(() => {

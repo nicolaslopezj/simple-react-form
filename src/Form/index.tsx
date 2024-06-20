@@ -1,18 +1,18 @@
-import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react'
-import omit from 'lodash/omit'
+import cloneDeep from 'lodash/cloneDeep'
 import isFunction from 'lodash/isFunction'
-import getNewValue from './getNewValue'
-import isReactNative from '../utility/isReactNative'
+import isNil from 'lodash/isNil'
+import omit from 'lodash/omit'
+import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react'
+import useDeepCompareEffect from 'use-deep-compare-effect'
 import {
-  ValueContext,
   ErrorMessagesContext,
   OnChangeContext,
-  ParentFieldNameContext
+  ParentFieldNameContext,
+  ValueContext,
 } from '../Contexts'
-import cloneDeep from 'lodash/cloneDeep'
-import isNil from 'lodash/isNil'
 import {FormProps, FormRef} from '../types'
-import useDeepCompareEffect from 'use-deep-compare-effect'
+import isReactNative from '../utility/isReactNative'
+import getNewValue from './getNewValue'
 
 function Form(props: FormProps, ref: React.Ref<FormRef>) {
   const propsState = cloneDeep(props.state || {})
@@ -40,7 +40,10 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
   }, [state])
 
   const onChange = (fieldName: string, fieldValue: any) => {
-    setState(oldValue => getNewValue(oldValue, fieldName, fieldValue))
+    setState(oldValue => {
+      const result = getNewValue(oldValue, fieldName, fieldValue)
+      return result
+    })
   }
 
   const submit = () => {
@@ -56,7 +59,7 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
   useImperativeHandle(ref, () => ({
     submit,
     getValue: () => state,
-    reset: resetState
+    reset: resetState,
   }))
 
   const renderChild = () => {
@@ -67,7 +70,7 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
       'onChange',
       'errorMessages',
       'useFormTag',
-      'onSubmit'
+      'onSubmit',
     )
     if (isReactNative()) {
       return props.children
@@ -78,9 +81,8 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
           {props.children}
         </form>
       )
-    } else {
-      return props.children
     }
+    return props.children
   }
 
   return (

@@ -16,6 +16,6 @@
     "experimentalDecorators": true,
     "outDir": "./lib",
     "lib": ["es2020", "dom"],
-    "jsx": "react"
+    "jsx": "react-jsx"
   }
 }

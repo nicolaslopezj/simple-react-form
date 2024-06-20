@@ -1,7 +1,7 @@
-import React, {useState} from 'react'
-import Form from '../Form'
-import Field from '../Field'
 import {act, fireEvent, render, screen} from '@testing-library/react'
+import React, {useState} from 'react'
+import Field from '../Field'
+import Form from '../Form'
 import '@testing-library/jest-dom'
 import {FieldProps} from '../types'
 
@@ -21,8 +21,14 @@ test('should call focus on child', () => {
 
   render(
     <Form>
-      <Field ref={handle => (field = handle)} fieldName="name" type={DummyInput} />
-    </Form>
+      <Field
+        ref={handle => {
+          field = handle
+        }}
+        fieldName="name"
+        type={DummyInput}
+      />
+    </Form>,
   )
 
   // focus the input
@@ -35,13 +41,13 @@ test('should pass parent value', () => {
   function DummyInput(props: FieldProps) {
     checked = true
     expect(props.parentValue).toEqual({hello: 'world'})
-    return <div></div>
+    return <div />
   }
 
   render(
     <Form state={{hello: 'world'}}>
       <Field fieldName="name" type={DummyInput} />
-    </Form>
+    </Form>,
   )
 
   expect(checked).toBe(true)
@@ -51,14 +57,14 @@ test('should inherit field type props', () => {
   interface DummyProps {
     name: string
   }
-  function DummyInput(props: FieldProps<string, DummyProps>) {
-    return <div></div>
+  function DummyInput(_props: FieldProps<string, DummyProps>) {
+    return <div />
   }
 
   render(
     <Form state={{hello: 'world'}}>
       <Field fieldName="hello" type={DummyInput} name="ss2ss" />
-    </Form>
+    </Form>,
   )
 })
 
@@ -73,7 +79,7 @@ test('should be able to add any prop to the field', () => {
   render(
     <Form state={{hello: 'world'}}>
       <Field fieldName="name" type={DummyInput} passingProp={100} />
-    </Form>
+    </Form>,
   )
 
   expect(checked).toBe(true)
@@ -98,14 +104,16 @@ test('should allow using nested field with onChange', async () => {
     return (
       <>
         <button
+          type="button"
           onClick={() => {
             props.onChange(oldVal => {
               return [...oldVal, {hello: oldVal.length}]
             })
-          }}>
+          }}
+        >
           add
         </button>
-        {props.value.map((item, index: number) => {
+        {props.value.map((_item, index: number) => {
           return <Field key={index} fieldName={String(`${index}.hello`)} type={HelloInput} />
         })}
       </>
@@ -145,19 +153,17 @@ test('should allow using nested field with onChange', async () => {
 test('should allow using nested array field', async () => {
   function HelloInput(props: FieldProps) {
     return (
-      <>
-        <input
-          value={props.value || ''}
-          onChange={event => props.onChange(event.target.value)}
-          placeholder={props.fieldName}
-          className="input"
-          type="text"
-        />
-      </>
+      <input
+        value={props.value || ''}
+        onChange={event => props.onChange(event.target.value)}
+        placeholder={props.fieldName}
+        className="input"
+        type="text"
+      />
     )
   }
 
-  function InterInput(props: FieldProps) {
+  function InterInput(_props: FieldProps) {
     return <Field fieldName="hello" type={HelloInput} />
   }
 
@@ -167,7 +173,12 @@ test('should allow using nested array field', async () => {
     testValue = state
 
     return (
-      <Form state={state} onChange={setState}>
+      <Form
+        state={state}
+        onChange={newVal => {
+          setState(newVal)
+        }}
+      >
         <Field fieldName="items.0" type={InterInput} />
         <Field fieldName="items.1" type={InterInput} />
       </Form>
@@ -178,6 +189,7 @@ test('should allow using nested array field', async () => {
 
   await act(async () => {
     fireEvent.change(screen.getByPlaceholderText('items.0.hello'), {target: {value: 'no0'}})
+    fireEvent.change(screen.getByPlaceholderText('items.1.hello'), {target: {value: 'no1'}})
   })
   await act(async () => {
     fireEvent.change(screen.getByPlaceholderText('items.1.hello'), {target: {value: 'no1'}})

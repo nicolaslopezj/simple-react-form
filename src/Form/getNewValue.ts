@@ -1,15 +1,16 @@
 import cloneDeep from 'lodash/cloneDeep'
-import isPlainObject from 'lodash/isPlainObject'
-import isNil from 'lodash/isNil'
-import isFunction from 'lodash/isFunction'
 import get from 'lodash/get'
+import isFunction from 'lodash/isFunction'
+import isNil from 'lodash/isNil'
+import isPlainObject from 'lodash/isPlainObject'
 
-const setValue = function (value, keyParts, fieldValue) {
+const setValue = (value: any, keyParts: string[], fieldValue: any) => {
   const key = keyParts.shift()
+  // it reached the leaf
   if (keyParts.length === 0) {
     value[key] = fieldValue
   } else {
-    if (!isNaN(keyParts[0])) {
+    if (Number.isInteger(Number.parseInt(keyParts[0]))) {
       // next key is array
       if (isNil(value[key])) {
         value[key] = []
@@ -26,7 +27,7 @@ const setValue = function (value, keyParts, fieldValue) {
   }
 }
 
-export default function (val, fieldName, fieldValue) {
+export default function (val: object, fieldName: string, fieldValue: any) {
   const value = cloneDeep(val)
   const keyParts = fieldName.split('.')
 

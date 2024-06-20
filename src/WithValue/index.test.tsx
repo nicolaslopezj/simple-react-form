@@ -1,19 +1,13 @@
+import {render, screen} from '@testing-library/react'
 import React from 'react'
-import Form from '../Form'
 import Field from '../Field'
-import WithValue from './index'
-import PropTypes from 'prop-types'
+import Form from '../Form'
 import ObjectField from '../Object'
 import {FieldProps} from '../types'
-import {render, screen} from '@testing-library/react'
+import WithValue from './index'
 import '@testing-library/jest-dom'
 
 class DummyInput extends React.Component<FieldProps> {
-  static propTypes = {
-    value: PropTypes.string,
-    onChange: PropTypes.func
-  }
-
   render() {
     return (
       <input
@@ -37,7 +31,7 @@ it('should pass the value of the form', () => {
           </div>
         )}
       </WithValue>
-    </Form>
+    </Form>,
   )
 
   const content = screen.getByText('Nicolás')
@@ -59,7 +53,7 @@ it('should pass the value of the form on sub object data', () => {
           )}
         </WithValue>
       </Field>
-    </Form>
+    </Form>,
   )
 
   const content = screen.getByText('Nicolás')

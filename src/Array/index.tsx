@@ -3,12 +3,12 @@
  * and create your own (like the material-ui fields do)
  */
 
-import React from 'react'
 import isArray from 'lodash/isArray'
 import without from 'lodash/without'
-import ObjectField from '../Object'
-import Field from '../Field'
+import React from 'react'
 import {ParentFieldNameContext} from '../Contexts'
+import Field from '../Field'
+import ObjectField from '../Object'
 import {FieldProps} from '../types'
 
 export type ArrayComponentProps = {
@@ -81,7 +81,7 @@ const defaultProps: Partial<ArrayComponentProps> = {
   autoAddItem: false,
   showAddButton: true,
   showRemoveButton: true,
-  renderProps: false
+  renderProps: false,
 }
 
 export default class ArrayComponent extends React.Component<
@@ -133,7 +133,8 @@ export default class ArrayComponent extends React.Component<
     return (
       <div
         style={{marginTop: 20, marginBottom: 20, padding: 20}}
-        key={`${this.props.fieldName}.${index}`}>
+        key={`${this.props.fieldName}.${index}`}
+      >
         {this.renderChildrenItemWithContext({index, children})}
         {button}
       </div>

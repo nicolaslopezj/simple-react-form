@@ -1,0 +1,84 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.7.2/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true,
+    "defaultBranch": "master"
+  },
+  "files": {
+    "ignore": ["graphql/types.*.tsx"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "nursery": {
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "lodash": "Importa lodash individualmente"
+            }
+          }
+        }
+      },
+      "complexity": {
+        "noBannedTypes": "off",
+        "noUselessTypeConstraint": "error",
+        "noForEach": "warn"
+      },
+      "correctness": {
+        "noPrecisionLoss": "error",
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error",
+        "useExhaustiveDependencies": "off",
+        "useJsxKeyInIterable": "error"
+      },
+      "style": {
+        "noNamespace": "off",
+        "useAsConstAssertion": "error",
+        "noParameterAssign": "off",
+        "useImportType": "off"
+      },
+      "suspicious": {
+        "noEmptyBlockStatements": "off",
+        "noExplicitAny": "off",
+        "noExtraNonNullAssertion": "error",
+        "noMisleadingInstantiator": "error",
+        "noUnsafeDeclarationMerging": "error",
+        "noArrayIndexKey": "off"
+      },
+      "a11y": {
+        "useAltText": "warn",
+        "noSvgWithoutTitle": "warn",
+        "useKeyWithClickEvents": "off"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "arrowParentheses": "asNeeded",
+      "bracketSpacing": false,
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "indentStyle": "space"
+    }
+  },
+  "json": {
+    "formatter": {
+      "indentStyle": "space"
+    }
+  }
+}

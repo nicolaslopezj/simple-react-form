@@ -1,10 +1,9 @@
-import React from 'react'
-import Form from '../Form'
+import {fireEvent, render, screen} from '@testing-library/react'
 import Field from '../Field'
-import ArrayField from './index'
+import Form from '../Form'
 import ObjectField from '../Object'
 import {FieldProps} from '../types'
-import {render, screen, fireEvent} from '@testing-library/react'
+import ArrayField from './index'
 import '@testing-library/jest-dom'
 
 function DummyInput(props: FieldProps) {
@@ -24,7 +23,7 @@ it('should render correctly', () => {
   const {container} = render(
     <Form>
       <Field fieldName="array" type={ArrayField} />
-    </Form>
+    </Form>,
   )
 
   expect(container.querySelector('.srf-array-container')).toBeInTheDocument()
@@ -36,7 +35,7 @@ it('addItem should add an item', () => {
       <Field fieldName="array" type={ArrayField}>
         <div className="children" />
       </Field>
-    </Form>
+    </Form>,
   )
 
   expect(container.querySelector('.children')).not.toBeInTheDocument()
@@ -53,7 +52,7 @@ it('removeItem should remove the item', () => {
       <Field fieldName="array" type={ArrayField}>
         <div className="children" />
       </Field>
-    </Form>
+    </Form>,
   )
   // add the first component
   fireEvent.click(screen.getByText('Add'))
@@ -68,7 +67,7 @@ it('should render an error if there is one', () => {
   const {container} = render(
     <Form>
       <Field fieldName="array" type={ArrayField} errorMessage="I AM AN ERROR" />
-    </Form>
+    </Form>,
   )
 
   expect(container.querySelector('.srf_errorMessage')).toBeInTheDocument()
@@ -82,7 +81,7 @@ it('should pass the value to the child fields', () => {
         <Field fieldName="name" type={DummyInput} />
         <Field fieldName="text" type={DummyInput} />
       </Field>
-    </Form>
+    </Form>,
   )
 
   // check the value of the first item
@@ -94,11 +93,16 @@ test('onChange should make changes correctly', () => {
   let state: any = {persons: [{name: 'Nicolás'}]}
 
   const {container} = render(
-    <Form state={state} onChange={changes => (state = changes)}>
+    <Form
+      state={state}
+      onChange={changes => {
+        state = changes
+      }}
+    >
       <Field fieldName="persons" type={ArrayField}>
         <Field fieldName="name" type={DummyInput} />
       </Field>
-    </Form>
+    </Form>,
   )
 
   // change input text value
@@ -109,24 +113,29 @@ test('onChange should make changes correctly', () => {
 test('onChange should make changes correctly on double array', () => {
   let state: any = {
     person: {
-      friends: [{name: 'Nicolás'}]
-    }
+      friends: [{name: 'Nicolás'}],
+    },
   }
 
   const {container} = render(
-    <Form state={state} onChange={changes => (state = changes)}>
+    <Form
+      state={state}
+      onChange={changes => {
+        state = changes
+      }}
+    >
       <Field fieldName="person" type={ObjectField}>
         <Field fieldName="friends" type={ArrayField}>
           <Field fieldName="name" type={DummyInput} />
         </Field>
       </Field>
-    </Form>
+    </Form>,
   )
 
   fireEvent.change(container.querySelector('input'), {target: {value: 'Joaquín'}})
   expect(state).toEqual({
     person: {
-      friends: [{name: 'Joaquín'}]
-    }
+      friends: [{name: 'Joaquín'}],
+    },
   })
 })
