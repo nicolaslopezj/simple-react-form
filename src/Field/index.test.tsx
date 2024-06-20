@@ -208,7 +208,7 @@ test('should allow using nested array field', async () => {
 })
 
 test('adding items to array very fast should be handled correctly', async () => {
-  function ItemsInput(props: FieldProps) {
+  function ItemsInput(props: FieldProps<any[], {}>) {
     return (
       <>
         <button

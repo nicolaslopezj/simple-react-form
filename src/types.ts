@@ -1,6 +1,6 @@
 import React, {ComponentProps, Dispatch, ElementType, SetStateAction} from 'react'
 
-export type FieldProps<TValue = any, TTypeExtraProps = {}> = {
+export type FieldPropsBase = {
   /**
    * The name of the field in the object.
    */
@@ -10,11 +10,6 @@ export type FieldProps<TValue = any, TTypeExtraProps = {}> = {
    * The type of the input. It should be a component
    */
   type?: ElementType<any>
-
-  /**
-   * The current value of the field
-   */
-  value?: TValue
 
   /**
    * The value of the parent object
@@ -30,11 +25,6 @@ export type FieldProps<TValue = any, TTypeExtraProps = {}> = {
    * The error message if there is a error
    */
   errorMessage?: string
-
-  /**
-   * Call this function when the value changes
-   */
-  onChange?: (newValue: Dispatch<SetStateAction<TValue>> | TValue) => any
 
   /**
    * The schema for the field
@@ -55,7 +45,37 @@ export type FieldProps<TValue = any, TTypeExtraProps = {}> = {
    * Some fields can have children
    */
   children?: React.ReactNode
-} & TTypeExtraProps
+}
+
+export type FieldProps<TValue = any, TTypeExtraProps = {}> = {
+  /**
+   * The current value of the field
+   */
+  value?: TValue
+
+  /**
+   * Call this function when the value changes
+   */
+  onChange?: Dispatch<SetStateAction<TValue>>
+} & FieldPropsBase &
+  TTypeExtraProps
+
+/**
+ * Field props with basic onChange. This is useful for fields that work with
+ * onChange props that are no Dispatch<SetStateAction<TValue>>. (useState)
+ */
+export type FieldPropsWithBasicOnChange<TValue = any, TTypeExtraProps = {}> = {
+  /**
+   * The current value of the field
+   */
+  value?: TValue
+
+  /**
+   * Call this function when the value changes
+   */
+  onChange?: (value: TValue) => void
+} & FieldPropsBase &
+  TTypeExtraProps
 
 export type FormFieldProps<TFieldType extends React.ElementType<any>> = {
   type: TFieldType
