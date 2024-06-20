@@ -5,6 +5,9 @@ import ObjectField from '../Object'
 import {FieldProps} from '../types'
 import ArrayField from './index'
 import '@testing-library/jest-dom'
+import {act} from 'react'
+
+jest.useFakeTimers()
 
 function DummyInput(props: FieldProps) {
   return (
@@ -89,7 +92,7 @@ it('should pass the value to the child fields', () => {
   expect(container.getElementsByTagName('input')[1].value).toBe('bye')
 })
 
-test('onChange should make changes correctly', () => {
+test('onChange should make changes correctly', async () => {
   let state: any = {persons: [{name: 'Nicolás'}]}
 
   const {container} = render(
@@ -105,8 +108,13 @@ test('onChange should make changes correctly', () => {
     </Form>,
   )
 
-  // change input text value
-  fireEvent.change(container.querySelector('.test-input'), {target: {value: 'Joaquín'}})
+  act(() => {
+    // change input text value
+    fireEvent.change(container.querySelector('.test-input'), {target: {value: 'Joaquín'}})
+    // Simulate state change
+    jest.advanceTimersByTime(0)
+  })
+
   expect(state).toEqual({persons: [{name: 'Joaquín'}]})
 })
 
@@ -132,7 +140,11 @@ test('onChange should make changes correctly on double array', () => {
     </Form>,
   )
 
-  fireEvent.change(container.querySelector('input'), {target: {value: 'Joaquín'}})
+  act(() => {
+    fireEvent.change(container.querySelector('input'), {target: {value: 'Joaquín'}})
+    // Simulate state change
+    jest.advanceTimersByTime(0)
+  })
   expect(state).toEqual({
     person: {
       friends: [{name: 'Joaquín'}],

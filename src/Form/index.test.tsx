@@ -4,7 +4,9 @@ import ObjectField from '../Object'
 import {FieldProps, FormRef} from '../types'
 import Form from './index'
 import '@testing-library/jest-dom'
-import {act} from 'react-dom/test-utils'
+import {act} from 'react'
+
+jest.useFakeTimers()
 
 function DummyInput(props: FieldProps) {
   return (
@@ -50,12 +52,16 @@ test('onChange should dispatch on changes', async () => {
 
   await act(async () => {
     fireEvent.change(container.querySelector('input'), {target: {value: 'foobar'}})
+    // Simulate state change
+    jest.advanceTimersByTime(0)
   })
 
   expect(mockFn.mock.calls[0][0]).toEqual({foo: 'foobar'})
 
   await act(async () => {
     fireEvent.change(container.querySelector('input'), {target: {value: 'barfoo'}})
+    // Simulate state change
+    jest.advanceTimersByTime(0)
   })
   expect(mockFn.mock.calls[1][0]).toEqual({foo: 'barfoo'})
 })

@@ -1,8 +1,15 @@
 import cloneDeep from 'lodash/cloneDeep'
-import isFunction from 'lodash/isFunction'
+import isEqual from 'lodash/isEqual'
 import isNil from 'lodash/isNil'
 import omit from 'lodash/omit'
-import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import useDeepCompareEffect from 'use-deep-compare-effect'
 import {
   ErrorMessagesContext,
@@ -15,13 +22,13 @@ import isReactNative from '../utility/isReactNative'
 import getNewValue from './getNewValue'
 
 function Form(props: FormProps, ref: React.Ref<FormRef>) {
-  const propsState = cloneDeep(props.state || {})
-  const [state, setState] = useState(propsState)
-  const omitOnChangeEvent = useRef(true)
+  const initialPropsState = useMemo(() => cloneDeep(props.state || {}), [props.state])
+  const [state, setState] = useState(initialPropsState)
 
-  const resetState = () => {
-    setState(propsState)
-  }
+  const resetState = useCallback(() => {
+    if (isEqual(state, initialPropsState)) return
+    setState(initialPropsState)
+  }, [initialPropsState, state])
 
   useDeepCompareEffect(() => {
     if (!isNil(props.state)) {
@@ -29,38 +36,34 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
     }
   }, [props.state || {}])
 
-  useDeepCompareEffect(() => {
-    if (omitOnChangeEvent.current) {
-      omitOnChangeEvent.current = false
-      return
-    }
-    if (isFunction(props.onChange)) {
-      props.onChange(state)
-    }
+  const onChange = useCallback((fieldName: string, fieldValue: any) => {
+    setState(oldValue => getNewValue(oldValue, fieldName, fieldValue))
+  }, [])
+
+  useEffect(() => {
+    if (!props.onChange) return
+    if (isEqual(initialPropsState, state)) return
+    props.onChange(state)
   }, [state])
 
-  const onChange = (fieldName: string, fieldValue: any) => {
-    setState(oldValue => {
-      const result = getNewValue(oldValue, fieldName, fieldValue)
-      return result
-    })
-  }
+  const submit = useCallback(() => {
+    props.onSubmit?.(state)
+  }, [state, props.onSubmit])
 
-  const submit = () => {
-    if (!isFunction(props.onSubmit)) return
-    return props.onSubmit(state)
-  }
-
-  const onFormSubmit = (event: any) => {
+  const onFormSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     return submit()
   }
 
-  useImperativeHandle(ref, () => ({
-    submit,
-    getValue: () => state,
-    reset: resetState,
-  }))
+  useImperativeHandle(
+    ref,
+    () => ({
+      submit,
+      getValue: () => state,
+      reset: resetState,
+    }),
+    [resetState, state, submit],
+  )
 
   const renderChild = () => {
     const domProps = omit(
@@ -72,9 +75,11 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
       'useFormTag',
       'onSubmit',
     )
+
     if (isReactNative()) {
       return props.children
     }
+
     if (props.useFormTag !== false) {
       return (
         <form {...domProps} onSubmit={onFormSubmit}>
@@ -82,6 +87,7 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
         </form>
       )
     }
+
     return props.children
   }
 

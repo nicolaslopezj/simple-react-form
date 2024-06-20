@@ -1,10 +1,12 @@
 import {fireEvent, render} from '@testing-library/react'
-import React from 'react'
+import React, {act} from 'react'
 import Field from '../Field'
 import Form from '../Form'
 import {FieldProps} from '../types'
 import {default as ObjectField} from './index'
 import '@testing-library/jest-dom'
+
+jest.useFakeTimers()
 
 class DummyInput extends React.Component<FieldProps> {
   render() {
@@ -73,6 +75,10 @@ test('onChange should make changes correctly', () => {
   )
 
   // changes the input value
-  fireEvent.change(container.querySelector('input'), {target: {value: 'Joaquín'}})
+  act(() => {
+    fireEvent.change(container.querySelector('input'), {target: {value: 'Joaquín'}})
+    jest.advanceTimersByTime(0)
+  })
+
   expect(state).toEqual({person: {name: 'Joaquín'}})
 })
