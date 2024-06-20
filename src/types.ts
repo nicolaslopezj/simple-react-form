@@ -1,4 +1,4 @@
-import React, {ComponentProps, ElementType} from 'react'
+import React, {ComponentProps, Dispatch, ElementType, SetStateAction} from 'react'
 
 export type FieldProps<TValue = any, TTypeExtraProps = {}> = {
   /**
@@ -34,7 +34,7 @@ export type FieldProps<TValue = any, TTypeExtraProps = {}> = {
   /**
    * Call this function when the value changes
    */
-  onChange?: (newValue: TValue) => any
+  onChange?: (newValue: Dispatch<SetStateAction<TValue>> | TValue) => any
 
   /**
    * The schema for the field
@@ -89,7 +89,7 @@ export type FormProps = Omit<React.HTMLProps<HTMLFormElement>, 'onChange'> & {
    * A callback that fires when the form value changes.
    * The argument will be the state with the updated field value.
    */
-  onChange?: (value: object) => any
+  onChange?: Function | Dispatch<SetStateAction<any>>
   /**
    * Pass error messages in a object
    */
