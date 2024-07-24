@@ -1,6 +1,6 @@
 {
   "name": "simple-react-form",
-  "version": "4.1.6",
+  "version": "4.1.7",
   "license": "MIT",
   "author": "Nicolás López <nicolaslopezj@me.com>",
   "description": "A library to make reusable form components in React and React Native",
