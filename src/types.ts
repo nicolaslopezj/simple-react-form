@@ -22,6 +22,11 @@ export type FieldPropsBase = {
   label?: React.ReactNode
 
   /**
+   * The placeholder of the input
+   */
+  placeholder?: string
+
+  /**
    * The error message if there is a error
    */
   errorMessage?: string
