@@ -1,6 +1,6 @@
 import get from 'lodash/get'
 import omit from 'lodash/omit'
-import React, {forwardRef, JSXElementConstructor, useContext, useMemo} from 'react'
+import {JSXElementConstructor, forwardRef, useContext, useMemo} from 'react'
 import {
   ErrorMessagesContext,
   OnChangeContext,
@@ -8,13 +8,6 @@ import {
   ValueContext,
 } from '../Contexts'
 import {FormFieldProps, fieldPropsKeys} from '../types'
-
-// Redecalare forwardRef
-declare module 'react' {
-  function forwardRef<T, P = {}>(
-    render: (props: P, ref: React.Ref<T>) => React.ReactElement | null,
-  ): (props: P & React.RefAttributes<T>) => React.ReactElement | null
-}
 
 function FieldInner<TFieldType extends JSXElementConstructor<any>>(
   props: FormFieldProps<TFieldType>,
