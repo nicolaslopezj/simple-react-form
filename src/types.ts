@@ -113,6 +113,7 @@ export const fieldPropsKeys = [
   'value',
   'parentValue',
   'label',
+  'placeholder',
   'errorMessage',
   'onChange',
   'fieldSchema',
