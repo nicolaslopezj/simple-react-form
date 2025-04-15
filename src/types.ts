@@ -82,11 +82,30 @@ export type FieldPropsWithBasicOnChange<TValue = any, TTypeExtraProps = {}> = {
 } & FieldPropsBase &
   TTypeExtraProps
 
-export type FormFieldProps<TFieldType extends React.ElementType<any>> = {
-  type: TFieldType
-  fieldName: string
-  errorMessage?: string
-} & ComponentProps<TFieldType>
+export type FormFieldProps<TFieldType extends React.ElementType<any>> = TFieldType extends undefined
+  ? {
+      type: React.ElementType<any>
+      fieldName: string
+      errorMessage?: string
+    }
+  : {
+      type: TFieldType
+      fieldName: string
+      errorMessage?: string
+    } & FilteredFieldPropsFromComponent<TFieldType>
+
+export type FilteredFieldPropsFromComponent<TFieldType extends React.ElementType<any>> = Omit<
+  ComponentProps<TFieldType>,
+  | 'fieldName'
+  | 'type'
+  | 'errorMessage'
+  | 'parentValue'
+  | 'fieldSchema'
+  | 'schema'
+  | 'value'
+  | 'onChange'
+  | 'errorMessage'
+>
 
 export const fieldPropsKeys = [
   'fieldName',

@@ -52,7 +52,11 @@ function FieldInner<TFieldType extends JSXElementConstructor<any>>(
 
   const Component = props.type
 
-  const componentRef = Component.prototype.render ? ref : null
+  // Only pass ref if Component is a class component
+  const componentRef =
+    typeof Component === 'function' && Component.prototype && Component.prototype.isReactComponent
+      ? ref
+      : null
 
   return (
     <ValueContext.Provider value={childProps.value}>
@@ -63,6 +67,10 @@ function FieldInner<TFieldType extends JSXElementConstructor<any>>(
   )
 }
 
-const Field = forwardRef(FieldInner)
+const Field = forwardRef(FieldInner) as <
+  TFieldType extends JSXElementConstructor<any> | undefined = undefined,
+>(
+  props: FormFieldProps<TFieldType> & {ref?: any},
+) => ReturnType<typeof FieldInner>
 
 export default Field

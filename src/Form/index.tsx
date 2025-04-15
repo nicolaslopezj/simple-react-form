@@ -67,17 +67,12 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
     [resetState, state, submit],
   )
 
-  const renderChild = () => {
-    const domProps = omit(
-      props,
-      'children',
-      'state',
-      'onChange',
-      'errorMessages',
-      'useFormTag',
-      'onSubmit',
-    )
+  const domProps = useMemo(
+    () => omit(props, 'children', 'state', 'onChange', 'errorMessages', 'useFormTag', 'onSubmit'),
+    [props],
+  )
 
+  const renderChild = () => {
     if (isReactNative()) {
       return props.children
     }
