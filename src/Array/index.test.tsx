@@ -66,6 +66,27 @@ it('removeItem should remove the item', () => {
   expect(container.querySelector('.children')).not.toBeInTheDocument()
 })
 
+it('removeItem should only remove the clicked item when duplicates exist', () => {
+  let state = {items: [{name: 'dup'}, {name: 'dup'}]}
+
+  const {container} = render(
+    <Form state={state} onChange={changes => (state = changes)}>
+      <Field fieldName="items" type={ArrayField}>
+        <Field fieldName="name" type={DummyInput} />
+      </Field>
+    </Form>,
+  )
+
+  const removeButtons = container.querySelectorAll('.srf_removeButton')
+  fireEvent.click(removeButtons[0])
+
+  act(() => {
+    jest.advanceTimersByTime(0)
+  })
+
+  expect(state).toEqual({items: [{name: 'dup'}]})
+})
+
 it('should render an error if there is one', () => {
   const {container} = render(
     <Form>
