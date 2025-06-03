@@ -1,10 +1,10 @@
 # Forms
 
-To create complex state management we use 'simple-react-form'
+We use **simple-react-form** to manage complex form state.
 
-Simple React Form lets us build forms by composing Field components. Each Field.type is a React component that receives a value and an onChange handler. The Form manages the state for us, updating the state object as fields change.
+Simple React Form lets us build forms by composing `Field` components. Each field type is a React component that receives a `value` and an `onChange` handler. The `Form` component manages the state for us, updating the state object as fields change.
 
-- Field Types are components that recieve as props "value" and "onChange"
+- Field Types are components that receive as props "value" and "onChange"
 - Use the Form component to manage and update form state automatically.
 - Field.fieldName will set the variable in the state object.
 - Use dot notation for nested object fields.

@@ -13,9 +13,10 @@
 ## Installation
 
 ```sh
-npm install --save simple-react-form
+npm install simple-react-form
+# or
+yarn add simple-react-form
 ```
-
 ---
 
 ## Main Exports
