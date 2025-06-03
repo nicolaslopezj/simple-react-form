@@ -163,3 +163,38 @@ test('should allow to reset state', () => {
 
   expect(form.getValue()).toEqual({name: 'Nico'})
 })
+
+test('does not render form tag in React Native environment', () => {
+  const original: any = (global as any).navigator
+  Object.defineProperty(global, 'navigator', {
+    value: {product: 'ReactNative'},
+    configurable: true,
+    enumerable: true,
+    writable: true,
+  })
+
+  const {container} = render(
+    <Form>
+      <Field fieldName="name" type={DummyInput} />
+    </Form>,
+  )
+
+  expect(container.querySelector('form')).not.toBeInTheDocument()
+
+  Object.defineProperty(global, 'navigator', {
+    value: original,
+    configurable: true,
+    enumerable: true,
+    writable: true,
+  })
+})
+
+test('passes dom props to the form element', () => {
+  const {container} = render(
+    <Form target="/submit-here">
+      <Field fieldName="name" type={DummyInput} />
+    </Form>,
+  )
+
+  expect(container.querySelector('form').getAttribute('target')).toBe('/submit-here')
+})
