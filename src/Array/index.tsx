@@ -106,7 +106,8 @@ export default class ArrayComponent extends React.Component<
 
   removeItem(index) {
     const value = this.props.value || []
-    var newArray = without(value, value[index])
+    const newArray = value.slice()
+    newArray.splice(index, 1)
     this.props.onChange(newArray)
   }
 
