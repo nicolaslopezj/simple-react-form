@@ -4,7 +4,6 @@
  */
 
 import isArray from 'lodash/isArray'
-import without from 'lodash/without'
 import React from 'react'
 import {ParentFieldNameContext} from '../Contexts'
 import Field from '../Field'

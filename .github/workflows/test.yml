@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'yarn'
+      - name: Use Yarn 1
+        run: |
+          corepack enable
+          corepack prepare yarn@1.22.19 --activate
+      - run: yarn install --frozen-lockfile
+      - run: yarn test
