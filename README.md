@@ -4,14 +4,27 @@ Simple React Form is the simplest way to handle forms in React. It helps you mak
 
 This is just a framework, you must [create the form components](#field-types) or [install a package with fields](#contributions) that you will use.
 
-To use with react native [check here](#react-native)
+To use with React Native, see [the dedicated section](#react-native)
+
+## Features
+
+- Minimal API with `Form` and `Field`.
+- Works with React and React Native.
+- Full TypeScript definitions.
+- Controlled or uncontrolled forms.
+- Create your own field components.
+
+See [API.md](./API.md) for the complete API reference.
+
 
 ### Installation
 
 Install the base package
 
 ```sh
-npm install --save simple-react-form
+npm install simple-react-form
+# or
+yarn add simple-react-form
 ```
 
 ### Example
@@ -102,9 +115,7 @@ function PostsCreate({ initialDoc }) {
 
 React Simple Form is built from the idea that you can create custom components easily.
 
-Basically this consist in a component that have the prop `value` and the prop `onChange`.
-You must render the `value` and call `onChange` passing the new value
-when the value has changed.
+Basically, a field type is a component that receives a `value` prop and an `onChange` handler. It must render the value and call `onChange` with the new value whenever it changes.
 
 ```js
 import UploadImage from '../components/my-fields/upload'
@@ -143,7 +154,7 @@ You can view the full list of props [here](https://github.com/nicolaslopezj/simp
 
 ## React Native
 
-With React Native the api is the same, but you must enclose the inner content of the form with a `View` component.
+In React Native the API is the same, but wrap the form contents in a `View` component.
 
 Example:
 
@@ -166,7 +177,7 @@ function TextFieldComponent({ value, onChange }) {
 export default TextFieldComponent
 ```
 
-Render the form in the component you want
+Render the form inside the desired component
 
 ```js
 import React, { useState } from 'react'
@@ -190,9 +201,9 @@ function MyForm() {
 
 > You should always render your fields inside a View when using react native.
 
-### WithValue High order component
+### WithValue higher-order component
 
-If you need to get the current value of the form in the children you can use the `WithValue` component
+If you need to access the current form value in child components, use the `WithValue` component.
 
 ```js
 import React from 'react'
@@ -223,3 +234,11 @@ function Example() {
 - [@fermuch](http://github.com/fermuch)
 - [@joadr](http://github.com/joadr)
 - [@prinzdezibel](http://github.com/prinzdezibel)
+
+## Running Tests
+
+Clone the repository, install dependencies and run:
+
+```sh
+yarn test
+```
