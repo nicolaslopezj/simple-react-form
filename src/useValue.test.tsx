@@ -1,4 +1,4 @@
-import {render, screen, fireEvent} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 import {ValueContext} from './Contexts'
 import useValue from './useValue'
@@ -23,7 +23,9 @@ test('useValue updates when the context value changes', () => {
     const [val, setVal] = React.useState('first')
     return (
       <ValueContext.Provider value={val}>
-        <button onClick={() => setVal('second')}>change</button>
+        <button type="button" onClick={() => setVal('second')}>
+          change
+        </button>
         <DisplayValue />
       </ValueContext.Provider>
     )

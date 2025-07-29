@@ -48,11 +48,25 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
     }
   }, [props.state || {}])
 
-  // when the state of the form changes, we call the onChange function
+  // Notify parent *only* when our internal state changed and *not* immediately
+  // after the parent has just provided us with a new `props.state`.  We detect
+  // an external change by keeping the previous `props.state` (cloned into
+  // `propsState`) in a ref and comparing it to the current one. This prevents
+  // a feedback-loop where the form sends its stale value back to the parent
+  // right after the parent updated it (see failing test case).
+  const prevPropsStateRef = useRef(propsState)
+
   useEffect(() => {
+    const propsStateChanged = !isEqual(prevPropsStateRef.current, propsState)
+
+    // Update ref for next render cycle
+    prevPropsStateRef.current = propsState
+
     if (!props.onChange) return
-    if (isEqual(propsState, state)) return
-    // Use startTransition for parent notifications to keep form fields responsive
+    if (isEqual(propsState, state)) return // nothing changed
+    if (propsStateChanged) return // skip, change came from parent
+
+    // Internal change → notify parent
     startTransition(() => {
       props.onChange(state)
     })
