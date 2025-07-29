@@ -1,6 +1,6 @@
 import get from 'lodash/get'
 import omit from 'lodash/omit'
-import {JSXElementConstructor, forwardRef, useContext, useMemo} from 'react'
+import {JSXElementConstructor, forwardRef, useCallback, useContext, useMemo} from 'react'
 import {
   ErrorMessagesContext,
   OnChangeContext,
@@ -32,6 +32,19 @@ function FieldInner<TFieldType extends JSXElementConstructor<any>>(
     return props.errorMessage || errorMessages[fieldName] || get(errorMessages, fieldName)
   }, [fieldName, props.errorMessage, errorMessages])
 
+  // Memoize the onChange callback to prevent recreating it on every render
+  const handleChange = useCallback(
+    (newValue: any) => {
+      return onChange(fieldName, newValue)
+    },
+    [onChange, fieldName],
+  )
+
+  // Memoize field value separately to reduce childProps recalculation
+  const fieldValue = useMemo(() => {
+    return get(parentValue || {}, props.fieldName)
+  }, [parentValue, props.fieldName])
+
   const childProps = useMemo(() => {
     const propOptions = omit(props, ['fieldName', 'type', 'errorMessage']) as any
     const allowedKeys = [...fieldPropsKeys, 'type']
@@ -39,16 +52,14 @@ function FieldInner<TFieldType extends JSXElementConstructor<any>>(
 
     return {
       ...propOptions,
-      value: get(parentValue || {}, props.fieldName),
+      value: fieldValue,
       parentValue: parentValue || {},
-      onChange: newValue => {
-        return onChange(fieldName, newValue)
-      },
+      onChange: handleChange,
       errorMessage,
       fieldName,
       passProps,
     }
-  }, [props, parentValue, fieldName, errorMessage])
+  }, [props, fieldValue, parentValue, handleChange, errorMessage, fieldName])
 
   const Component = props.type
 

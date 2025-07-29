@@ -4,7 +4,7 @@
  */
 
 import isArray from 'lodash/isArray'
-import React from 'react'
+import React, {startTransition} from 'react'
 import {ParentFieldNameContext} from '../Contexts'
 import Field from '../Field'
 import ObjectField from '../Object'
@@ -89,14 +89,17 @@ export default class ArrayComponent extends React.Component<
   static defaultProps = defaultProps
 
   addItem(itemValue = {}) {
-    var newArray = this.props.value
+    let newArray = this.props.value
     if (isArray(newArray)) {
       newArray.push(itemValue)
     } else {
       newArray = [itemValue]
     }
 
-    this.props.onChange(newArray)
+    // Use startTransition for array operations as they're typically not urgent
+    startTransition(() => {
+      this.props.onChange(newArray)
+    })
   }
 
   getObjectField() {
@@ -107,7 +110,10 @@ export default class ArrayComponent extends React.Component<
     const value = this.props.value || []
     const newArray = value.slice()
     newArray.splice(index, 1)
-    this.props.onChange(newArray)
+    // Use startTransition for array operations as they're typically not urgent
+    startTransition(() => {
+      this.props.onChange(newArray)
+    })
   }
 
   getChildrenComponents(item, index) {
