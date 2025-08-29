@@ -124,6 +124,9 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
     return props.children
   }
 
+  console.log('[simple-react-form] state', state)
+  console.log('[simple-react-form] props', props)
+
   return (
     <ParentFieldNameContext.Provider value={null}>
       <ErrorMessagesContext.Provider value={props.errorMessages}>

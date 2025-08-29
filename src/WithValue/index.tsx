@@ -5,5 +5,9 @@ export interface Props {
 }
 
 export default function WithValue(props: Props) {
-  return <ValueContext.Consumer>{value => props.children(value)}</ValueContext.Consumer>
+  return <ValueContext.Consumer>{value => {
+     // value should be at least an empty object. This means the context is not mounted yet
+    if (!value) return null
+    return props.children(value)
+  }}</ValueContext.Consumer>
 }
