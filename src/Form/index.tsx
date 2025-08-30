@@ -20,7 +20,7 @@ import {
   ValueContext,
 } from '../Contexts'
 import {FormProps, FormRef} from '../types'
-import isReactNative from '../utility/isReactNative'
+import FormInner from './FormInner'
 import getNewValue from './getNewValue'
 
 function Form(props: FormProps, ref: React.Ref<FormRef>) {
@@ -108,30 +108,19 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
     [props],
   )
 
-  const renderChild = () => {
-    if (isReactNative()) {
-      return props.children
-    }
-
-    if (props.useFormTag !== false) {
-      return (
-        <form {...domProps} onSubmit={onFormSubmit}>
-          {props.children}
-        </form>
-      )
-    }
-
-    return props.children
-  }
-
-  console.log('[simple-react-form] state', state)
-  console.log('[simple-react-form] props', props)
-
   return (
     <ParentFieldNameContext.Provider value={null}>
       <ErrorMessagesContext.Provider value={props.errorMessages}>
         <OnChangeContext.Provider value={onChange}>
-          <ValueContext.Provider value={state}>{renderChild()}</ValueContext.Provider>
+          <ValueContext.Provider value={state}>
+            <FormInner
+              domProps={domProps}
+              onFormSubmit={onFormSubmit}
+              useFormTag={props.useFormTag}
+            >
+              {props.children}
+            </FormInner>
+          </ValueContext.Provider>
         </OnChangeContext.Provider>
       </ErrorMessagesContext.Provider>
     </ParentFieldNameContext.Provider>
