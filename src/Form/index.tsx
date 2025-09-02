@@ -27,18 +27,12 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
   const propsState = useMemo(() => cloneDeep(props.state || {}), [props.state])
   const [state, setState] = useState(propsState)
 
-  // Track if changes are coming from internal field updates
-  const isUpdatingFromField = useRef(false)
-
   const resetState = useCallback(() => {
     if (isEqual(propsState, state)) return
-    // Only reset if we're not currently processing a field update
-    if (!isUpdatingFromField.current) {
-      // Use startTransition for form resets as they're typically not urgent
-      startTransition(() => {
-        setState(propsState)
-      })
-    }
+    // Always allow reset, but use startTransition for async behavior
+    startTransition(() => {
+      setState(propsState)
+    })
   }, [propsState, state])
 
   // when the props state changes, we set the state to the new props.state
@@ -73,14 +67,8 @@ function Form(props: FormProps, ref: React.Ref<FormRef>) {
   }, [state, props.onChange, propsState])
 
   const onChange = useCallback((fieldName: string, fieldValue: any) => {
-    isUpdatingFromField.current = true
     setState(oldValue => {
-      const newValue = getNewValue(oldValue, fieldName, fieldValue)
-      // Reset the flag after state update
-      Promise.resolve().then(() => {
-        isUpdatingFromField.current = false
-      })
-      return newValue
+      return getNewValue(oldValue, fieldName, fieldValue)
     })
   }, [])
 

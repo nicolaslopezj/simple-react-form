@@ -198,3 +198,51 @@ test('passes dom props to the form element', () => {
 
   expect(container.querySelector('form').getAttribute('target')).toBe('/submit-here')
 })
+
+test('resetState race condition: isUpdatingFromField.current blocks state reset', async () => {
+  let form: FormRef = null
+  const setState = jest.fn()
+
+  const {container, rerender} = render(
+    <Form
+      ref={handle => {
+        form = handle
+      }}
+      state={{name: 'initial'}}
+      onChange={setState}
+    >
+      <Field fieldName="name" type={DummyInput} />
+    </Form>,
+  )
+
+  // First, change the field value (this sets isUpdatingFromField.current = true)
+  act(() => {
+    fireEvent.change(container.querySelector('input'), {target: {value: 'changed'}})
+  })
+
+  // Verify the change happened
+  expect(form.getValue()).toEqual({name: 'changed'})
+
+  // Now simulate parent component updating props.state by rerendering with new state
+  // This triggers the useDeepCompareEffect which calls resetState
+  // However, resetState is blocked by isUpdatingFromField.current still being true
+  act(() => {
+    // to make sure all hooks and effects are executed
+    rerender(
+      <Form
+        ref={handle => {
+          form = handle
+        }}
+        state={{name: 'external'}}
+        onChange={setState}
+      >
+        <Field fieldName="name" type={DummyInput} />
+      </Form>,
+    )
+  })
+
+  // The state should be reset to {name: 'external'} from the new props.state
+  // Currently this test will FAIL because of a race condition bug where
+  // isUpdatingFromField.current prevents resetState from executing
+  expect(form.getValue()).toEqual({name: 'external'})
+})
